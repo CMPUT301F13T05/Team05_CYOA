@@ -8,3 +8,4 @@ Team Members:
 * Joel Malina (jmalina) email: jmalina@ualberta.ca
 * Kevin Lafond (klafond) email: klafond@ualberta.ca
 * Chris Pavlicek (cpavlice) email: cpavlice@ualberta.ca
+* Leon Jamieson (ljamieso) email: ljamieso@ualberta.ca
