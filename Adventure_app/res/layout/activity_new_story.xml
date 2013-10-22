@@ -13,26 +13,21 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         android:ems="10"
-        android:text="Title" >
+        android:text="Title"
+        android:onClick="openContext" >
 
         <requestFocus />
     </EditText>
-
-    <Button
-        android:id="@+id/dropdownbutton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:text="..." />
 
     <EditText
         android:id="@+id/authortext"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/titletext"
+        android:layout_alignParentRight="true"
         android:layout_below="@+id/titletext"
         android:ems="10"
         android:text="Author" />
@@ -41,9 +36,23 @@
         android:id="@+id/fragments"
         android:layout_width="match_parent"
         android:layout_height="350dp"
+        android:layout_above="@+id/button1"
         android:layout_alignLeft="@+id/authortext"
         android:layout_below="@+id/authortext"
         android:scrollbars="horizontal" >
+
     </ListView>
+
+    <Button
+        android:onClick="openContext"
+        android:id="@+id/button1"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/fragments"
+        android:layout_alignParentBottom="true"
+        android:text="Frag" 
+
+        />
 
 </RelativeLayout>

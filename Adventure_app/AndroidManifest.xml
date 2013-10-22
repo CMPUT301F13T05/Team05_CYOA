@@ -5,7 +5,7 @@
     android:versionName="1.0" >
 
     <uses-sdk
-        android:minSdkVersion="8"
+        android:minSdkVersion="16"
         android:targetSdkVersion="17" />
 
     <application
@@ -27,8 +27,20 @@
             android:label="@string/title_activity_new_story" >
         </activity>
         <activity
-            android:name="com.example.adventure_app.Stroy"
+            android:name="com.example.adventure_app.Story"
             android:label="@string/title_activity_stroy" >
+        </activity>
+        <activity
+            android:name="com.example.adventure_app.EditFragment"
+            android:label="@string/title_activity_edit_fragment" >
+        </activity>
+        <activity
+            android:name="com.example.adventure_app.Fragement_Edit"
+            android:label="@string/title_activity_fragement__edit" >
+        </activity>
+        <activity
+            android:name="com.example.adventure_app.Edit"
+            android:label="@string/title_activity_edit" >
         </activity>
     </application>
 

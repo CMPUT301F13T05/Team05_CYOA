@@ -1,9 +1,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
-
-    <item
-        android:id="@+id/action_settings"
-        android:orderInCategory="100"
-        android:showAsAction="never"
-        android:title="@string/action_settings"/>
-
+        <item android:id="@+id/search" android:title="Search"  android:showAsAction="ifRoom|withText" android:actionViewClass="android.widget.SearchView"></item>
+        <item android:id="@+id/new_story" android:showAsAction="never" android:title="New Story"></item>
+        <item android:id="@+id/download"  android:showAsAction="never" android:title="Download"></item>
+		
 </menu>
