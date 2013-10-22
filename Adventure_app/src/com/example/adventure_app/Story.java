@@ -8,24 +8,24 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 
-public class New_story extends Activity {
+public class Story extends Activity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_new_story);
+		setContentView(R.layout.activity_story);
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.new_story, menu);
+		getMenuInflater().inflate(R.menu.story, menu);
 		return true;
 	}
 
-	
 	// We want to create a context Menu when the user long click on an item
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v,
@@ -40,9 +40,8 @@ public class New_story extends Activity {
 		MenuInflater inflater = getMenuInflater();
 		
 		// Open Menu
-		inflater.inflate(R.menu.editstorymenu, menu);
+		inflater.inflate(R.menu.annotatemenu, menu);
 	}
-	
 	public void openContext(View v) {
 		registerForContextMenu( v );
         openContextMenu( v );  

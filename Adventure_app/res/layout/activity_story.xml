@@ -6,7 +6,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".Stroy" >
+    tools:context=".Story" >
 
     <TextView
         android:id="@+id/titleview"
@@ -28,14 +28,6 @@
         android:textSize="25dp" />
 
     <Button
-        android:id="@+id/dropdown"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/authorview"
-        android:layout_alignParentRight="true"
-        android:text="..." />
-
-    <Button
         android:id="@+id/choicesbutton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -48,11 +40,21 @@
         android:id="@+id/storyview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_above="@+id/choicesbutton"
         android:layout_alignParentLeft="true"
-        android:layout_alignRight="@+id/dropdown"
         android:layout_below="@+id/authorview"
         android:layout_marginTop="26dp"
         android:text="Story"
         android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <Button
+        android:id="@+id/buttonannotate"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:text="ann" 
+        android:onClick="openContext"/>
 
 </RelativeLayout>
