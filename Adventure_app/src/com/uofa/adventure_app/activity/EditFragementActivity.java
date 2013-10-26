@@ -16,53 +16,27 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.uofa.adventure_app;
+package com.uofa.adventure_app.activity;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
 
 import com.uofa.adventure_app.R;
 
-public class BrowserActivity extends Activity {
+public class EditFragementActivity extends Activity implements AdventureActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
+		setContentView(R.layout.activity_edit);
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-	    MenuInflater inflater = getMenuInflater();
-	    inflater.inflate(R.menu.main, menu);
-		return super.onCreateOptionsMenu(menu);
-	}
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle presses on the action bar items
-		switch (item.getItemId()) {
-		case R.id.new_story:
-			newStory();
-
-		default:
-			return super.onOptionsItemSelected(item);
-		}
-	}
-	public void newStory() {
-		Intent myIntent = new Intent(this, EditStoryActivity.class);
-		this.startActivity(myIntent);
-	}
-	
-	public void viewStory(View v) {
-		Intent myIntent = new Intent(this, StoryActivity.class);
-		this.startActivity(myIntent);
+		getMenuInflater().inflate(R.menu.edit, menu);
+		return true;
 	}
 
-	
 }
