@@ -24,15 +24,14 @@
         </activity>
         <activity
             android:name=".activity.EditFragementActivity"
-            android:label="@string/title_activity_edit_fragment" >
-        </activity>
+            android:label="@string/title_activity_edit_fragement" >       </activity>
         <activity
             android:name=".activity.EditStoryActivity"
-            android:label="@string/title_activity_fragement__edit" >
+            android:label="@string/title_activity_edit_story" >
         </activity>
         <activity
             android:name=".activity.StoryActivity"
-            android:label="@string/title_activity_edit" >
+            android:label="@string/title_activity_story" >
         </activity>
     </application>
 
