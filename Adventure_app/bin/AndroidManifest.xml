@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.adventure_app"
+    package="com.uofa.adventure_app"
     android:versionCode="1"
     android:versionName="1.0" >
 
@@ -14,7 +14,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="com.example.adventure_app.MainActivity"
+            android:name="com.uofa.adventure_app.BrowserActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,23 +23,23 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.example.adventure_app.New_story"
+            android:name="com.uofa.adventure_app.EditStoryActivity"
             android:label="@string/title_activity_new_story" >
         </activity>
         <activity
-            android:name="com.example.adventure_app.Story"
+            android:name="com.uofa.adventure_app.StoryActivity"
             android:label="@string/title_activity_stroy" >
         </activity>
         <activity
-            android:name="com.example.adventure_app.EditFragment"
+            android:name="com.uofa.adventure_app.EditFragment"
             android:label="@string/title_activity_edit_fragment" >
         </activity>
         <activity
-            android:name="com.example.adventure_app.Fragement_Edit"
+            android:name="com.uofa.adventure_app.Fragement_Edit"
             android:label="@string/title_activity_fragement__edit" >
         </activity>
         <activity
-            android:name="com.example.adventure_app.Edit"
+            android:name="com.uofa.adventure_app.EditActivity"
             android:label="@string/title_activity_edit" >
         </activity>
     </application>

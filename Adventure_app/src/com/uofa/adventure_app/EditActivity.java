@@ -1,10 +1,12 @@
-package com.example.adventure_app;
+package com.uofa.adventure_app;
 
-import android.os.Bundle;
 import android.app.Activity;
+import android.os.Bundle;
 import android.view.Menu;
 
-public class Edit extends Activity {
+import com.uofa.adventure_app.R;
+
+public class EditActivity extends Activity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
