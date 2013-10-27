@@ -1,5 +1,3 @@
-package com.uofa.adventure_app.activity;
-
 /*
 Adventure App - Allows you to create an Adventure Book, or Download
 	books from other authors.
@@ -18,6 +16,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+package com.uofa.adventure_app.activity;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.ContextMenu;
