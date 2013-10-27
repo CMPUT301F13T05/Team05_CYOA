@@ -10,16 +10,21 @@ public class WebServiceController {
  * Gets a story by name
  * @return
  */
+	// TODO: Implement
 	public Story fetch(String name) {
-		
+		Story story = new Story();
+		return story;
 	}
 	/**
 	 * Returns a story with a given id.
 	 * @param id
 	 * @return
 	 */
+	
+	// TODO: implement
 	public Story fetch(Integer id) {
-		
+		Story story = new Story();
+		return story;
 	}
 	
 	/**
@@ -27,8 +32,10 @@ public class WebServiceController {
 	 * @param story
 	 * @return
 	 */
-	public boolean publish(Story story) {
 	
+	// TODO: implement
+	public boolean publish(Story story) {
+		return true;
 	}
 	
 	/**
@@ -36,8 +43,10 @@ public class WebServiceController {
 	 * @param searchKey
 	 * @return
 	 */
+	
+	// TODO: Implement
 	public ArrayList<Story> search(String searchKey) {
-		
+		return new ArrayList<Story>();
 	}
 
 }
