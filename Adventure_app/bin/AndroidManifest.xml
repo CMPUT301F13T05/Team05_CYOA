@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.adventure_app"
+    package="com.uofa.adventure_app"
     android:versionCode="1"
     android:versionName="1.0" >
 
@@ -12,9 +12,9 @@
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme" android:name=".application.AdventureApplication">
         <activity
-            android:name="com.example.adventure_app.MainActivity"
+            android:name=".activity.BrowserActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,24 +23,15 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.example.adventure_app.New_story"
-            android:label="@string/title_activity_new_story" >
+            android:name=".activity.EditFragementActivity"
+            android:label="@string/title_activity_edit_fragement" >       </activity>
+        <activity
+            android:name=".activity.EditStoryActivity"
+            android:label="@string/title_activity_edit_story" >
         </activity>
         <activity
-            android:name="com.example.adventure_app.Story"
-            android:label="@string/title_activity_stroy" >
-        </activity>
-        <activity
-            android:name="com.example.adventure_app.EditFragment"
-            android:label="@string/title_activity_edit_fragment" >
-        </activity>
-        <activity
-            android:name="com.example.adventure_app.Fragement_Edit"
-            android:label="@string/title_activity_fragement__edit" >
-        </activity>
-        <activity
-            android:name="com.example.adventure_app.Edit"
-            android:label="@string/title_activity_edit" >
+            android:name=".activity.StoryActivity"
+            android:label="@string/title_activity_story" >
         </activity>
     </application>
 
