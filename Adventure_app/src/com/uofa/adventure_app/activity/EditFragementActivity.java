@@ -20,7 +20,12 @@ package com.uofa.adventure_app.activity;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.ContextMenu;
 import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.View;
+import android.view.ContextMenu.ContextMenuInfo;
+import android.widget.AdapterView.AdapterContextMenuInfo;
 
 import com.uofa.adventure_app.R;
 
@@ -37,6 +42,27 @@ public class EditFragementActivity extends Activity implements AdventureActivity
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.edit, menu);
 		return true;
+	}
+	// We want to create a context Menu when the user long click on an item
+	@Override
+	public void onCreateContextMenu(ContextMenu menu, View v,
+			ContextMenuInfo menuInfo) {
+		super.onCreateContextMenu(menu, v, menuInfo);
+		AdapterContextMenuInfo aInfo = (AdapterContextMenuInfo) menuInfo;
+
+		
+		// Style our context menu
+		menu.setHeaderIcon(android.R.drawable.ic_input_get);
+		menu.setHeaderTitle("Options");
+		MenuInflater inflater = getMenuInflater();
+
+		inflater.inflate(R.menu.createchoice, menu);
+		
+	}
+
+	public void openChoices(View v) {
+		registerForContextMenu( v );
+        openContextMenu( v );  
 	}
 
 }

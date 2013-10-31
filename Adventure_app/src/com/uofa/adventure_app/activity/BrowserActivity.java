@@ -18,6 +18,7 @@
  */
 package com.uofa.adventure_app.activity;
 
+import java.util.ArrayList;
 import java.util.UUID;
 
 import android.app.Activity;
@@ -27,6 +28,9 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.GridView;
 
 import com.uofa.adventure_app.R;
 import com.uofa.adventure_app.application.AdventureApplication;
@@ -36,11 +40,28 @@ import com.uofa.adventure_app.model.Fragement;
 import com.uofa.adventure_app.model.Story;
 
 public class BrowserActivity extends Activity implements AdventureActivity {
-
+	private ArrayAdapter<String> adapter;
+	ArrayList<String> List;
+	GridView grid;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_browser);
+		grid = (GridView) findViewById(R.id.gridView1);
+		List = new ArrayList<String>();
+		List.add("Story " + 1);
+		for (int i = 10; i<20; i++)
+			List.add("Story " + i);
+
+		adapter = new ArrayAdapter<String>(this,
+				R.layout.list_item, List);
+		grid.setAdapter(adapter);
+		 grid.setOnItemClickListener(new GridView.OnItemClickListener() {
+		       // @Override
+		        public void onItemClick(AdapterView<?> a, View v, int i, long l) {
+		    		viewStory(v);
+		        }
+		 });
 		/*
 		 //TESTING
 		Story tStory = new Story();

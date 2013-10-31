@@ -12,21 +12,10 @@
         android:id="@+id/gridView1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/button1"
         android:layout_alignParentRight="false"
         android:numColumns="3"
         android:scrollbars="horizontal" >
 
     </GridView>
-
-    <Button
-        android:id="@+id/button1"
-        android:onClick="viewStory"
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/gridView1"
-        android:layout_alignParentBottom="true"
-        android:text="Button" />
 
 </RelativeLayout>

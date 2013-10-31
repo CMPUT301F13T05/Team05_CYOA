@@ -18,6 +18,8 @@
  */
 package com.uofa.adventure_app.activity;
 
+import java.util.ArrayList;
+
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.ContextMenu;
@@ -25,15 +27,37 @@ import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.GridView;
+import android.widget.ListView;
+import android.widget.AdapterView.AdapterContextMenuInfo;
 
 import com.uofa.adventure_app.R;
 
 public class EditStoryActivity extends Activity implements AdventureActivity {
-
+	private ArrayAdapter<String> adapter;
+	ArrayList<String> List;
+	ListView list;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_edit_story);
+		list = (ListView) findViewById(R.id.fragments);
+		List = new ArrayList<String>();
+		for (int i = 1; i < 50; i++){
+			List.add("Fragment " + i);
+			System.out.println(List.get(i - 1));
+		}
+		adapter = new ArrayAdapter<String>(this,
+				R.layout.list_item, List);
+		list.setAdapter(adapter);
+		 list.setOnItemClickListener(new GridView.OnItemClickListener() {
+		       // @Override
+		        public void onItemClick(AdapterView<?> a, View v, int i, long l) {
+		    		openContext(v);
+		        }
+		 });
 	}
 
 	@Override
@@ -49,7 +73,7 @@ public class EditStoryActivity extends Activity implements AdventureActivity {
 	public void onCreateContextMenu(ContextMenu menu, View v,
 			ContextMenuInfo menuInfo) {
 		super.onCreateContextMenu(menu, v, menuInfo);
-		//AdapterContextMenuInfo aInfo = (AdapterContextMenuInfo) menuInfo;
+		AdapterContextMenuInfo aInfo = (AdapterContextMenuInfo) menuInfo;
 
 		
 		// Style our context menu

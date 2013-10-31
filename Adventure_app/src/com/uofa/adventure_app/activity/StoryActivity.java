@@ -18,21 +18,35 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 package com.uofa.adventure_app.activity;
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
+import android.widget.AdapterView.AdapterContextMenuInfo;
+
 
 import com.uofa.adventure_app.R;
 
 public class StoryActivity extends Activity implements AdventureActivity {
-
+	TextView testtitle;
+	TextView testAuthor;
+	TextView testBody;
+	boolean choice;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_story);
+		testtitle = (TextView) findViewById(R.id.titleview);
+		testAuthor = (TextView) findViewById(R.id.authorview);
+		testBody = (TextView) findViewById(R.id.storyview);
+		testBody.setText("This story isn't very good.");
+		testAuthor.setText("Author 1 edited by User 1");
+		testtitle.setText("Story 1");
 	}
 
 	@Override
@@ -47,19 +61,46 @@ public class StoryActivity extends Activity implements AdventureActivity {
 	public void onCreateContextMenu(ContextMenu menu, View v,
 			ContextMenuInfo menuInfo) {
 		super.onCreateContextMenu(menu, v, menuInfo);
-		//AdapterContextMenuInfo aInfo = (AdapterContextMenuInfo) menuInfo;
+		AdapterContextMenuInfo aInfo = (AdapterContextMenuInfo) menuInfo;
 
 		
 		// Style our context menu
 		menu.setHeaderIcon(android.R.drawable.ic_input_get);
 		menu.setHeaderTitle("Options");
 		MenuInflater inflater = getMenuInflater();
+		if (choice == false){
+			// Open Menu
+			inflater.inflate(R.menu.annotatemenu, menu);
+		}else{
+			inflater.inflate(R.menu.choices, menu);
+			choice = false;
+		}
 		
-		// Open Menu
-		inflater.inflate(R.menu.annotatemenu, menu);
 	}
 	public void openContext(View v) {
 		registerForContextMenu( v );
         openContextMenu( v );  
 	}
+	
+	public void openChoices(View v) {
+		choice = true;
+		registerForContextMenu( v );
+        openContextMenu( v );  
+	}
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// Handle presses on the action bar items
+		switch (item.getItemId()) {
+		case R.id.editstory:
+			editStory();
+
+		default:
+			return super.onOptionsItemSelected(item);
+		}
+	}
+	public void editStory() {
+		Intent myIntent = new Intent(this, EditStoryActivity.class);
+		this.startActivity(myIntent);
+	}
+
 }
