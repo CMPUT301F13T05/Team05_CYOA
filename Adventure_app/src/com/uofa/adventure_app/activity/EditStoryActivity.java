@@ -33,7 +33,7 @@ public class EditStoryActivity extends Activity implements AdventureActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_new_story);
+		setContentView(R.layout.activity_edit_story);
 	}
 
 	@Override

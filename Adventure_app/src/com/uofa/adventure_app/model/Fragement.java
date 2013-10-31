@@ -23,30 +23,21 @@ import java.util.SortedMap;
 
 import org.json.JSONObject;
 
-import com.uofa.adventure_app.interfaces.JSONEncode;
-
-public class Fragement  implements JSONEncode {
+public class Fragement  {
 	
 	private SortedMap<Integer, Media> media; // Key will be a line number
 	private ArrayList<Annotation> annotations;
 	private ArrayList<Choice> choices;
+
+	public Fragement() {
+		super();
+		this.annotations = new ArrayList<Annotation>();
+		this.choices = new ArrayList<Choice>(); 
+	}	
 	
-	/**
-	 * Place in your model and when needed will be called by JSON
-	 * @return
-	 * 		The JSON object
-	 */
-	public JSONObject encodeJSON() {
-		JSONObject object = new JSONObject();
-		return object;
+	public void addChoice(Choice choice) {
+		this.choices.add(choice);
 	}
 	
-	/**
-	 * The model will decode the JSON object for itself
-	 * @param object
-	 * 		Object from JSON
-	 */
-	public void decodeJSON(JSONObject object){
-		
-	}
+
 }

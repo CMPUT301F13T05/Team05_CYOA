@@ -29,7 +29,7 @@ public class EditFragementActivity extends Activity implements AdventureActivity
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_edit);
+		setContentView(R.layout.activity_edit_fragement);
 	}
 
 	@Override

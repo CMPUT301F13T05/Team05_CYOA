@@ -18,6 +18,8 @@
  */
 package com.uofa.adventure_app.activity;
 
+import java.util.UUID;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -27,13 +29,33 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.uofa.adventure_app.R;
+import com.uofa.adventure_app.application.AdventureApplication;
+import com.uofa.adventure_app.model.Author;
+import com.uofa.adventure_app.model.Choice;
+import com.uofa.adventure_app.model.Fragement;
+import com.uofa.adventure_app.model.Story;
 
 public class BrowserActivity extends Activity implements AdventureActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
+		setContentView(R.layout.activity_browser);
+		
+		/*
+		 //TESTING
+		Story tStory = new Story();
+		tStory.addAuthor(new Author("Chris"));
+		tStory.addFragement(new Fragement());
+		Fragement tFrag = new Fragement();
+		tFrag.addChoice(new Choice(new Fragement()));
+		tFrag.addChoice(new Choice(new Fragement()));
+		tFrag.addChoice(new Choice(new Fragement()));
+		tFrag.addChoice(new Choice(new Fragement()));
+		tFrag.addChoice(new Choice(new Fragement()));
+		tStory.addFragement(tFrag);
+		AdventureApplication.getWebServiceController().publish(tStory);
+*/
 	}
 
 	@Override
@@ -57,9 +79,11 @@ public class BrowserActivity extends Activity implements AdventureActivity {
 	public void newStory() {
 		Intent myIntent = new Intent(this, EditStoryActivity.class);
 		this.startActivity(myIntent);
+		
 	}
 	
 	public void viewStory(View v) {
+		
 		Intent myIntent = new Intent(this, StoryActivity.class);
 		this.startActivity(myIntent);
 	}
