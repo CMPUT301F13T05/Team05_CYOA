@@ -19,35 +19,61 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package com.uofa.adventure_app.model;
 
 import java.util.ArrayList;
-import java.util.SortedMap;
+import java.util.UUID;
 
-import org.json.JSONObject;
-
-import com.uofa.adventure_app.interfaces.JSONEncode;
-
-public class Story implements JSONEncode {
+public class Story {
 
 	private String title;
 	private ArrayList<Author> authors; 
 	private ArrayList<Fragement> fragements;
+	private UUID id;
 	
-	/**
-	 * Place in your model and when needed will be called by JSON
-	 * @return
-	 * 		The JSON object
-	 */
-	public JSONObject encodeJSON() {
-		JSONObject object = new JSONObject();
-		return object;
+	public Story() {
+		this.authors = new ArrayList<Author>();
+		this.fragements = new ArrayList<Fragement>();
+		this.id = UUID.randomUUID();
 	}
 	
 	/**
-	 * The model will decode the JSON object for itself
-	 * @param object
-	 * 		Object from JSON
+	 * @param title the title to set
 	 */
-	public void decodeJSON(JSONObject object){
-		
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	/**
+	 * @param authors the authors to set
+	 */
+	public void setAuthors(ArrayList<Author> authors) {
+		this.authors = authors;
+	}
+/**
+ * Adds an Author to the Current List of Authors
+ * @param author
+ */
+	
+	//TODO: Check if author exists in list already.
+	public void addAuthor(Author author) {
+		this.authors.add(author);
 	}
 	
+	/**
+	 * @param fragements the fragements to set
+	 */
+	public void setFragements(ArrayList<Fragement> fragements) {
+		this.fragements = fragements;
+	}
+	
+	public void addFragement(Fragement fragement) {
+		this.fragements.add(fragement);
+	}
+
+	public void setId(UUID id) {
+		this.id = id;
+	}
+	
+	public UUID id() {
+		return this.id;
+	}
+
 }

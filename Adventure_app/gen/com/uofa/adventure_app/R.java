@@ -27,7 +27,7 @@ public final class R {
         public static final int annotatem=0x7f080016;
         public static final int authortext=0x7f080003;
         public static final int authorview=0x7f080006;
-        public static final int button1=0x7f080000;
+        public static final int button1=0x7f080001;
         public static final int buttonannotate=0x7f080009;
         public static final int cancel=0x7f08000c;
         public static final int choicesbutton=0x7f080007;
@@ -39,7 +39,7 @@ public final class R {
         public static final int editfragment=0x7f080018;
         public static final int editstory=0x7f080017;
         public static final int fragments=0x7f080004;
-        public static final int gridView1=0x7f080001;
+        public static final int gridView1=0x7f080000;
         public static final int new_story=0x7f080012;
         public static final int newfrag=0x7f080015;
         public static final int publish=0x7f08000e;
@@ -52,9 +52,9 @@ public final class R {
         public static final int titleview=0x7f080005;
     }
     public static final class layout {
-        public static final int activity_edit=0x7f030000;
-        public static final int activity_main=0x7f030001;
-        public static final int activity_new_story=0x7f030002;
+        public static final int activity_browser=0x7f030000;
+        public static final int activity_edit_fragement=0x7f030001;
+        public static final int activity_edit_story=0x7f030002;
         public static final int activity_story=0x7f030003;
     }
     public static final class menu {
