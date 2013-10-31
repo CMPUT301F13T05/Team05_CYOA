@@ -41,7 +41,7 @@ public class BrowserActivity extends Activity implements AdventureActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_browser);
-		
+		/*
 		 //TESTING
 		Story tStory = new Story();
 		tStory.addAuthor(new User("Chris2"));
@@ -54,6 +54,7 @@ public class BrowserActivity extends Activity implements AdventureActivity {
 		tFrag.addChoice(new Choice(new Fragement()));
 		tStory.addFragement(tFrag);
 		AdventureApplication.getWebServiceController().publish(tStory);
+		*/
 	}
 
 	@Override
