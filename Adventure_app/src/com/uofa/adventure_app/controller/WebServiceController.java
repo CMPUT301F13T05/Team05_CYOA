@@ -65,10 +65,10 @@ public class WebServiceController {
 	// TODO: implement
 	public void fetch(UUID id) {
 		// This should search all Fields
-		String searchQuery = "{\"query\" : {\"term\" : {\"id\" : \"" + id.toString() + "\"}}}";
+		String searchQuery = "";//"{\"query\" : {\"term\" : {\"id\" : \"" + id.toString() + "\"}}}";
 		//String searchQuery = "{ \"query\": { \"match_all\": {}}}";
 		try {
-			HttpObject obj = new HttpObject(HttpRequestType.POST,searchQuery , new URL(commonUrlString + "_search?pretty=1"));
+			HttpObject obj = new HttpObject(HttpRequestType.POST,searchQuery , new URL(commonUrlString + "_search?q=" + id.toString() + "&pretty=1"));
 			new PerformHttp().execute(obj);
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
