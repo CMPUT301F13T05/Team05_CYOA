@@ -15,12 +15,17 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 package com.uofa.adventure_app.controller;
 
+import java.io.BufferedInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
@@ -29,91 +34,74 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 
+import android.R;
 import android.os.AsyncTask;
 
 import com.google.gson.Gson;
 import com.uofa.adventure_app.model.Story;
 
 public class WebServiceController {
-	
-    private HttpClient httpclient = new DefaultHttpClient();
-    private static final String TAG = "HttpClient";
-	
-/**
- * Gets a story by name
- * @return
- */
+
+	private HttpClient httpclient = new DefaultHttpClient();
+	private static final String commonUrlString = "http://cmput301.softwareprocess.es:8080/cmput301f13t05/";
+
+	/**
+	 * Gets a story by name
+	 * 
+	 * @return
+	 */
 	// TODO: Implement
 	public Story fetch(String name) {
 
 		Story story = new Story();
 		return story;
 	}
+
 	/**
 	 * Returns a story with a given id in JSON
+	 * 
 	 * @param id
 	 * @return
 	 */
-	
+
 	// TODO: implement
 	public Story fetch(Integer id) {
 		Story story = new Story();
 		return story;
 	}
-	
+
 	/**
-	 * Publishes the given story to the server
+	 * Publishes a Story to the Internet!
+	 * 
 	 * @param story
 	 * @return
 	 */
-	
-	private StringEntity stringEntity(Story story) {
-        StringEntity stringEntity = null;
-        Gson obj = new Gson();
-		String jsonString = obj.toJson(story);
-        try {
-                stringEntity = new StringEntity(jsonString);
-        } catch (UnsupportedEncodingException e) {
-                // TODO Auto-generated catch block
-        		e.printStackTrace();
-        		return null;
-        }
-        
-        	return stringEntity;
-	}
-	
-	private void writeStream(OutputStream out, String jsonString) {
+	public boolean publish(Story story) {
+		boolean returnValue = false;
 		try {
-			out.write(jsonString.getBytes(Charset.forName("UTF-8")));
-		} catch (IOException e) {
+			new PostStory(story).execute(new URL(commonUrlString + story.id()));
+		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+		return returnValue;
 	}
-	
-	// TODO: implement
-	public boolean publish(Story story) {
-		
-		
-		return true;
-	}
-	
 
-	
 	/**
 	 * Searches the Server for the given key
+	 * 
 	 * @param searchKey
 	 * @return
 	 */
-	
+
 	// TODO: Implement
 	public ArrayList<Story> search(String searchKey) {
 		return new ArrayList<Story>();
 	}
-	
+
 	/**
 	 * TODO:Implement
+	 * 
 	 * @param start
 	 * @param end
 	 * @return
@@ -121,32 +109,96 @@ public class WebServiceController {
 	public ArrayList<Story> loadWithIndexRange(int start, int end) {
 		return new ArrayList<Story>();
 	}
-	
+
+	// This code Should be refactored and Combined with other Server requests
+	// that have similar code....
+	// Post Request to the Server, with the Story
+	private boolean post(Story story, URL url) {
+		Gson gson = new Gson();
+		String jsonString = gson.toJson(story);
+
+		String ErrorMessage = null;
+		HttpURLConnection conn = null;
+		try {
+			conn = (HttpURLConnection) url.openConnection();
+			conn.setRequestMethod("POST");
+			conn.setRequestProperty("Accept","application/json");
+			conn.setDoOutput(true);
+
+			// Sets the length, no buffer needed.
+			conn.setFixedLengthStreamingMode(jsonString.length());
+
+			// Writes the Bytes to the ouput stream
+			conn.getOutputStream().write(
+					jsonString.getBytes(Charset.forName("UTF-8")));
+
+			/*
+			// Gets a Response Code.
+			int status = conn.getResponseCode();
+			Object BufferedInputStream;
+			if (status / 100 != 2) {
+			}
+			*/
+			// response = new Response(status, new Hashtable<String,
+			// List<String>>(), conn.getResponseMessage().getBytes());
+
+			// if (response == null) {
+			BufferedInputStream in = new BufferedInputStream(
+					conn.getInputStream());
+			byte[] body = readStream(in);
+			// response = new Response(conn.getResponseCode(),
+			// conn.getHeaderFields(), body);
+			// }
+
+		} catch (IOException e) {
+			e.printStackTrace(System.err);
+			// Error Handeling
+			/*
+			 * mErrorMessage = ((request instanceof POST) ? "POST " : "GET ") +
+			 * str(R.string.aerc_failed) + ": " + e.getLocalizedMessage();
+			 */
+		} finally {
+			if (conn != null)
+				conn.disconnect();
+		}
+		return true;
+	}
+
 	/**
 	 * This Class is used for Posting a Story
+	 * 
 	 * @author chris
-	 *
+	 * 
 	 */
 	private class PostStory extends AsyncTask<URL, Void, Boolean> {
-		
+
 		private Story story;
-		
-		
-		
-	     protected Boolean doInBackground(URL... urls) {
-	         int count = urls.length;
-	         long totalSize = 0;
 
-	         return true;
-	     }
+		public PostStory(Story story) {
+			this.story = story;
+		}
 
+		protected Boolean doInBackground(URL... urls) {
+			post(story, urls[0]);
 
-	     protected boolean onPostExecute(Long result) {
-	    	 
-	    	 return true;
-	     }
+			return true;
+		}
 
-	 }
-	
+		protected boolean onPostExecute(Long result) {
+
+			return true;
+		}
+
+	}
+
+	// utilities
+	private static byte[] readStream(InputStream in) throws IOException {
+		byte[] buf = new byte[1024];
+		int count = 0;
+		ByteArrayOutputStream out = new ByteArrayOutputStream(1024);
+		while ((count = in.read(buf)) != -1)
+			out.write(buf, 0, count);
+		return out.toByteArray();
+	}
 
 }
