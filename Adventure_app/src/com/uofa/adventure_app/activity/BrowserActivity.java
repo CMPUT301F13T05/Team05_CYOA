@@ -18,9 +18,12 @@
  */
 package com.uofa.adventure_app.activity;
 
+<<<<<<< HEAD
 import java.util.ArrayList;
 import java.util.UUID;
 
+=======
+>>>>>>> aca5c008998b465eef2af5b4cc04e5bcfd18a9b2
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -34,10 +37,6 @@ import android.widget.GridView;
 
 import com.uofa.adventure_app.R;
 import com.uofa.adventure_app.application.AdventureApplication;
-import com.uofa.adventure_app.model.User;
-import com.uofa.adventure_app.model.Choice;
-import com.uofa.adventure_app.model.Fragement;
-import com.uofa.adventure_app.model.Story;
 
 public class BrowserActivity extends Activity implements AdventureActivity {
 	private ArrayAdapter<String> adapter;
@@ -47,6 +46,7 @@ public class BrowserActivity extends Activity implements AdventureActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_browser);
+<<<<<<< HEAD
 		grid = (GridView) findViewById(R.id.gridView1);
 		List = new ArrayList<String>();
 		List.add("Story " + 1);
@@ -62,10 +62,13 @@ public class BrowserActivity extends Activity implements AdventureActivity {
 		    		viewStory(v);
 		        }
 		 });
+=======
+		
+>>>>>>> aca5c008998b465eef2af5b4cc04e5bcfd18a9b2
 		/*
 		 //TESTING
 		Story tStory = new Story();
-		tStory.addAuthor(new User("Chris2"));
+		tStory.addAuthor(new Author("Chris"));
 		tStory.addFragement(new Fragement());
 		Fragement tFrag = new Fragement();
 		tFrag.addChoice(new Choice(new Fragement()));
@@ -74,8 +77,9 @@ public class BrowserActivity extends Activity implements AdventureActivity {
 		tFrag.addChoice(new Choice(new Fragement()));
 		tFrag.addChoice(new Choice(new Fragement()));
 		tStory.addFragement(tFrag);
-		AdventureApplication.getWebServiceController().publish(tStory);
 		*/
+		AdventureApplication.getWebServiceController().search("Chris");
+
 	}
 
 	@Override
