@@ -1,6 +1,6 @@
 /*
 Adventure App - Allows you to create an Adventure Book, or Download
-	books from other authors.
+	books from other users.
 Copyright (C) Fall 2013 Team 5 CMPUT 301 University of Alberta
 
 This program is free software: you can redistribute it and/or modify
@@ -24,12 +24,12 @@ import java.util.UUID;
 public class Story {
 
 	private String title;
-	private ArrayList<Author> authors; 
+	private ArrayList<User> users; 
 	private ArrayList<Fragement> fragements;
 	private UUID id;
 	
 	public Story() {
-		this.authors = new ArrayList<Author>();
+		this.users = new ArrayList<User>();
 		this.fragements = new ArrayList<Fragement>();
 		this.id = UUID.randomUUID();
 	}
@@ -42,19 +42,19 @@ public class Story {
 	}
 
 	/**
-	 * @param authors the authors to set
+	 * @param users the users to set
 	 */
-	public void setAuthors(ArrayList<Author> authors) {
-		this.authors = authors;
+	public void setusers(ArrayList<User> users) {
+		this.users = users;
 	}
 /**
- * Adds an Author to the Current List of Authors
+ * Adds an User to the Current List of users
  * @param author
  */
 	
 	//TODO: Check if author exists in list already.
-	public void addAuthor(Author author) {
-		this.authors.add(author);
+	public void addAuthor(User author) {
+		this.users.add(author);
 	}
 	
 	/**
