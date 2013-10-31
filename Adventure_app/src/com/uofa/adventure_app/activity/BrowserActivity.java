@@ -30,7 +30,7 @@ import android.view.View;
 
 import com.uofa.adventure_app.R;
 import com.uofa.adventure_app.application.AdventureApplication;
-import com.uofa.adventure_app.model.User;
+import com.uofa.adventure_app.model.Author;
 import com.uofa.adventure_app.model.Choice;
 import com.uofa.adventure_app.model.Fragement;
 import com.uofa.adventure_app.model.Story;
@@ -41,10 +41,11 @@ public class BrowserActivity extends Activity implements AdventureActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_browser);
+		
 		/*
 		 //TESTING
 		Story tStory = new Story();
-		tStory.addAuthor(new User("Chris2"));
+		tStory.addAuthor(new Author("Chris"));
 		tStory.addFragement(new Fragement());
 		Fragement tFrag = new Fragement();
 		tFrag.addChoice(new Choice(new Fragement()));
@@ -54,7 +55,7 @@ public class BrowserActivity extends Activity implements AdventureActivity {
 		tFrag.addChoice(new Choice(new Fragement()));
 		tStory.addFragement(tFrag);
 		AdventureApplication.getWebServiceController().publish(tStory);
-		*/
+*/
 	}
 
 	@Override
