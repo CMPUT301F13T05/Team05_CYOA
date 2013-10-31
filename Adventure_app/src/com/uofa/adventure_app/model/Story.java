@@ -24,12 +24,12 @@ import java.util.UUID;
 public class Story {
 
 	private String title;
-	private ArrayList<Author> authors; 
+	private ArrayList<User> authors; 
 	private ArrayList<Fragement> fragements;
 	private UUID id;
 	
 	public Story() {
-		this.authors = new ArrayList<Author>();
+		this.authors = new ArrayList<User>();
 		this.fragements = new ArrayList<Fragement>();
 		this.id = UUID.randomUUID();
 	}
@@ -44,16 +44,16 @@ public class Story {
 	/**
 	 * @param authors the authors to set
 	 */
-	public void setAuthors(ArrayList<Author> authors) {
+	public void setAuthors(ArrayList<User> authors) {
 		this.authors = authors;
 	}
 /**
- * Adds an Author to the Current List of Authors
+ * Adds an User to the Current List of Authors
  * @param author
  */
 	
 	//TODO: Check if author exists in list already.
-	public void addAuthor(Author author) {
+	public void addAuthor(User author) {
 		this.authors.add(author);
 	}
 	

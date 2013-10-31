@@ -23,15 +23,15 @@ import java.util.UUID;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class Author {
+public class User {
 	
 	private String name;
 	private UUID uid;
 	
 	/**
-	 * Generates an Empty Author. A uid is always generated.
+	 * Generates an Empty User. A uid is always generated.
 	 */
-	public Author() {
+	public User() {
 		super();
 		this.setUid(UUID.randomUUID());
 	}
@@ -40,14 +40,14 @@ public class Author {
 	 * Creates an author with name and uid.
 	 * @param name
 	 */
-	public Author(String name) {
+	public User(String name) {
 		super();
 		this.name = name;
 		this.setUid(UUID.randomUUID());
 	}
 
 	/**
-	 * Set the name of the Author
+	 * Set the name of the User
 	 * @param name
 	 */
 	public void setName(String name) {
@@ -67,7 +67,7 @@ public class Author {
 	}
 	
 	/**
-	 * Get the Unique id of the Author
+	 * Get the Unique id of the User
 	 * @return
 	 */
 	public UUID uid() {

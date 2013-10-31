@@ -25,9 +25,9 @@ public class Annotation {
 	private Media media;
 	
 	// same as user
-	private Author author;
+	private User author;
 
-	public Annotation(Author author) {
+	public Annotation(User author) {
 		this.author = author;
 	}
 	
