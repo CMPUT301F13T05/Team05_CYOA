@@ -18,6 +18,8 @@
  */
 package com.uofa.adventure_app.activity;
 
+import java.util.UUID;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -53,6 +55,7 @@ public class BrowserActivity extends Activity implements AdventureActivity {
 		/*
 		AdventureApplication.getWebServiceController().search("Chris2");
 		*/
+		AdventureApplication.getWebServiceController().fetch(UUID.fromString("1b2356dd-7681-4c0b-8079-399af94ee29f"));
 
 	}
 
@@ -75,6 +78,7 @@ public class BrowserActivity extends Activity implements AdventureActivity {
 		}
 	}
 	public void newStory() {
+
 		Intent myIntent = new Intent(this, EditStoryActivity.class);
 		this.startActivity(myIntent);
 		
