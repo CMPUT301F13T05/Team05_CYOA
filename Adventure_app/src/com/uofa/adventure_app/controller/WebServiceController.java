@@ -101,7 +101,7 @@ public class WebServiceController {
 		boolean returnValue = false;
 		
 		// This should search all Fields
-		String searchQuery = "{\"query\" : { \"query_string\" : { \"query\" : \"chris2\" }}}";
+		String searchQuery = "{\"query\" : { \"query_string\" : { \"query\" : \"" + searchKey + "\" }}}";
 		//String searchQuery = "{ \"query\": { \"match_all\": {}}}";
 		try {
 			HttpObject obj = new HttpObject(HttpRequestType.POST,searchQuery , new URL(commonUrlString + "_search?pretty=1"));
@@ -178,11 +178,9 @@ public class WebServiceController {
 
 		} catch (IOException e) {
 			e.printStackTrace(System.err);
-			// Error Handeling
-			/*
-			 * mErrorMessage = ((request instanceof POST) ? "POST " : "GET ") +
-			 * str(R.string.aerc_failed) + ": " + e.getLocalizedMessage();
-			 */
+			 /*mErrorMessage = ((request instanceof POST) ? "POST " : "GET ") +
+			 str(R.string.aerc_failed) + ": " + e.getLocalizedMessage();*/
+
 		} finally {
 			// Disconnect!
 			if (conn != null)
@@ -193,61 +191,6 @@ public class WebServiceController {
 	}
 	
 	
-	// This code Should be refactored and Combined with other Server requests
-	// that have similar code....
-	// Post Request to the Server, with the Story
-	/*
-	private boolean post(Story story, URL url) {
-		Gson gson = new Gson();
-		String jsonString = gson.toJson(story);
-
-		String ErrorMessage = null;
-		HttpURLConnection conn = null;
-		try {
-			conn = (HttpURLConnection) url.openConnection();
-			conn.setRequestMethod("POST");
-			conn.setRequestProperty("Accept","application/json");
-			conn.setDoOutput(true);
-
-			// Sets the length, no buffer needed.
-			conn.setFixedLengthStreamingMode(jsonString.length());
-
-			// Writes the Bytes to the ouput stream
-			conn.getOutputStream().write(
-					jsonString.getBytes(Charset.forName("UTF-8")));
-
-			/*
-			// Gets a Response Code.
-			int status = conn.getResponseCode();
-			Object BufferedInputStream;
-			if (status / 100 != 2) {
-			}
-			
-			// response = new Response(status, new Hashtable<String,
-			// List<String>>(), conn.getResponseMessage().getBytes());
-
-			// if (response == null) {
-			BufferedInputStream in = new BufferedInputStream(
-					conn.getInputStream());
-			byte[] body = readStream(in);
-			// response = new Response(conn.getResponseCode(),
-			// conn.getHeaderFields(), body);
-			// }
-
-		} catch (IOException e) {
-			e.printStackTrace(System.err);
-			// Error Handeling
-			/*
-			 * mErrorMessage = ((request instanceof POST) ? "POST " : "GET ") +
-			 * str(R.string.aerc_failed) + ": " + e.getLocalizedMessage();
-			 
-		} finally {
-			if (conn != null)
-				conn.disconnect();
-		}
-		return true;
-	}
-*/
 	/**
 	 * This Class is used for Posting a Story
 	 * 
@@ -255,13 +198,23 @@ public class WebServiceController {
 	 * 
 	 */
 	private class PerformHttp extends AsyncTask<HttpObject, Void, String> {
-
+		
 		protected String doInBackground(HttpObject... httpObj) {
 			return httpWithType(httpObj[0]);
 		}
 
+		
+		/* (non-Javadoc)
+		 * @see android.os.AsyncTask#onProgressUpdate(Progress[])
+		 */
+		@Override
+		protected void onProgressUpdate(Void... values) {
+			// TODO Auto-generated method stub
+			super.onProgressUpdate(values);
+			// We should show a loading wheel in the window...
+		}
 		protected void onPostExecute(String result) {
-			System.out.println("Results are chars: " + result.length());
+			System.out.println(result);
 		}
 
 	}
@@ -271,9 +224,9 @@ public class WebServiceController {
         byte[] contents = new byte[1024];
          int bytesRead=0;
          String s = new String();
-         while ((bytesRead = in.read(contents)) != -1) {
-        	 System.out.println(bytesRead);
-             s.concat(new String(contents, 0, bytesRead));
+         while ((bytesRead = in.read(contents)) != -1) {;
+        	 String addString = new String(contents, 0, bytesRead);
+        	 s = s + addString;
          }
 		return s;
 
