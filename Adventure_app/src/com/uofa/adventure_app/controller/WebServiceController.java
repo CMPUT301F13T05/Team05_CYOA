@@ -19,15 +19,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package com.uofa.adventure_app.controller;
 
 import java.io.BufferedInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.StringWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.UUID;
 
 import org.apache.http.client.HttpClient;
 import org.apache.http.impl.client.DefaultHttpClient;
@@ -64,9 +63,17 @@ public class WebServiceController {
 	 */
 
 	// TODO: implement
-	public Story fetch(Integer id) {
-		Story story = new Story();
-		return story;
+	public void fetch(UUID id) {
+		// This should search all Fields
+		String searchQuery = "{\"query\" : {\"term\" : {\"id\" : \"" + id.toString() + "\"}}}";
+		//String searchQuery = "{ \"query\": { \"match_all\": {}}}";
+		try {
+			HttpObject obj = new HttpObject(HttpRequestType.POST,searchQuery , new URL(commonUrlString + "_search?pretty=1"));
+			new PerformHttp().execute(obj);
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -95,10 +102,7 @@ public class WebServiceController {
 	 * @return
 	 */
 
-	public ArrayList<Story> search(String searchKey) {
-		
-		Gson gson = new Gson();
-		boolean returnValue = false;
+	public void search(String searchKey) {
 		
 		// This should search all Fields
 		String searchQuery = "{\"query\" : { \"query_string\" : { \"query\" : \"" + searchKey + "\" }}}";
@@ -111,7 +115,6 @@ public class WebServiceController {
 			e.printStackTrace();
 		}
 		
-		return new ArrayList<Story>();
 	}
 
 	/**
@@ -204,16 +207,9 @@ public class WebServiceController {
 		}
 
 		
-		/* (non-Javadoc)
-		 * @see android.os.AsyncTask#onProgressUpdate(Progress[])
-		 */
-		@Override
-		protected void onProgressUpdate(Void... values) {
-			// TODO Auto-generated method stub
-			super.onProgressUpdate(values);
-			// We should show a loading wheel in the window...
-		}
+
 		protected void onPostExecute(String result) {
+			System.out.println("Results: ");
 			System.out.println(result);
 		}
 
