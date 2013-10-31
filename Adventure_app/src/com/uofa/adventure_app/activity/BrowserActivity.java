@@ -78,7 +78,10 @@ public class BrowserActivity extends Activity implements AdventureActivity {
 		tFrag.addChoice(new Choice(new Fragement()));
 		tStory.addFragement(tFrag);
 		*/
-		AdventureApplication.getWebServiceController().search("Chris");
+		// Search Example See Log of output.
+		/*
+		AdventureApplication.getWebServiceController().search("Chris2");
+		*/
 
 	}
 
