@@ -1,0 +1,5 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+	<item android:id="@+id/quit" android:showAsAction="never" android:title="Add Media"></item>
+	<item android:id="@+id/publish" android:showAsAction="never" android:title="Cancel"></item>
+	<item android:id="@+id/quit" android:showAsAction="never" android:title="Delete"></item>
+</menu>
