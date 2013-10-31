@@ -95,8 +95,22 @@ public class WebServiceController {
 	 * @return
 	 */
 
-	// TODO: Implement
 	public ArrayList<Story> search(String searchKey) {
+		
+		Gson gson = new Gson();
+		boolean returnValue = false;
+		
+		// This should search all Fields
+		String searchQuery = "{\"query\" : { \"query_string\" : { \"query\" : \"chris2\" }}}";
+		//String searchQuery = "{ \"query\": { \"match_all\": {}}}";
+		try {
+			HttpObject obj = new HttpObject(HttpRequestType.POST,searchQuery , new URL(commonUrlString + "_search?pretty=1"));
+			new PerformHttp().execute(obj);
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		return new ArrayList<Story>();
 	}
 
@@ -246,9 +260,8 @@ public class WebServiceController {
 			return httpWithType(httpObj[0]);
 		}
 
-		protected void onPostExecute(Long result) {
-
-			//return true;
+		protected void onPostExecute(String result) {
+			System.out.println("Results are chars: " + result.length());
 		}
 
 	}
@@ -259,7 +272,8 @@ public class WebServiceController {
          int bytesRead=0;
          String s = new String();
          while ((bytesRead = in.read(contents)) != -1) {
-             s = new String(contents, 0, bytesRead);
+        	 System.out.println(bytesRead);
+             s.concat(new String(contents, 0, bytesRead));
          }
 		return s;
 

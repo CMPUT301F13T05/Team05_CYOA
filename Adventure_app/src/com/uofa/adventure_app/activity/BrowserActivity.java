@@ -18,8 +18,6 @@
  */
 package com.uofa.adventure_app.activity;
 
-import java.util.UUID;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -30,10 +28,6 @@ import android.view.View;
 
 import com.uofa.adventure_app.R;
 import com.uofa.adventure_app.application.AdventureApplication;
-import com.uofa.adventure_app.model.Author;
-import com.uofa.adventure_app.model.Choice;
-import com.uofa.adventure_app.model.Fragement;
-import com.uofa.adventure_app.model.Story;
 
 public class BrowserActivity extends Activity implements AdventureActivity {
 
@@ -54,8 +48,9 @@ public class BrowserActivity extends Activity implements AdventureActivity {
 		tFrag.addChoice(new Choice(new Fragement()));
 		tFrag.addChoice(new Choice(new Fragement()));
 		tStory.addFragement(tFrag);
-		AdventureApplication.getWebServiceController().publish(tStory);
-*/
+		*/
+		AdventureApplication.getWebServiceController().search("Chris");
+
 	}
 
 	@Override
