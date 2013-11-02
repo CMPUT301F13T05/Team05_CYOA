@@ -26,6 +26,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 
@@ -37,6 +39,7 @@ public class StoryActivity extends Activity implements AdventureActivity {
 	TextView testAuthor;
 	TextView testBody;
 	boolean choice;
+	View currentView;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -47,6 +50,7 @@ public class StoryActivity extends Activity implements AdventureActivity {
 		testBody.setText("This story isn't very good.");
 		testAuthor.setText("Author 1 edited by User 1");
 		testtitle.setText("Story 1");
+		currentView = this.findViewById(android.R.id.content);
 	}
 
 	@Override
@@ -77,7 +81,8 @@ public class StoryActivity extends Activity implements AdventureActivity {
 		}
 		
 	}
-	public void openContext(View v) {
+	public void openAnnotateContext(View v) {
+		
 		registerForContextMenu( v );
         openContextMenu( v );  
 	}
@@ -91,15 +96,36 @@ public class StoryActivity extends Activity implements AdventureActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// Handle presses on the action bar items
 		switch (item.getItemId()) {
-		case R.id.editstory:
-			editStory();
-
-		default:
-			return super.onOptionsItemSelected(item);
+			case R.id.editstory:
+				editStory();
+				break;
+			case R.id.annotatem:			
+				openAnnotateContext(currentView);
+				break;
+			case R.id.editfragment:
+				editFragment();
+				break;
+			case R.id.quit:
+				browseView();
+				break;
+			default:
+				return super.onOptionsItemSelected(item);
 		}
+		return super.onOptionsItemSelected(item);
 	}
+	
 	public void editStory() {
 		Intent myIntent = new Intent(this, EditStoryActivity.class);
+		this.startActivity(myIntent);
+	}
+	
+	public void editFragment(){
+		Intent myIntent = new Intent(this, EditFragementActivity.class);
+		this.startActivity(myIntent);
+	}
+	
+	public void browseView(){
+		Intent myIntent = new Intent(this, BrowserActivity.class);
 		this.startActivity(myIntent);
 	}
 

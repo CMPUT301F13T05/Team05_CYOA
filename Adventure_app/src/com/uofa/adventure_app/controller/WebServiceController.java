@@ -210,7 +210,7 @@ public class WebServiceController {
 
 		protected void onPostExecute(String result) {
 			System.out.println("Results: ");
-			System.out.println(result);
+			//System.out.println(result);
 		}
 
 	}

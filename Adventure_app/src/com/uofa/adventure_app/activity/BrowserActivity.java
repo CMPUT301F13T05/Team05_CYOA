@@ -18,17 +18,14 @@
  */
 package com.uofa.adventure_app.activity;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
+
 import java.util.ArrayList;
 import java.util.UUID;
 
-=======
->>>>>>> aca5c008998b465eef2af5b4cc04e5bcfd18a9b2
-=======
+
 import java.util.UUID;
 
->>>>>>> 2b6d285691f7b29594396be9ac047c326f0796f4
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -107,7 +104,7 @@ public class BrowserActivity extends Activity implements AdventureActivity {
 	}
 	public void newStory() {
 
-		Intent myIntent = new Intent(this, EditStoryActivity.class);
+		Intent myIntent = new Intent(this, EditFragementActivity.class);
 		this.startActivity(myIntent);
 		
 	}

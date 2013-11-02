@@ -21,11 +21,13 @@ package com.uofa.adventure_app.activity;
 import java.util.ArrayList;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -47,7 +49,6 @@ public class EditStoryActivity extends Activity implements AdventureActivity {
 		List = new ArrayList<String>();
 		for (int i = 1; i < 50; i++){
 			List.add("Fragment " + i);
-			System.out.println(List.get(i - 1));
 		}
 		adapter = new ArrayAdapter<String>(this,
 				R.layout.list_item, List);
@@ -67,6 +68,18 @@ public class EditStoryActivity extends Activity implements AdventureActivity {
 		return true;
 	}
 
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// Handle presses on the action bar items
+		switch (item.getItemId()) {
+			case R.id.newfragment:
+				newFragment();
+				break;
+			default:
+				return super.onOptionsItemSelected(item);
+		}
+		return super.onOptionsItemSelected(item);
+	}
 	
 	// We want to create a context Menu when the user long click on an item
 	@Override
@@ -83,10 +96,35 @@ public class EditStoryActivity extends Activity implements AdventureActivity {
 		
 		// Open Menu
 		inflater.inflate(R.menu.editstorymenu, menu);
+		
 	}
+	@Override
+	public boolean onContextItemSelected(MenuItem item) {
+		// Handle presses on the action bar items
+		switch (item.getItemId()) {
+			case R.id.editfrag:
+				editFragment();
+				break;
+			default:
+				return super.onOptionsItemSelected(item);
+		}
+		return super.onOptionsItemSelected(item);
+	}
+	
+
 	
 	public void openContext(View v) {
 		registerForContextMenu( v );
         openContextMenu( v );  
+	}
+	
+	public void editFragment(){
+		Intent myIntent = new Intent(this, EditFragementActivity.class);
+		this.startActivity(myIntent);
+	}
+	
+	public void newFragment(){
+		Intent myIntent = new Intent(this, EditFragementActivity.class);
+		this.startActivity(myIntent);
 	}
 }
