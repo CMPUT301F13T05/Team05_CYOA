@@ -55,6 +55,18 @@ public class WebServiceController {
 		return story;
 	}
 
+	public void fetchAll() {
+		
+		String searchQuery = "{  \"fields\" : [\"id\", \"title\", \"users\"],\"query\": { \"match_all\": {}}}";
+		try {
+			HttpObject obj = new HttpObject(HttpRequestType.POST,searchQuery , new URL(commonUrlString + "_search?pretty=1&size=1000000"));
+			new PerformHttp().execute(obj);
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 	/**
 	 * Returns a story with a given id in JSON
 	 * 
@@ -205,8 +217,6 @@ public class WebServiceController {
 		protected String doInBackground(HttpObject... httpObj) {
 			return httpWithType(httpObj[0]);
 		}
-
-		
 
 		protected void onPostExecute(String result) {
 			System.out.println("Results: ");

@@ -20,11 +20,6 @@ package com.uofa.adventure_app.activity;
 
 
 import java.util.ArrayList;
-import java.util.UUID;
-
-
-import java.util.UUID;
-
 
 import android.app.Activity;
 import android.content.Intent;
@@ -39,6 +34,10 @@ import android.widget.GridView;
 
 import com.uofa.adventure_app.R;
 import com.uofa.adventure_app.application.AdventureApplication;
+import com.uofa.adventure_app.model.Choice;
+import com.uofa.adventure_app.model.Fragement;
+import com.uofa.adventure_app.model.Story;
+import com.uofa.adventure_app.model.User;
 
 public class BrowserActivity extends Activity implements AdventureActivity {
 	private ArrayAdapter<String> adapter;
@@ -63,10 +62,11 @@ public class BrowserActivity extends Activity implements AdventureActivity {
 		    		viewStory(v);
 		        }
 		 });
-		/*
+		
 		 //TESTING
 		Story tStory = new Story();
-		tStory.addAuthor(new Author("Chris"));
+		tStory.addAuthor(new User("Chris"));
+		tStory.setTitle("This is A TITLE");
 		tStory.addFragement(new Fragement());
 		Fragement tFrag = new Fragement();
 		tFrag.addChoice(new Choice(new Fragement()));
@@ -75,12 +75,13 @@ public class BrowserActivity extends Activity implements AdventureActivity {
 		tFrag.addChoice(new Choice(new Fragement()));
 		tFrag.addChoice(new Choice(new Fragement()));
 		tStory.addFragement(tFrag);
-		*/
+		
 		// Search Example See Log of output.
-		/*
-		AdventureApplication.getWebServiceController().search("Chris2");
-		*/
-		AdventureApplication.getWebServiceController().fetch(UUID.fromString("1b2356dd-7681-4c0b-8079-399af94ee29f"));
+		
+		//AdventureApplication.getWebServiceController().publish(tStory);
+		//AdventureApplication.getWebServiceController().publish(tStory);
+		
+		AdventureApplication.getWebServiceController().fetchAll();
 
 	}
 
