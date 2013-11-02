@@ -2,9 +2,8 @@ package ca.ualberta.cs.cyoa_team05.views;
 
 import java.util.Observable;
 
+import android.R;
 import android.os.Bundle;
-
-import ca.ualberta.cs.cyoa_team05.R;
 
 public class BrowserView extends UIView {
 	

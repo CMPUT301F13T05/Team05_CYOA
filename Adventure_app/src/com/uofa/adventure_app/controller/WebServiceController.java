@@ -22,8 +22,6 @@ import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -31,10 +29,8 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 
 import org.apache.http.client.HttpClient;
-import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 
-import android.R;
 import android.os.AsyncTask;
 
 import com.google.gson.Gson;
@@ -135,7 +131,7 @@ public class WebServiceController {
 			/*
 			// Gets a Response Code.
 			int status = conn.getResponseCode();
-			Object BufferedInputStream;
+			Object BufferedInputStream;Adventure
 			if (status / 100 != 2) {
 			}
 			*/
