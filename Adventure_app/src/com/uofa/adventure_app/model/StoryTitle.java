@@ -1,6 +1,6 @@
 /*
 Adventure App - Allows you to create an Adventure Book, or Download
-	books from other authors.
+	books from other users.
 Copyright (C) Fall 2013 Team 5 CMPUT 301 University of Alberta
 
 This program is free software: you can redistribute it and/or modify
@@ -18,65 +18,55 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 package com.uofa.adventure_app.model;
 
+import java.util.ArrayList;
 import java.util.UUID;
 
-import org.json.JSONException;
-import org.json.JSONObject;
+public class StoryTitle {
 
-public class User {
+	private String title;
+	private ArrayList<User> users; 
+	private UUID id;
 	
-	private String name;
-	private UUID uid;
-	
-	/**
-	 * Generates an Empty User. A uid is always generated.
-	 */
-	public User() {
-		super();
-		this.setUid(UUID.randomUUID());
+	public StoryTitle() {
+		this.users = new ArrayList<User>();
+		this.id = UUID.randomUUID();
 	}
 	
 	/**
-	 * Creates an author with name and uid.
-	 * @param name
+	 * @param title the title to set
 	 */
-	public User(String name) {
-		super();
-		this.name = name;
-		this.setUid(UUID.randomUUID());
+	public void setTitle(String title) {
+		this.title = title;
 	}
-
+	public String title() {
+		return this.title;
+	}
 	/**
-	 * Set the name of the User
-	 * @param name
+	 * @param users the users to set
 	 */
-	public void setName(String name) {
-		this.name = name;
+	public void setUsers(ArrayList<User> users) {
+		this.users = users;
+	}
+/**
+ * Adds an User to the Current List of users
+ * @param author
+ */
+	
+	//TODO: Check if author exists in list already.
+	public void addUser(User user) {
+		this.users.add(user);
 	}
 	
-	/**
-	 * Set the uid of the User
-	 * @param uid
-	 */
-	private void setUid(UUID uid) {
-		this.uid = uid;
+	public ArrayList<User> users() {
+		return this.users;
 	}
 	
-	/**
-	 * Get the name of the author
-	 * @return
-	 */
-	public String getName() {
-		return this.name;
+	public void setId(UUID id) {
+		this.id = id;
 	}
 	
-	/**
-	 * Get the Unique id of the User
-	 * @return
-	 */
-	public UUID getUid() {
-		return this.uid;
+	public UUID id() {
+		return this.id;
 	}
 
-	
 }

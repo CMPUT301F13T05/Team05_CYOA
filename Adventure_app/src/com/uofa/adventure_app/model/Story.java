@@ -32,6 +32,7 @@ public class Story {
 		this.users = new ArrayList<User>();
 		this.fragements = new ArrayList<Fragement>();
 		this.id = UUID.randomUUID();
+		this.title = "";
 	}
 	
 	/**
@@ -40,11 +41,18 @@ public class Story {
 	public void setTitle(String title) {
 		this.title = title;
 	}
+	
+	/**
+	 * @param title the title to set
+	 */
+	public String title() {
+		return this.title;
+	}
 
 	/**
 	 * @param users the users to set
 	 */
-	public void setusers(ArrayList<User> users) {
+	public void setUsers(ArrayList<User> users) {
 		this.users = users;
 	}
 /**
@@ -53,8 +61,12 @@ public class Story {
  */
 	
 	//TODO: Check if author exists in list already.
-	public void addAuthor(User author) {
-		this.users.add(author);
+	public void addUser(User user) {
+		this.users.add(user);
+	}
+	
+	public ArrayList<User> users() {
+		return this.users;
 	}
 	
 	/**

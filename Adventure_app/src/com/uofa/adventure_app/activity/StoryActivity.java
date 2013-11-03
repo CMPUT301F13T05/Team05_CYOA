@@ -19,6 +19,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package com.uofa.adventure_app.activity;
 import java.io.File;
 
+import java.util.ArrayList;
+
+
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
@@ -32,17 +35,22 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+
 import android.view.Window;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.AdapterView.AdapterContextMenuInfo;
 
+import android.widget.AdapterView.AdapterContextMenuInfo;
+import android.widget.TextView;
 
 import com.uofa.adventure_app.R;
+import com.uofa.adventure_app.application.AdventureApplication;
+import com.uofa.adventure_app.interfaces.AdventureActivity;
+import com.uofa.adventure_app.model.Story;
 
-public class StoryActivity extends Activity implements AdventureActivity {
+public class StoryActivity extends AdventureActivity {
 	TextView testtitle;
 	TextView testAuthor;
 	TextView testBody;
@@ -138,6 +146,7 @@ public class StoryActivity extends Activity implements AdventureActivity {
 		Intent myIntent = new Intent(this, BrowserActivity.class);
 		this.startActivity(myIntent);
 	}
+
 	 private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
 	    
 	    public void takeAPhoto() {
@@ -171,5 +180,18 @@ public class StoryActivity extends Activity implements AdventureActivity {
 	            }
 	        }
 	    }
+
+	
+		public void updateView(){
+		AdventureApplication.getStoryController();
+	}
+
+		@Override
+		public void dataReturn(ArrayList<Story> result, String method) {
+			// TODO Auto-generated method stub
+			
+		}
+
+
 
 }
