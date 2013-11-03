@@ -17,9 +17,15 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 package com.uofa.adventure_app.activity;
+import java.io.File;
+
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Menu;
@@ -27,6 +33,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
@@ -40,6 +48,7 @@ public class StoryActivity extends Activity implements AdventureActivity {
 	TextView testBody;
 	boolean choice;
 	View currentView;
+	Uri imageFileUri;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -100,7 +109,8 @@ public class StoryActivity extends Activity implements AdventureActivity {
 				editStory();
 				break;
 			case R.id.annotatem:			
-				openAnnotateContext(currentView);
+				//openAnnotateContext(currentView);
+				takeAPhoto();
 				break;
 			case R.id.editfragment:
 				editFragment();
@@ -128,5 +138,38 @@ public class StoryActivity extends Activity implements AdventureActivity {
 		Intent myIntent = new Intent(this, BrowserActivity.class);
 		this.startActivity(myIntent);
 	}
+	 private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
+	    
+	    public void takeAPhoto() {
+	        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+	        
+	        String folder = Environment.getExternalStorageDirectory().getAbsolutePath() + "/tmp";
+	        File folderF = new File(folder);
+	        if (!folderF.exists()) {
+	            folderF.mkdir();
+	        }
+	        
+	        String imageFilePath = folder + "/" + String.valueOf(System.currentTimeMillis()) + "jpg";
+	        File imageFile = new File(imageFilePath);
+	        imageFileUri = Uri.fromFile(imageFile);
+	        
+	        intent.putExtra(MediaStore.EXTRA_OUTPUT, imageFileUri);
+	        startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
+	    }
+	    
+	    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+	        if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
+	           //TextView tv = (TextView) findViewById(R.id.status);
+	            if (resultCode == RESULT_OK) {
+	                System.out.println("Photo OK!");
+	                ImageView annotation = (ImageView) findViewById(R.id.annotation);
+	                annotation.setImageDrawable(Drawable.createFromPath(imageFileUri.getPath()));
+	            } else if (resultCode == RESULT_CANCELED) {
+	                System.out.println("Photo canceled");
+	            } else {
+	                System.out.println("Not sure what happened!" + resultCode);
+	            }
+	        }
+	    }
 
 }
