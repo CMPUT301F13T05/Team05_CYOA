@@ -20,6 +20,7 @@ package com.uofa.adventure_app.activity;
 
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -65,7 +66,7 @@ public class BrowserActivity extends AdventureActivity {
 		
 		 //TESTING
 		Story tStory = new Story();
-		tStory.addAuthor(new User("Chris"));
+		tStory.addUser(new User("Chris"));
 		tStory.setTitle("This is A TITLE");
 		tStory.addFragement(new Fragement());
 		Fragement tFrag = new Fragement();
@@ -81,7 +82,12 @@ public class BrowserActivity extends AdventureActivity {
 		//AdventureApplication.getWebServiceController().publish(tStory);
 		//AdventureApplication.getWebServiceController().publish(tStory);
 		HttpObjectStory httpStory = new HttpObjectStory();
+		
+		// This method will get all, and call the all method in dataReturn()..
 		this.httpRequest(httpStory.fetchAll(), GET_ALL_METHOD);
+		
+		// This method will call the get method in dataReturn() when done loading...
+		this.httpRequest(httpStory.searchObject("Chris"), GET_METHOD);
 
 	}
 
@@ -127,7 +133,13 @@ public class BrowserActivity extends AdventureActivity {
 			// Need to parse the Data, or Maybe I will change this to an array always..?
 			System.out.println(result);
 		}
-		
+		if(method.equals(GET_METHOD)) {
+			System.out.println("We got some data here!");
+			// Need to parse the Data, or Maybe I will change this to an array always..?
+			for(Story s: result) {
+				System.out.println(s.title());
+			}
+		}
 	}
 
 	

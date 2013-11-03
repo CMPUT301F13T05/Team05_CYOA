@@ -11,6 +11,7 @@ import com.uofa.adventure_app.controller.StoryParser;
 import com.uofa.adventure_app.controller.WebServiceController;
 import com.uofa.adventure_app.controller.http.HttpObject;
 import com.uofa.adventure_app.model.Story;
+import com.uofa.adventure_app.model.StoryTitle;
 
 public abstract class AdventureActivity extends Activity {
 	
@@ -67,6 +68,7 @@ public abstract class AdventureActivity extends Activity {
 		
 		protected ArrayList<Story> doInBackground(HttpObject... httpObj) {
 			StoryParser parser = new StoryParser();
+			ArrayList<Story> stories = new ArrayList<Story>();
 			return parser.parseStory(webServiceController.httpWithType(httpObj[0]));
 			
 		}

@@ -90,6 +90,7 @@ public class WebServiceController {
 			if (conn != null)
 				conn.disconnect();
 		}
+		System.err.println(responseMessage);
 		return responseMessage;
 		
 	}
