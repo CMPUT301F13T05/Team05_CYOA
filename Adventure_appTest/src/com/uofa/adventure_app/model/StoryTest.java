@@ -20,7 +20,8 @@ public class StoryTest extends TestCase {
 		// test if a story was made
 		assertNotNull(testStory);
 		// test if it has all of it's components initialized
-		assertEquals("", testStory.title());
+		//assertEquals("", testStory.title());
+		assertNotNull(testStory.title());
 		assertNotNull(testStory.users());
 		assertNotNull(testStory.id());
 		assertNotNull(testStory.getFragements());
@@ -42,12 +43,19 @@ public class StoryTest extends TestCase {
 		testStory.setUsers(testList);
 		assertSame("Should be the same", testList, testStory.users());
 		
-		Story testStory2 = new Story();
 		User testUser4 = new User("Tommy");
 		// testing if adding an individual user works
-		testStory2.addUser(testUser4);
-		assertEquals("Tommy", testStory2.users());
+		testStory.addUser(testUser4);
+		assertTrue(testStory.users().contains(testUser4));
 		
+		// TODO
+		// testing if setFragments works
+		Story testStory2 = new Story();
+		
+		// testing if setId works
+		testStory.setId(testStory2.id());
+		assertEquals("Two different stories with the same ID --BAD", testStory.id(), testStory2.id());
+	
 	}
 	
 	

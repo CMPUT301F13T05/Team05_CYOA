@@ -30,6 +30,7 @@ public class StoryTitle {
 	public StoryTitle() {
 		this.users = new ArrayList<User>();
 		this.id = UUID.randomUUID();
+		this.title = "";
 	}
 	
 	/**
@@ -61,6 +62,7 @@ public class StoryTitle {
 		return this.users;
 	}
 	
+	// Shouldn't this be private?!
 	public void setId(UUID id) {
 		this.id = id;
 	}

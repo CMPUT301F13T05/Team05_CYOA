@@ -87,6 +87,8 @@ public class Story {
 		return this.fragements;	
 	}
 	
+	// shouldn't this be private?!
+	// cause i can set two story id's to be the same otherwise!!
 	public void setId(UUID id) {
 		this.id = id;
 	}
