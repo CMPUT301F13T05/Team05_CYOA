@@ -19,6 +19,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package com.uofa.adventure_app.model;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.UUID;
 
 public class Story {
@@ -43,7 +44,7 @@ public class Story {
 	}
 	
 	/**
-	 * @param title the title to set
+	 * @param title the title of the story
 	 */
 	public String title() {
 		return this.title;
@@ -62,7 +63,19 @@ public class Story {
 	
 	//TODO: Check if author exists in list already.
 	public void addUser(User user) {
-		this.users.add(user);
+		boolean flag = false;
+
+		Iterator<User> it = this.users().iterator();
+		while (it.hasNext())
+		{
+			if (((User) it).getName() == user.getName()){
+				flag = true;
+			}
+		}
+		
+		if (!flag){
+			this.users.add(user);
+		}
 	}
 	
 	public ArrayList<User> users() {
@@ -80,6 +93,11 @@ public class Story {
 		this.fragements.add(fragement);
 	}
 
+	public ArrayList<Fragement> getFragements()
+	{	
+		return this.fragements;	
+	}
+	
 	public void setId(UUID id) {
 		this.id = id;
 	}
