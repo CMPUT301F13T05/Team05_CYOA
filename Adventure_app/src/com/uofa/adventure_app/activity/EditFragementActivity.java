@@ -18,18 +18,22 @@
  */
 package com.uofa.adventure_app.activity;
 
+import java.util.ArrayList;
+
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
-import android.view.ContextMenu.ContextMenuInfo;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 
 import com.uofa.adventure_app.R;
+import com.uofa.adventure_app.interfaces.AdventureActivity;
+import com.uofa.adventure_app.model.Story;
 
-public class EditFragementActivity extends Activity implements AdventureActivity {
+public class EditFragementActivity extends  AdventureActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +67,15 @@ public class EditFragementActivity extends Activity implements AdventureActivity
 	public void openChoices(View v) {
 		registerForContextMenu( v );
         openContextMenu( v );  
+	}
+	public void updateView(){
+		
+	}
+
+	@Override
+	public void dataReturn(ArrayList<Story> result, String method) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

@@ -21,18 +21,15 @@ package com.uofa.adventure_app.model;
 import java.util.ArrayList;
 import java.util.UUID;
 
-public class Story {
+public class StoryTitle {
 
 	private String title;
 	private ArrayList<User> users; 
-	private ArrayList<Fragement> fragements;
 	private UUID id;
 	
-	public Story() {
+	public StoryTitle() {
 		this.users = new ArrayList<User>();
-		this.fragements = new ArrayList<Fragement>();
 		this.id = UUID.randomUUID();
-		this.title = "";
 	}
 	
 	/**
@@ -41,14 +38,9 @@ public class Story {
 	public void setTitle(String title) {
 		this.title = title;
 	}
-	
-	/**
-	 * @param title the title to set
-	 */
 	public String title() {
 		return this.title;
 	}
-
 	/**
 	 * @param users the users to set
 	 */
@@ -69,17 +61,6 @@ public class Story {
 		return this.users;
 	}
 	
-	/**
-	 * @param fragements the fragements to set
-	 */
-	public void setFragements(ArrayList<Fragement> fragements) {
-		this.fragements = fragements;
-	}
-	
-	public void addFragement(Fragement fragement) {
-		this.fragements.add(fragement);
-	}
-
 	public void setId(UUID id) {
 		this.id = id;
 	}

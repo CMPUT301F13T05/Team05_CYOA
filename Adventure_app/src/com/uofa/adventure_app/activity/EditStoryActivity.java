@@ -30,14 +30,16 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ArrayAdapter;
 import android.widget.GridView;
 import android.widget.ListView;
-import android.widget.AdapterView.AdapterContextMenuInfo;
 
 import com.uofa.adventure_app.R;
+import com.uofa.adventure_app.interfaces.AdventureActivity;
+import com.uofa.adventure_app.model.Story;
 
-public class EditStoryActivity extends Activity implements AdventureActivity {
+public class EditStoryActivity extends AdventureActivity {
 	private ArrayAdapter<String> adapter;
 	ArrayList<String> List;
 	ListView list;
@@ -126,5 +128,16 @@ public class EditStoryActivity extends Activity implements AdventureActivity {
 	public void newFragment(){
 		Intent myIntent = new Intent(this, EditFragementActivity.class);
 		this.startActivity(myIntent);
+	}	
+	
+	public void updateView(){
+		
 	}
+
+	@Override
+	public void dataReturn(ArrayList<Story> result, String method) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
