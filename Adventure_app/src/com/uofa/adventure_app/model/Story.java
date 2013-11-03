@@ -60,20 +60,9 @@ public class Story {
  * Adds an User to the Current List of users
  * @param author
  */
-	
-	//TODO: Check if author exists in list already.
 	public void addUser(User user) {
-		boolean flag = false;
-
-		Iterator<User> it = this.users().iterator();
-		while (it.hasNext())
-		{
-			if (((User) it).getName() == user.getName()){
-				flag = true;
-			}
-		}
 		
-		if (!flag){
+		if (!this.users().contains(user)){
 			this.users.add(user);
 		}
 	}

@@ -20,23 +20,23 @@ public class UserTest extends TestCase {
 	{
 		
 		User testUser = new User();
-		// make sure a user was made.
+		// test if a user was made.
 		assertNotNull(testUser);
-		// make sure a Uid was made
+		// test if a Uid was made
 		assertNotNull(testUser.getUid());
 		
-		// make sure setting/getting a User name works
+		// test if setting/getting a User name works
 		testUser.setName("Joel");
 		assertEquals("Joel", testUser.getName());
 		
 		User testUserName = new User("Joel");
-		// make sure testUserName was made
+		// test if testUserName was made
 		assertNotNull(testUserName);
 		
-		// make sure it is not the same user as testUser
+		// test if testUserName is the same user as testUser
 		assertNotSame(testUser, testUserName);
 		
-		// make sure they don't have the same Uid's
+		//test if they have the same Uid's
 		assertNotSame(testUser.getUid(), testUserName.getUid());
 	}
 	
