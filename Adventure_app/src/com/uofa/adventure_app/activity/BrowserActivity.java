@@ -21,7 +21,6 @@ package com.uofa.adventure_app.activity;
 
 import java.util.ArrayList;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -33,13 +32,14 @@ import android.widget.ArrayAdapter;
 import android.widget.GridView;
 
 import com.uofa.adventure_app.R;
-import com.uofa.adventure_app.application.AdventureApplication;
+import com.uofa.adventure_app.controller.http.HttpObjectStory;
+import com.uofa.adventure_app.interfaces.AdventureActivity;
 import com.uofa.adventure_app.model.Choice;
 import com.uofa.adventure_app.model.Fragement;
 import com.uofa.adventure_app.model.Story;
 import com.uofa.adventure_app.model.User;
 
-public class BrowserActivity extends Activity implements AdventureActivity {
+public class BrowserActivity extends AdventureActivity {
 	private ArrayAdapter<String> adapter;
 	ArrayList<String> List;
 	GridView grid;
@@ -80,8 +80,8 @@ public class BrowserActivity extends Activity implements AdventureActivity {
 		
 		//AdventureApplication.getWebServiceController().publish(tStory);
 		//AdventureApplication.getWebServiceController().publish(tStory);
-		
-		AdventureApplication.getWebServiceController().fetchAll();
+		HttpObjectStory httpStory = new HttpObjectStory();
+		this.httpRequest(httpStory.fetchAll(), GET_ALL_METHOD);
 
 	}
 
@@ -114,6 +114,20 @@ public class BrowserActivity extends Activity implements AdventureActivity {
 		
 		Intent myIntent = new Intent(this, StoryActivity.class);
 		this.startActivity(myIntent);
+	}
+	
+	public void updateView(){
+		
+	}
+
+	@Override
+	public void dataReturn(ArrayList<Story> result, String method) {
+		if(method.equals(GET_ALL_METHOD)) {
+			System.out.println("We got some data here!");
+			// Need to parse the Data, or Maybe I will change this to an array always..?
+			System.out.println(result);
+		}
+		
 	}
 
 	

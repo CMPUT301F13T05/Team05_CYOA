@@ -20,6 +20,7 @@ package com.uofa.adventure_app.application;
 
 import android.app.Application;
 
+import com.uofa.adventure_app.controller.ActivityController;
 import com.uofa.adventure_app.controller.StoryController;
 import com.uofa.adventure_app.controller.WebServiceController;
 
@@ -27,6 +28,7 @@ public class AdventureApplication extends Application {
 	
 	transient private static StoryController storyController;
 	transient private static WebServiceController webServiceController;
+	transient private static ActivityController activityController;
 	
 	// Usable controller - singelton for all classes
 	public static StoryController getStoryController() {
@@ -42,6 +44,13 @@ public class AdventureApplication extends Application {
 			webServiceController = new WebServiceController();
 		}
 		return webServiceController;	
+	}
+	
+	public static ActivityController getActivityController() {
+		if(activityController == null) {
+			activityController = new ActivityController();
+		}
+		return activityController;	
 	}
 	
 
