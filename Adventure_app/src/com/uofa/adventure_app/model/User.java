@@ -54,6 +54,10 @@ public class User {
 		this.name = name;
 	}
 	
+	/**
+	 * Set the uid of the User
+	 * @param uid
+	 */
 	private void setUid(UUID uid) {
 		this.uid = uid;
 	}
@@ -62,7 +66,7 @@ public class User {
 	 * Get the name of the author
 	 * @return
 	 */
-	public String name() {
+	public String getName() {
 		return this.name;
 	}
 	
@@ -70,7 +74,7 @@ public class User {
 	 * Get the Unique id of the User
 	 * @return
 	 */
-	public UUID uid() {
+	public UUID getUid() {
 		return this.uid;
 	}
 
