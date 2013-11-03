@@ -31,6 +31,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -82,19 +83,28 @@ public class StoryActivity extends AdventureActivity {
 	public void onCreateContextMenu(ContextMenu menu, View v,
 			ContextMenuInfo menuInfo) {
 		super.onCreateContextMenu(menu, v, menuInfo);
-		AdapterContextMenuInfo aInfo = (AdapterContextMenuInfo) menuInfo;
+		if (choice == false){
+			AdapterContextMenuInfo aInfo = (AdapterContextMenuInfo) menuInfo;
 
 		
-		// Style our context menu
-		menu.setHeaderIcon(android.R.drawable.ic_input_get);
-		menu.setHeaderTitle("Options");
-		MenuInflater inflater = getMenuInflater();
-		if (choice == false){
+			// Style our context menu
+			menu.setHeaderIcon(android.R.drawable.ic_input_get);
+			menu.setHeaderTitle("Annotate");
+			MenuInflater inflater1 = getMenuInflater();
+
 			// Open Menu
-			inflater.inflate(R.menu.annotatemenu, menu);
+			inflater1.inflate(R.menu.annotatemenu, menu);
 		}else{
-			inflater.inflate(R.menu.choices, menu);
 			choice = false;
+			AdapterContextMenuInfo aInfo = (AdapterContextMenuInfo) menuInfo;
+
+			
+			// Style our context menu
+			menu.setHeaderIcon(android.R.drawable.ic_input_get);
+			menu.setHeaderTitle("Choices");
+			MenuInflater inflater2 = getMenuInflater();
+			inflater2.inflate(R.menu.choices, menu);
+
 		}
 		
 	}
@@ -105,6 +115,7 @@ public class StoryActivity extends AdventureActivity {
 	}
 	
 	public void openChoices(View v) {
+		currentView.getRootView().dispatchKeyEvent(new KeyEvent (KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_BACK));
 		choice = true;
 		registerForContextMenu( v );
         openContextMenu( v );  
@@ -116,9 +127,10 @@ public class StoryActivity extends AdventureActivity {
 			case R.id.editstory:
 				editStory();
 				break;
-			case R.id.annotatem:			
-				//openAnnotateContext(currentView);
-				takeAPhoto();
+			case R.id.annotatem:	
+				currentView.getRootView().dispatchKeyEvent(new KeyEvent (KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_BACK));
+				openAnnotateContext(currentView);
+				//takeAPhoto();
 				break;
 			case R.id.editfragment:
 				editFragment();
@@ -129,7 +141,26 @@ public class StoryActivity extends AdventureActivity {
 			default:
 				return super.onOptionsItemSelected(item);
 		}
+		
 		return super.onOptionsItemSelected(item);
+	}
+	
+	@Override
+	public boolean onContextItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.takepic:
+			takeAPhoto();
+			currentView.getRootView().dispatchKeyEvent(new KeyEvent (KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_BACK));
+			break;
+		case R.id.choosemedia:
+			currentView.getRootView().dispatchKeyEvent(new KeyEvent (KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_BACK));
+			break;
+		default:
+			currentView.getRootView().dispatchKeyEvent(new KeyEvent (KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_BACK));
+			return super.onContextItemSelected(item);
+	}
+	return super.onContextItemSelected(item);
+		
 	}
 	
 	public void editStory() {
