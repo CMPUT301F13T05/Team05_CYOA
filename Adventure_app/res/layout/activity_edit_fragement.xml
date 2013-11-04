@@ -6,15 +6,48 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".EditActivity" >
+    tools:context=".Edit_Fragment" >
 
     <Button
-        android:id="@+id/button1"
+        android:id="@+id/bchoice"
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:text="Choice" />
+        android:text="Choice" 
+        android:onClick="openChoices"/>
+
+    <EditText
+        android:id="@+id/newtitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/button1"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="51dp"
+        android:ems="10"
+        android:text="Title" />
+
+    <EditText
+        android:id="@+id/newauthor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/newtitle"
+        android:layout_below="@+id/newtitle"
+        android:ems="10"
+        android:text="Author" />
+
+    <EditText
+        android:id="@+id/newbody"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/button1"
+        android:layout_below="@+id/newauthor"
+        android:layout_marginTop="27dp"
+        android:ems="10"
+        android:text="New fragment" >
+
+        <requestFocus />
+    </EditText>
 
 </RelativeLayout>

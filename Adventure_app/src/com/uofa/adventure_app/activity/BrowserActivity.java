@@ -18,10 +18,10 @@
  */
 package com.uofa.adventure_app.activity;
 
-import java.util.HashMap;
-import java.util.List;
+import java.util.ArrayList;
+import java.util.UUID;
 
-import android.app.Activity;
+
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -30,21 +30,48 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
+
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.GridView;
 
 import com.uofa.adventure_app.R;
-import com.uofa.adventure_app.controller.LocalStorageController;
+import com.uofa.adventure_app.controller.http.HttpObjectStory;
+import com.uofa.adventure_app.interfaces.AdventureActivity;
+import com.uofa.adventure_app.model.Choice;
+import com.uofa.adventure_app.model.Fragement;
+import com.uofa.adventure_app.model.Story;
+import com.uofa.adventure_app.model.User;
 
-public class BrowserActivity extends Activity implements AdventureActivity {
-	SQLiteDatabase mydb;
+public class BrowserActivity extends AdventureActivity {
+	private ArrayAdapter<String> adapter;
+	ArrayList<String> List;
+	GridView grid;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_browser);
-		/*
+		grid = (GridView) findViewById(R.id.gridView1);
+		List = new ArrayList<String>();
+		List.add("Story " + 1);
+		for (int i = 10; i<20; i++)
+			List.add("Story " + i);
+
+		adapter = new ArrayAdapter<String>(this,
+				R.layout.list_item, List);
+		grid.setAdapter(adapter);
+		 grid.setOnItemClickListener(new GridView.OnItemClickListener() {
+		       // @Override
+		        public void onItemClick(AdapterView<?> a, View v, int i, long l) {
+		    		viewStory(v);
+		        }
+		 });
+		
 		 //TESTING
 		Story tStory = new Story();
-		tStory.addAuthor(new User("Chris2"));
+		tStory.addUser(new User("Chris"));
+		tStory.setTitle("This is A TITLE");
 		tStory.addFragement(new Fragement());
 		Fragement tFrag = new Fragement();
 		tFrag.addChoice(new Choice(new Fragement()));
@@ -53,8 +80,19 @@ public class BrowserActivity extends Activity implements AdventureActivity {
 		tFrag.addChoice(new Choice(new Fragement()));
 		tFrag.addChoice(new Choice(new Fragement()));
 		tStory.addFragement(tFrag);
-		AdventureApplication.getWebServiceController().publish(tStory);
-		*/
+		
+		// Search Example See Log of output.
+		
+		//AdventureApplication.getWebServiceController().publish(tStory);
+		//AdventureApplication.getWebServiceController().publish(tStory);
+		HttpObjectStory httpStory = new HttpObjectStory();
+		
+		// This method will get all, and call the all method in dataReturn()..
+		this.httpRequest(httpStory.fetchAll(), GET_ALL_METHOD);
+		
+		// This method will call the get method in dataReturn() when done loading...
+		this.httpRequest(httpStory.searchObject("Chris"), GET_METHOD);
+
 	}
 
 	@Override
@@ -76,7 +114,8 @@ public class BrowserActivity extends Activity implements AdventureActivity {
 		}
 	}
 	public void newStory() {
-		Intent myIntent = new Intent(this, EditStoryActivity.class);
+
+		Intent myIntent = new Intent(this, EditFragementActivity.class);
 		this.startActivity(myIntent);
 		//Testing
 		//LocalStorageController localStorageController = new LocalStorageController(this);
@@ -120,6 +159,26 @@ public class BrowserActivity extends Activity implements AdventureActivity {
 		
 		Intent myIntent = new Intent(this, StoryActivity.class);
 		this.startActivity(myIntent);
+	}
+	
+	public void updateView(){
+		
+	}
+
+	@Override
+	public void dataReturn(ArrayList<Story> result, String method) {
+		if(method.equals(GET_ALL_METHOD)) {
+			System.out.println("We got some data here!");
+			// Need to parse the Data, or Maybe I will change this to an array always..?
+			System.out.println(result);
+		}
+		if(method.equals(GET_METHOD)) {
+			System.out.println("We got some data here!");
+			// Need to parse the Data, or Maybe I will change this to an array always..?
+			for(Story s: result) {
+				System.out.println(s.title());
+			}
+		}
 	}
 
 	

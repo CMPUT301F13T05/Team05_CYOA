@@ -21,7 +21,10 @@ package com.uofa.adventure_app.application;
 import android.app.Application;
 import android.widget.Toast;
 
+
 import com.uofa.adventure_app.controller.LocalStorageController;
+import com.uofa.adventure_app.controller.ActivityController;
+
 import com.uofa.adventure_app.controller.StoryController;
 import com.uofa.adventure_app.controller.WebServiceController;
 
@@ -29,7 +32,12 @@ public class AdventureApplication extends Application {
 	
 	transient private static StoryController storyController;
 	transient private static WebServiceController webServiceController;
+
 	transient private static LocalStorageController localStorageController;
+
+	transient private static ActivityController activityController;
+	
+
 	// Usable controller - singelton for all classes
 	public static StoryController getStoryController() {
 		if(storyController == null) {
@@ -46,11 +54,21 @@ public class AdventureApplication extends Application {
 		return webServiceController;	
 	}
 	
+
 	public  LocalStorageController getLocalStorageController(){
 		if(localStorageController == null) {
 			localStorageController = new LocalStorageController(this);
 		}
 		return localStorageController;	
 	}
+
+	public static ActivityController getActivityController() {
+		if(activityController == null) {
+			activityController = new ActivityController();
+		}
+		return activityController;	
+	}
+	
+
 
 }
