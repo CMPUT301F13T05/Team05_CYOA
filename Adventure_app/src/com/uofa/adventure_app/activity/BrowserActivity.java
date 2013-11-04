@@ -18,25 +18,25 @@
  */
 package com.uofa.adventure_app.activity;
 
-import java.util.UUID;
+import java.util.HashMap;
+import java.util.List;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.uofa.adventure_app.R;
-import com.uofa.adventure_app.application.AdventureApplication;
-import com.uofa.adventure_app.model.User;
-import com.uofa.adventure_app.model.Choice;
-import com.uofa.adventure_app.model.Fragement;
-import com.uofa.adventure_app.model.Story;
+import com.uofa.adventure_app.controller.LocalStorageController;
 
 public class BrowserActivity extends Activity implements AdventureActivity {
-
+	SQLiteDatabase mydb;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -78,7 +78,42 @@ public class BrowserActivity extends Activity implements AdventureActivity {
 	public void newStory() {
 		Intent myIntent = new Intent(this, EditStoryActivity.class);
 		this.startActivity(myIntent);
-		
+		//Testing
+		//LocalStorageController localStorageController = new LocalStorageController(this);
+		//localStorageController.openForWrite();
+		//localStorageController.insertToStoriesTable(4, "test", "This is test");
+		//localStorageController.insertToAuthorsTable(2, "Chris", 2);
+		//localStorageController.insertToAuthorsTable(3, "Kevin", 3);
+		//localStorageController.insertToAuthorsTable(4, "Joel", 2);
+		//localStorageController.insertToAuthorsTable(5, "Ulvi", 2);
+		//localStorageController.insertToChoicesTable(1, 1);
+		//localStorageController.insertToFragmentsTable(1, "test fragment", 1);
+		//localStorageController.insertToImagesTable(3, "pointer1", false, 3);
+		//localStorageController.close();
+		//
+		//Cursor c=localStorageController.openForRead().db.rawQuery("select * from images where is_annotation=1", null);
+		//c.moveToFirst();		
+				//mydb.rawQuery("select DISTINCT tbl_name from sqlite_master", null);
+		/*if (c != null ) {
+			if  (c.moveToFirst()) {
+				do {
+					
+					String one = c.getString(0);
+					Toast.makeText(this, one, 2).show();
+					String two = c.getString(1);
+					Toast.makeText(this, two, 2).show();
+					String three = c.getString(2);
+					Toast.makeText(this, three, 2).show();
+					String four = c.getString(3);
+					Toast.makeText(this, four, 2).show();
+				}while (c.moveToNext());
+			}
+		}  
+		c.close();
+		//String title = c.getString(0);
+		localStorageController.close();
+		*/
+
 	}
 	
 	public void viewStory(View v) {
