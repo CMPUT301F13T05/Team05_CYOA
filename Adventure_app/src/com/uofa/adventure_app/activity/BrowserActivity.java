@@ -52,21 +52,8 @@ public class BrowserActivity extends AdventureActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_browser);
-		grid = (GridView) findViewById(R.id.gridView1);
-		List = new ArrayList<String>();
-		List.add("Story " + 1);
-		for (int i = 10; i<20; i++)
-			List.add("Story " + i);
 
-		adapter = new ArrayAdapter<String>(this,
-				R.layout.list_item, List);
-		grid.setAdapter(adapter);
-		 grid.setOnItemClickListener(new GridView.OnItemClickListener() {
-		       // @Override
-		        public void onItemClick(AdapterView<?> a, View v, int i, long l) {
-		    		viewStory(v);
-		        }
-		 });
+		
 		
 		 //TESTING
 		Story tStory = new Story();
@@ -170,6 +157,18 @@ public class BrowserActivity extends AdventureActivity {
 		if(method.equals(GET_ALL_METHOD)) {
 			System.out.println("We got some data here!");
 			// Need to parse the Data, or Maybe I will change this to an array always..?
+			ArrayList<String> strings = new ArrayList<String>();
+			for(Story s: result) {
+				if(s != null) {
+				strings.add(s.title());
+				}
+			}
+			
+			adapter = new ArrayAdapter<String>(this,
+					R.layout.list_item, strings);
+			grid = (GridView) findViewById(R.id.gridView1);
+			grid.setAdapter(adapter);
+			 
 			System.out.println(result);
 		}
 		if(method.equals(GET_METHOD)) {
