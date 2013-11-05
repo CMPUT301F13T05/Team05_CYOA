@@ -17,7 +17,6 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package com.uofa.adventure_app.activity;
-
 import java.util.ArrayList;
 import java.util.UUID;
 
@@ -106,15 +105,22 @@ public class BrowserActivity extends AdventureActivity {
 		this.startActivity(myIntent);
 		//Testing
 		//LocalStorageController localStorageController = new LocalStorageController(this);
+		//Toast.makeText(this, localStorageController.getStory(1).get(3).get(0), 2).show();
+		//localStorageController.getStory(1);
+		//HashMap<Integer, List<String>> newMap =localStorageController.getBrowserViewInfo();
+		//newMap.get(4).get(0);
+		//Toast.makeText(this, localStorageController.getChoices(1).get(2)+"", 2).show();
 		//localStorageController.openForWrite();
-		//localStorageController.insertToStoriesTable(4, "test", "This is test");
-		//localStorageController.insertToAuthorsTable(2, "Chris", 2);
-		//localStorageController.insertToAuthorsTable(3, "Kevin", 3);
-		//localStorageController.insertToAuthorsTable(4, "Joel", 2);
-		//localStorageController.insertToAuthorsTable(5, "Ulvi", 2);
-		//localStorageController.insertToChoicesTable(1, 1);
-		//localStorageController.insertToFragmentsTable(1, "test fragment", 1);
-		//localStorageController.insertToImagesTable(3, "pointer1", false, 3);
+		//localStorageController.insertIntoStoriesTable(4, "test", "This is test");
+		//localStorageController.insertIntoUsersTable(2, "Chris", 2);
+		//localStorageController.insertIntoUsersTable(3, "Kevin", 3);
+		//localStorageController.insertIntoUsersTable(4, "Joel", 2);
+		//localStorageController.insertIntoUsersTable(5, "Ulvi", 2);
+		//localStorageController.insertIntoUsersTable(6, "Ulvi", 4);
+		//localStorageController.insertIntoChoicesTable(1, 1);
+		//localStorageController.insertIntoChoicesTable(3, 1);
+		//localStorageController.insertIntoFragmentsTable(1, "test fragment", 1);
+		//localStorageController.insertIntoImagesTable(3, "pointer1", false, 3);
 		//localStorageController.close();
 		//
 		//Cursor c=localStorageController.openForRead().db.rawQuery("select * from images where is_annotation=1", null);
