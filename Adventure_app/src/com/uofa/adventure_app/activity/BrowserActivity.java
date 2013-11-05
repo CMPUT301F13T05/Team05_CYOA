@@ -17,10 +17,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package com.uofa.adventure_app.activity;
-
-
 import java.util.ArrayList;
-import java.util.UUID;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -28,8 +25,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.GridView;
 
 import com.uofa.adventure_app.R;
@@ -41,28 +36,16 @@ import com.uofa.adventure_app.model.Story;
 import com.uofa.adventure_app.model.User;
 
 public class BrowserActivity extends AdventureActivity {
-	private ArrayAdapter<String> adapter;
+	private StoryGridAdapter adapter;
 	ArrayList<String> List;
 	GridView grid;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_browser);
-		grid = (GridView) findViewById(R.id.gridView1);
-		List = new ArrayList<String>();
-		List.add("Story " + 1);
-		for (int i = 10; i<20; i++)
-			List.add("Story " + i);
 
-		adapter = new ArrayAdapter<String>(this,
-				R.layout.list_item, List);
-		grid.setAdapter(adapter);
-		 grid.setOnItemClickListener(new GridView.OnItemClickListener() {
-		       // @Override
-		        public void onItemClick(AdapterView<?> a, View v, int i, long l) {
-		    		viewStory(v);
-		        }
-		 });
+		
 		
 		 //TESTING
 		Story tStory = new Story();
@@ -113,7 +96,49 @@ public class BrowserActivity extends AdventureActivity {
 
 		Intent myIntent = new Intent(this, EditFragementActivity.class);
 		this.startActivity(myIntent);
-		
+		//Testing
+		//LocalStorageController localStorageController = new LocalStorageController(this);
+		//Toast.makeText(this, localStorageController.getStory(1).get(3).get(0), 2).show();
+		//localStorageController.getStory(1);
+		//HashMap<Integer, List<String>> newMap =localStorageController.getBrowserViewInfo();
+		//newMap.get(4).get(0);
+		//Toast.makeText(this, localStorageController.getChoices(1).get(2)+"", 2).show();
+		//localStorageController.openForWrite();
+		//localStorageController.insertIntoStoriesTable(4, "test", "This is test");
+		//localStorageController.insertIntoUsersTable(2, "Chris", 2);
+		//localStorageController.insertIntoUsersTable(3, "Kevin", 3);
+		//localStorageController.insertIntoUsersTable(4, "Joel", 2);
+		//localStorageController.insertIntoUsersTable(5, "Ulvi", 2);
+		//localStorageController.insertIntoUsersTable(6, "Ulvi", 4);
+		//localStorageController.insertIntoChoicesTable(1, 1);
+		//localStorageController.insertIntoChoicesTable(3, 1);
+		//localStorageController.insertIntoFragmentsTable(1, "test fragment", 1);
+		//localStorageController.insertIntoImagesTable(3, "pointer1", false, 3);
+		//localStorageController.close();
+		//
+		//Cursor c=localStorageController.openForRead().db.rawQuery("select * from images where is_annotation=1", null);
+		//c.moveToFirst();		
+				//mydb.rawQuery("select DISTINCT tbl_name from sqlite_master", null);
+		/*if (c != null ) {
+			if  (c.moveToFirst()) {
+				do {
+					
+					String one = c.getString(0);
+					Toast.makeText(this, one, 2).show();
+					String two = c.getString(1);
+					Toast.makeText(this, two, 2).show();
+					String three = c.getString(2);
+					Toast.makeText(this, three, 2).show();
+					String four = c.getString(3);
+					Toast.makeText(this, four, 2).show();
+				}while (c.moveToNext());
+			}
+		}  
+		c.close();
+		//String title = c.getString(0);
+		localStorageController.close();
+		*/
+
 	}
 	
 	public void viewStory(View v) {
@@ -131,7 +156,19 @@ public class BrowserActivity extends AdventureActivity {
 		if(method.equals(GET_ALL_METHOD)) {
 			System.out.println("We got some data here!");
 			// Need to parse the Data, or Maybe I will change this to an array always..?
-			System.out.println(result);
+			ArrayList<String> strings = new ArrayList<String>();
+			for(Story s: result) {
+				if(s != null) {
+				strings.add(s.title());
+				}
+			}
+			
+
+			
+			adapter = new StoryGridAdapter(this, result);
+			grid = (GridView) findViewById(R.id.gridView1);
+			grid.setAdapter(adapter);
+
 		}
 		if(method.equals(GET_METHOD)) {
 			System.out.println("We got some data here!");

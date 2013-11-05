@@ -3,6 +3,9 @@ package com.uofa.adventure_app.interfaces;
 import java.util.ArrayList;
 
 import android.app.Activity;
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 
 import com.uofa.adventure_app.application.AdventureApplication;
@@ -11,7 +14,7 @@ import com.uofa.adventure_app.controller.StoryParser;
 import com.uofa.adventure_app.controller.WebServiceController;
 import com.uofa.adventure_app.controller.http.HttpObject;
 import com.uofa.adventure_app.model.Story;
-import com.uofa.adventure_app.model.StoryTitle;
+
 
 public abstract class AdventureActivity extends Activity {
 	
@@ -68,7 +71,6 @@ public abstract class AdventureActivity extends Activity {
 		
 		protected ArrayList<Story> doInBackground(HttpObject... httpObj) {
 			StoryParser parser = new StoryParser();
-			ArrayList<Story> stories = new ArrayList<Story>();
 			return parser.parseStory(webServiceController.httpWithType(httpObj[0]));
 			
 		}
@@ -87,11 +89,23 @@ public abstract class AdventureActivity extends Activity {
 	
 	public abstract void dataReturn(ArrayList<Story> result, String method);
 	
-	protected void httpRequest(HttpObject httpObject, String method) {
-		new PerformHttp(this, method).execute(httpObject);
+	protected boolean isNetworkAvailable() {
+	    ConnectivityManager connectivityManager 
+	          = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+	    NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+	    return activeNetworkInfo != null && activeNetworkInfo.isConnected();
 	}
 	
-
+	protected void httpRequest(HttpObject httpObject, String method) {
+		if(this.isNetworkAvailable()) {
+		new PerformHttp(this, method).execute(httpObject);
+		} else {
+			// do nothing...
+		}
+	}
+	
+	
+	
 
 	
 }

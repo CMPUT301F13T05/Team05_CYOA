@@ -17,17 +17,32 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 package com.uofa.adventure_app.activity;
+import java.io.File;
+
 import java.util.ArrayList;
+
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+
+import android.view.Window;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.TextView;
 
@@ -42,6 +57,7 @@ public class StoryActivity extends AdventureActivity {
 	TextView testBody;
 	boolean choice;
 	View currentView;
+	Uri imageFileUri;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -67,19 +83,28 @@ public class StoryActivity extends AdventureActivity {
 	public void onCreateContextMenu(ContextMenu menu, View v,
 			ContextMenuInfo menuInfo) {
 		super.onCreateContextMenu(menu, v, menuInfo);
-		AdapterContextMenuInfo aInfo = (AdapterContextMenuInfo) menuInfo;
+		if (choice == false){
+			AdapterContextMenuInfo aInfo = (AdapterContextMenuInfo) menuInfo;
 
 		
-		// Style our context menu
-		menu.setHeaderIcon(android.R.drawable.ic_input_get);
-		menu.setHeaderTitle("Options");
-		MenuInflater inflater = getMenuInflater();
-		if (choice == false){
+			// Style our context menu
+			menu.setHeaderIcon(android.R.drawable.ic_input_get);
+			menu.setHeaderTitle("Annotate");
+			MenuInflater inflater1 = getMenuInflater();
+
 			// Open Menu
-			inflater.inflate(R.menu.annotatemenu, menu);
+			inflater1.inflate(R.menu.annotatemenu, menu);
 		}else{
-			inflater.inflate(R.menu.choices, menu);
 			choice = false;
+			AdapterContextMenuInfo aInfo = (AdapterContextMenuInfo) menuInfo;
+
+			
+			// Style our context menu
+			menu.setHeaderIcon(android.R.drawable.ic_input_get);
+			menu.setHeaderTitle("Choices");
+			MenuInflater inflater2 = getMenuInflater();
+			inflater2.inflate(R.menu.choices, menu);
+
 		}
 		
 	}
@@ -90,6 +115,7 @@ public class StoryActivity extends AdventureActivity {
 	}
 	
 	public void openChoices(View v) {
+		currentView.getRootView().dispatchKeyEvent(new KeyEvent (KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_BACK));
 		choice = true;
 		registerForContextMenu( v );
         openContextMenu( v );  
@@ -101,8 +127,10 @@ public class StoryActivity extends AdventureActivity {
 			case R.id.editstory:
 				editStory();
 				break;
-			case R.id.annotatem:			
+			case R.id.annotatem:	
+				currentView.getRootView().dispatchKeyEvent(new KeyEvent (KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_BACK));
 				openAnnotateContext(currentView);
+				//takeAPhoto();
 				break;
 			case R.id.editfragment:
 				editFragment();
@@ -113,7 +141,26 @@ public class StoryActivity extends AdventureActivity {
 			default:
 				return super.onOptionsItemSelected(item);
 		}
+		
 		return super.onOptionsItemSelected(item);
+	}
+	
+	@Override
+	public boolean onContextItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.takepic:
+			takeAPhoto();
+			currentView.getRootView().dispatchKeyEvent(new KeyEvent (KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_BACK));
+			break;
+		case R.id.choosemedia:
+			currentView.getRootView().dispatchKeyEvent(new KeyEvent (KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_BACK));
+			break;
+		default:
+			currentView.getRootView().dispatchKeyEvent(new KeyEvent (KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_BACK));
+			return super.onContextItemSelected(item);
+	}
+	return super.onContextItemSelected(item);
+		
 	}
 	
 	public void editStory() {
@@ -130,6 +177,41 @@ public class StoryActivity extends AdventureActivity {
 		Intent myIntent = new Intent(this, BrowserActivity.class);
 		this.startActivity(myIntent);
 	}
+
+	 private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
+	    
+	    public void takeAPhoto() {
+	        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+	        
+	        String folder = Environment.getExternalStorageDirectory().getAbsolutePath() + "/tmp";
+	        File folderF = new File(folder);
+	        if (!folderF.exists()) {
+	            folderF.mkdir();
+	        }
+	        
+	        String imageFilePath = folder + "/" + String.valueOf(System.currentTimeMillis()) + "jpg";
+	        File imageFile = new File(imageFilePath);
+	        imageFileUri = Uri.fromFile(imageFile);
+	        
+	        intent.putExtra(MediaStore.EXTRA_OUTPUT, imageFileUri);
+	        startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
+	    }
+	    
+	    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+	        if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
+	           //TextView tv = (TextView) findViewById(R.id.status);
+	            if (resultCode == RESULT_OK) {
+	                System.out.println("Photo OK!");
+	                ImageView annotation = (ImageView) findViewById(R.id.annotation);
+	                annotation.setImageDrawable(Drawable.createFromPath(imageFileUri.getPath()));
+	            } else if (resultCode == RESULT_CANCELED) {
+	                System.out.println("Photo canceled");
+	            } else {
+	                System.out.println("Not sure what happened!" + resultCode);
+	            }
+	        }
+	    }
+
 	
 		public void updateView(){
 		AdventureApplication.getStoryController();
@@ -140,6 +222,7 @@ public class StoryActivity extends AdventureActivity {
 			// TODO Auto-generated method stub
 			
 		}
+
 
 
 }

@@ -25,8 +25,13 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.Charset;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+
 import com.uofa.adventure_app.controller.http.HttpObject;
 import com.uofa.adventure_app.enums.HttpRequestType;
+
 
 public class WebServiceController {
 	
@@ -68,6 +73,7 @@ public class WebServiceController {
 
 			// Gets a Response Code.
 			int status = conn.getResponseCode();
+
 			if (status / 100 != 2) {
 				responseMessage = conn.getResponseMessage();
 			}
@@ -90,7 +96,6 @@ public class WebServiceController {
 			if (conn != null)
 				conn.disconnect();
 		}
-		System.err.println(responseMessage);
 		return responseMessage;
 		
 	}
