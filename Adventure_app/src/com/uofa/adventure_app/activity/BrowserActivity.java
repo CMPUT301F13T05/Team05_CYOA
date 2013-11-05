@@ -37,7 +37,7 @@ import com.uofa.adventure_app.model.Story;
 import com.uofa.adventure_app.model.User;
 
 public class BrowserActivity extends AdventureActivity {
-	private StoryGrid adapter;
+	private StoryGridAdapter adapter;
 	ArrayList<String> List;
 	GridView grid;
 
@@ -159,7 +159,7 @@ public class BrowserActivity extends AdventureActivity {
 			
 
 			
-			adapter = new StoryGrid(this, result);
+			adapter = new StoryGridAdapter(this, result);
 			grid = (GridView) findViewById(R.id.gridView1);
 			grid.setAdapter(adapter);
 

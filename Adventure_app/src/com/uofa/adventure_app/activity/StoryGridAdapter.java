@@ -14,13 +14,13 @@ import android.widget.TextView;
 import com.uofa.adventure_app.model.Story;
 import com.uofa.adventure_app.model.User;
 
-public class StoryGrid extends BaseAdapter {
+public class StoryGridAdapter extends BaseAdapter {
 
 	private ArrayList<Story> stories;
 	private Context context;
 	private LayoutInflater mInflater;
 	
-	public StoryGrid(Context context, ArrayList<Story> stories) {
+	public StoryGridAdapter(Context context, ArrayList<Story> stories) {
 		this.context = context;
         mInflater = LayoutInflater.from(this.context);
 		this.stories = new ArrayList<Story>(stories);
