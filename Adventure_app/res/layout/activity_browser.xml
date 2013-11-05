@@ -11,7 +11,7 @@
     <GridView
         android:id="@+id/gridView1"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_alignParentRight="false"
         android:numColumns="3"
         android:scrollbars="horizontal" >

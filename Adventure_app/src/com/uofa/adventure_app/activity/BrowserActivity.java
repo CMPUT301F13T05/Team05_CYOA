@@ -21,11 +21,18 @@ import java.util.ArrayList;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.ContextMenu;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ContextMenu.ContextMenuInfo;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+
 import android.widget.GridView;
+import android.widget.AdapterView.AdapterContextMenuInfo;
 
 import com.uofa.adventure_app.R;
 import com.uofa.adventure_app.controller.http.HttpObjectStory;
@@ -36,17 +43,31 @@ import com.uofa.adventure_app.model.Story;
 import com.uofa.adventure_app.model.User;
 
 public class BrowserActivity extends AdventureActivity {
-	private StoryGridAdapter adapter;
+	private ArrayAdapter<String> storyGridAdapter;
 	ArrayList<String> List;
 	GridView grid;
+
+	User username;
+	View v;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_browser);
-
-		
-		
+		//setContentView(R.layout.activity_browser);
+		v = this.findViewById(android.R.id.content);
+		username = new User();
+//	    boolean firstrun = getSharedPreferences("PREFERENCE", MODE_PRIVATE).getBoolean("firstrun", true);
+//	    if (firstrun){
+//	    	System.out.println(v);
+//	    	//openFirstContext(v);
+//		    System.out.println("here");
+//	    // Save the state
+//	    getSharedPreferences("PREFERENCE", MODE_PRIVATE)
+//	        .edit()
+//	        .putBoolean("firstrun", false)
+//	        .commit();
+//	    }
+	    setContentView(R.layout.activity_browser);
 		 //TESTING
 		Story tStory = new Story();
 		tStory.addUser(new User("Chris"));
@@ -67,12 +88,14 @@ public class BrowserActivity extends AdventureActivity {
 		HttpObjectStory httpStory = new HttpObjectStory();
 		
 		// This method will get all, and call the all method in dataReturn()..
-		this.httpRequest(httpStory.fetchAll(), GET_ALL_METHOD);
+		
 		
 		// This method will call the get method in dataReturn() when done loading...
 		this.httpRequest(httpStory.searchObject("Chris"), GET_METHOD);
 
 	}
+
+
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -83,14 +106,22 @@ public class BrowserActivity extends AdventureActivity {
 	}
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
+
 		// Handle presses on the action bar items
 		switch (item.getItemId()) {
 		case R.id.new_story:
 			newStory();
+			break;
+		case R.id.refresh:
+			System.out.println("Here before call");
+			HttpObjectStory httpStory = new HttpObjectStory();
+			this.httpRequest(httpStory.fetchAll(), GET_ALL_METHOD);
+			break;
 
 		default:
 			return super.onOptionsItemSelected(item);
 		}
+		return super.onOptionsItemSelected(item);
 	}
 	public void newStory() {
 
@@ -162,12 +193,41 @@ public class BrowserActivity extends AdventureActivity {
 				strings.add(s.title());
 				}
 			}
+			for(int i = 0; i <strings.size(); i++) {
+				if(strings.get(i).equals("")) {
+					strings.remove(i);
+				}else 
+					if (strings.get(i).equals(" ")){
+						strings.remove(i);
+					}
+
+				
+			}
+			System.out.println("0: " + strings.get(0)+"/");
 			
 
+
 			
-			adapter = new StoryGridAdapter(this, result);
+
 			grid = (GridView) findViewById(R.id.gridView1);
-			grid.setAdapter(adapter);
+
+
+			strings.add("" + strings.size());
+			storyGridAdapter = new ArrayAdapter<String>(this,
+					R.layout.list_item, strings);
+			grid = (GridView) findViewById(R.id.gridView1);
+			grid.setAdapter(storyGridAdapter);
+			grid.setOnItemClickListener(new 
+			GridView.OnItemClickListener() {
+			       // @Override
+			        public void onItemClick(AdapterView<?> a, View v, int i, long l) {
+			         
+			        	viewStory(v);
+			          
+			        }
+			    });
+			 
+			System.out.println(result);
 
 		}
 		if(method.equals(GET_METHOD)) {
@@ -178,6 +238,41 @@ public class BrowserActivity extends AdventureActivity {
 			}
 		}
 	}
+	// We want to create a context Menu when the user long click on an item
+	@Override
+	public void onCreateContextMenu(ContextMenu menu, View v,
+			ContextMenuInfo menuInfo) {
+		super.onCreateContextMenu(menu, v, menuInfo);
+			AdapterContextMenuInfo aInfo = (AdapterContextMenuInfo) menuInfo;
 
+		
+			// Style our context menu
+			menu.setHeaderIcon(android.R.drawable.ic_input_get);
+			menu.setHeaderTitle("Please enter your Name:");
+			MenuInflater inflater1 = getMenuInflater();
+
+			// Open Menu
+			inflater1.inflate(R.menu.firstcontext, menu);
+
+		
+	}
+	public void openFirstContext(View v) {
+		
+		registerForContextMenu( v );
+        openContextMenu( v );  
+	}
+	@Override
+	public boolean onContextItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.ok:
+			
+			break;
+
+		default:
+			return super.onContextItemSelected(item);
+	}
+	return super.onContextItemSelected(item);
+		
+	}
 	
 }

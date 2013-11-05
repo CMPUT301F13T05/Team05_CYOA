@@ -62,14 +62,18 @@ public abstract class AdventureActivity extends Activity {
  *
  */
 	public class PerformHttp extends AsyncTask<HttpObject, Void, ArrayList<Story>> {
+
+
 		AdventureActivity activity = null;
 		String method = null;
 		public PerformHttp(AdventureActivity activity, String method) {
+			System.out.println("Here perform async");
 			this.activity = activity;
 			this.method = method;
 		}
 		
 		protected ArrayList<Story> doInBackground(HttpObject... httpObj) {
+			System.out.println("Here in back");
 			StoryParser parser = new StoryParser();
 			return parser.parseStory(webServiceController.httpWithType(httpObj[0]));
 			
@@ -105,7 +109,11 @@ public abstract class AdventureActivity extends Activity {
 	}
 	
 	
+<<<<<<< Updated upstream
 	
+=======
+
+>>>>>>> Stashed changes
 
 	
 }
