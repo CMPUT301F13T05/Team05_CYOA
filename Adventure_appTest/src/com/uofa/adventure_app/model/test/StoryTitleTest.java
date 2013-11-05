@@ -1,6 +1,10 @@
-package com.uofa.adventure_app.model;
+package com.uofa.adventure_app.model.test;
 
 import java.util.ArrayList;
+
+import com.uofa.adventure_app.model.Story;
+import com.uofa.adventure_app.model.StoryTitle;
+import com.uofa.adventure_app.model.User;
 
 import junit.framework.TestCase;
 

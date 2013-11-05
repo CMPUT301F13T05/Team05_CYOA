@@ -62,7 +62,7 @@ public class StoryActivity extends AdventureActivity {
 		return true;
 	}
 
-	// We want to create a context Menu when the user long click on an item
+	// We want to create a context Menu when the user long clicks on an item
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v,
 			ContextMenuInfo menuInfo) {

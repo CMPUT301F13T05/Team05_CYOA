@@ -1,6 +1,8 @@
-package com.uofa.adventure_app.model;
+package com.uofa.adventure_app.model.test;
 
 import java.util.ArrayList;
+
+import com.uofa.adventure_app.model.Fragement;
 
 import junit.framework.TestCase;
 

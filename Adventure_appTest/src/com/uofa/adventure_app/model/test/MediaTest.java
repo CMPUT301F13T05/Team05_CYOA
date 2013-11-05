@@ -1,4 +1,6 @@
-package com.uofa.adventure_app.model;
+package com.uofa.adventure_app.model.test;
+
+import com.uofa.adventure_app.model.Media;
 
 import junit.framework.TestCase;
 
