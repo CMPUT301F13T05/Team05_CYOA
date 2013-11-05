@@ -19,20 +19,13 @@
 package com.uofa.adventure_app.activity;
 
 import java.util.ArrayList;
-import java.util.UUID;
-
 
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.GridView;
 
 import com.uofa.adventure_app.R;
@@ -44,7 +37,7 @@ import com.uofa.adventure_app.model.Story;
 import com.uofa.adventure_app.model.User;
 
 public class BrowserActivity extends AdventureActivity {
-	private ArrayAdapter<String> adapter;
+	private StoryGrid adapter;
 	ArrayList<String> List;
 	GridView grid;
 
@@ -164,12 +157,12 @@ public class BrowserActivity extends AdventureActivity {
 				}
 			}
 			
-			adapter = new ArrayAdapter<String>(this,
-					R.layout.list_item, strings);
+
+			
+			adapter = new StoryGrid(this, result);
 			grid = (GridView) findViewById(R.id.gridView1);
 			grid.setAdapter(adapter);
-			 
-			System.out.println(result);
+
 		}
 		if(method.equals(GET_METHOD)) {
 			System.out.println("We got some data here!");

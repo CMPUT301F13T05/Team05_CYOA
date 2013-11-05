@@ -14,7 +14,7 @@ import com.uofa.adventure_app.controller.StoryParser;
 import com.uofa.adventure_app.controller.WebServiceController;
 import com.uofa.adventure_app.controller.http.HttpObject;
 import com.uofa.adventure_app.model.Story;
-import com.uofa.adventure_app.model.StoryTitle;
+
 
 public abstract class AdventureActivity extends Activity {
 	
