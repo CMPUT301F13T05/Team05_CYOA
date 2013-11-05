@@ -64,10 +64,16 @@ public class LocalStorageController {
 	public void close(){
     	DBHelper.close();
 	}
+	
+	/**
+	 * deletes database*/
+	public int deleteAll(){
+    	return db.delete(DbHelper.DATABASE_NAME, null, null);
+    	}
 	/**
 	 * Inserts values to the Stories table
 	 * tested, works*/
-	public void insertToStoriesTable(int story_id,String title, String text){
+	public void insertIntoStoriesTable(int story_id,String title, String text){
 		ContentValues values = new ContentValues();	
 		values.put("story_id", story_id);
 	    values.put("title", title);
@@ -75,19 +81,19 @@ public class LocalStorageController {
 	    db.insert("stories", null, values);
 	}
 	/**
-	 * Inserts values into authors table
+	 * Inserts values into users table
 	 * tested, works*/
-	public void insertToAuthorsTable(int author_id,String name, int story_id){
+	public void insertIntoUsersTable(int user_id,String name, int story_id){
 		ContentValues values = new ContentValues();	
-		values.put("author_id", author_id);
+		values.put("user_id", user_id);
 	    values.put("name", name);
 	    values.put("story_id", story_id);
-	    db.insert("authors", null, values);
+	    db.insert("users", null, values);
 	}
 	/**
 	 * Inserts values into fragments table
 	 * tested, works*/
-	public void insertToFragmentsTable(int fragment_id,String text, int story_id){
+	public void insertIntoFragmentsTable(int fragment_id,String text, int story_id){
 		ContentValues values = new ContentValues();	
 		values.put("fragment_id", fragment_id);
 	    values.put("text", text);
@@ -101,7 +107,7 @@ public class LocalStorageController {
 	/**
 	 * if isAnnotation==true, then photo is annotation, 1 is inserted into the is_annotaion column
 	 * if isAnnotation==false, then photo is part of the fragment, 0 is inserted into the is_annotaion column*/
-	public void insertToImagesTable(int image_id,String pointer, boolean isAnnotation, int fragment_id){
+	public void insertIntoImagesTable(int image_id,String pointer, boolean isAnnotation, int fragment_id){
 		ContentValues values = new ContentValues();	
 		values.put("image_id", image_id);
 		values.put("pointer", pointer);
@@ -112,7 +118,7 @@ public class LocalStorageController {
 	/**
 	 * Inserts values into choices table
 	 * tested, works*/
-	public void insertToChoicesTable(int choice_id,int fragment_id){
+	public void insertIntoChoicesTable(int choice_id,int fragment_id){
 		ContentValues values = new ContentValues();	
 		values.put("choice_id", choice_id);
 	    values.put("fragment_id", fragment_id);
@@ -138,28 +144,30 @@ public class LocalStorageController {
 		return ids;
 	}
 /**
- * return a map with story_id as a key, arrayList of authors as value, tested, works
+ * returns a map with story_id as a key.The arrayList is a value part  of the map, which contains story title as a first element,
+ * the rest of the elements are users associated with the given story id, tested, works
  * */
 	public  HashMap<Integer, List<String>> getBrowserViewInfo(){
 		HashMap<Integer, List<String>> map = new HashMap<Integer, List<String>>();
 		List<Integer> ids= this.getStoryIDs();
-		String temp="select name from authors where story_id=";
-		String getAuthors;
+		String temp="select name from users where story_id=";
+		String getUsers;
 		int length=ids.size();
 		this.openForRead();
 		for (int i =0;i<length;i++){
-			List<String> authors = new ArrayList<String>();
-			getAuthors=temp+Integer.toString(ids.get(i));
-			Cursor c=db.rawQuery(getAuthors, null);
+			List<String> output = new ArrayList<String>();
+			output.add(this.getTitle(ids.get(i)));
+			getUsers=temp+Integer.toString(ids.get(i));
+			Cursor c=db.rawQuery(getUsers, null);
 			c.moveToFirst();
 			if (c != null ) {
 				if  (c.moveToFirst()) {
 					do {
 						
-						String author = c.getString(0);
-						authors.add(author);
+						String user = c.getString(0);
+						output.add(user);
 					}while (c.moveToNext());
-					map.put(ids.get(i), authors);
+					map.put(ids.get(i), output);
 				}
 			}  
 			c.close();
@@ -169,4 +177,114 @@ public class LocalStorageController {
 		db.close();
 		return map;
 	}
+	/**
+	 * returns title of the story, story_id given, tested, works*/
+	public String getTitle(int story_id){
+		String getTitleString="select title from stories where story_id="+story_id;
+		String title=null;
+		this.openForRead();
+		Cursor titlec = db.rawQuery(getTitleString, null);
+		titlec.moveToFirst();
+		if (titlec != null ) {
+			if  (titlec.moveToFirst()) {
+				do {
+					title = titlec.getString(0);
+				}while (titlec.moveToNext());
+			}
+		}  
+		titlec.close();
+		
+		return title;
+	}
+	/**
+	 * returns list of users, given story_id
+	 * tested, works*/
+	public List<String> getUsers(int story_id){
+		String getUsersString="select name from users where story_id="+story_id;
+		List<String> users = new ArrayList<String>();
+		this.openForRead();
+		Cursor userc=db.rawQuery(getUsersString, null);
+		userc.moveToFirst();
+		if (userc != null ) {
+			if  (userc.moveToFirst()) {
+				do {
+					users.add(userc.getString(0));
+				}while (userc.moveToNext());
+			}
+		}  
+		userc.close();
+		return users;
+	}
+	/**returns ids of choices as a List<String> of a fragment, given fragment_id
+	 * tested, works*/
+	public List<String> getChoices(int fragment_id){
+		String getChoicesString="select choice_id from choices where fragment_id="+fragment_id;
+		List<String> choices = new ArrayList<String>();
+		String choiceID;
+		this.openForRead();
+		Cursor choicec=db.rawQuery(getChoicesString, null);
+		choicec.moveToFirst();
+		if (choicec != null ) {
+			if  (choicec.moveToFirst()) {
+				do {
+					choiceID=choicec.getString(0);
+					choices.add(choiceID);
+				}while (choicec.moveToNext());
+			}
+		}  
+		choicec.close();
+		return choices;
+	}
+	/**
+	 * returns List of Lists (String)
+	 * 1st element is Story title, has type of List<String>, use getStory(story_id).get(0).get(0) to get title as String
+	 * 2nd element is Story users, has type of List<String>
+	 * 3rd element is 1st fragments' choices, has type of List<String>
+	 * 4th element is body of the 1st fragment, has type of List<string>, use getStory(story_id).get(3).get(0) to get body as String
+	 * ATENTION!!!
+	 * This method assumes that, fragments are ordered. That is, first fragment of the given story is above 
+	 * all other fragments of that story
+	 * */
+	
+	public List<List<String>> getStory(int story_id){
+		List<List<String>> storyInfo =new ArrayList<List<String>>();
+		List<String> storyTitle = new ArrayList<String>();
+		storyTitle.add(this.getTitle(story_id));
+		List<String> users = new ArrayList<String>();
+		users=this.getUsers(story_id);
+		
+		String firstFragment="select fragment_id from fragments where story_id="+story_id+" limit 1";
+		int firstFragmentID=0;
+		Cursor fragc=db.rawQuery(firstFragment, null);
+		fragc.moveToFirst();
+		if (fragc != null ) {
+			if  (fragc.moveToFirst()) {
+				do {
+					firstFragmentID=Integer.parseInt(fragc.getString(0));
+					//frags.add(choiceID);
+				}while (fragc.moveToNext());
+			}
+		}  
+		fragc.close();
+		List<String> choices = new ArrayList<String>();
+		choices=getChoices(firstFragmentID);
+		List<String> fragmentBody = new ArrayList<String>();
+		String getBody="select text from fragments where fragment_id="+firstFragmentID;
+		Cursor bodyc=db.rawQuery(getBody, null);
+		bodyc.moveToFirst();
+		if (bodyc != null ) {
+			if  (bodyc.moveToFirst()) {
+				do {
+					fragmentBody.add(bodyc.getString(0));
+				}while (bodyc.moveToNext());
+			}
+		}  
+		bodyc.close();
+		storyInfo.add(storyTitle);
+		storyInfo.add(users);
+		storyInfo.add(choices);
+		storyInfo.add(fragmentBody);
+		return storyInfo;
+	}
+	
 }

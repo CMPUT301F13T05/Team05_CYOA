@@ -31,8 +31,8 @@ public class DbHelper extends SQLiteOpenHelper {
 	 */
 	static final String CreateStoryTable ="create table if not exists stories "+
 										  "(story_id integer primary key,title VARCHAR not null,text VARCHAR);";
-	static final String CreateAuthorsTable="create table if not exists authors "+
-										  "(author_id integer primary key,name VARCHAR not null,story_id integer,"+
+	static final String CreateUsersTable="create table if not exists users "+
+										  "(user_id integer primary key,name VARCHAR not null,story_id integer,"+
 										  "FOREIGN KEY(story_id) REFERENCES stories(story_id))";
 	static final String CreateFragmentsTable="create table if not exists fragments "+
 										  "(fragment_id integer primary key,text VARCHAR,story_id integer,"+
@@ -54,7 +54,7 @@ public class DbHelper extends SQLiteOpenHelper {
     }
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(CreateStoryTable);
-        db.execSQL(CreateAuthorsTable);
+        db.execSQL(CreateUsersTable);
         db.execSQL(CreateFragmentsTable);
         db.execSQL(CreateImagesTable);
         db.execSQL(CreateChoicesTable);
