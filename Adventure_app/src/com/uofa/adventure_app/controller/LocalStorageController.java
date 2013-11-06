@@ -40,7 +40,10 @@ public class LocalStorageController {
 	private Context context;
 	public static DbHelper DBHelper;
 	public SQLiteDatabase db;
-	
+	/**
+	 * 
+	 * @param ctx
+	 */
 	public LocalStorageController(Context ctx){
     	this.context=ctx;
     	DBHelper=new DbHelper(context);

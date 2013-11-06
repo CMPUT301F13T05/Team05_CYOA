@@ -43,6 +43,7 @@ import com.uofa.adventure_app.model.Story;
 import com.uofa.adventure_app.model.User;
 
 public class BrowserActivity extends AdventureActivity {
+
 	private ArrayAdapter<String> storyGridAdapter;
 	ArrayList<String> List;
 	GridView grid;
@@ -53,22 +54,22 @@ public class BrowserActivity extends AdventureActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		//setContentView(R.layout.activity_browser);
+		setContentView(R.layout.activity_browser);
 		v = this.findViewById(android.R.id.content);
 		username = new User();
-//	    boolean firstrun = getSharedPreferences("PREFERENCE", MODE_PRIVATE).getBoolean("firstrun", true);
-//	    if (firstrun){
-//	    	System.out.println(v);
-//	    	//openFirstContext(v);
-//		    System.out.println("here");
-//	    // Save the state
-//	    getSharedPreferences("PREFERENCE", MODE_PRIVATE)
-//	        .edit()
-//	        .putBoolean("firstrun", false)
-//	        .commit();
-//	    }
-	    setContentView(R.layout.activity_browser);
-		 //TESTING
+		boolean firstrun = getSharedPreferences("PREFERENCE", MODE_PRIVATE).getBoolean("firstrun", true);
+		if (firstrun){
+			System.out.println(v);
+			Intent myIntent = new Intent(this, FirstRunOnlyActivity.class);
+			this.startActivity(myIntent);
+			System.out.println("here");
+			// Save the state
+			getSharedPreferences("PREFERENCE", MODE_PRIVATE)
+			.edit()
+			.putBoolean("firstrun", false)
+			.commit();
+		}
+		//TESTING
 		Story tStory = new Story();
 		tStory.addUser(new User("Chris"));
 		tStory.setTitle("This is A TITLE");
@@ -80,18 +81,18 @@ public class BrowserActivity extends AdventureActivity {
 		tFrag.addChoice(new Choice(new Fragement()));
 		tFrag.addChoice(new Choice(new Fragement()));
 		tStory.addFragement(tFrag);
-		
+
 		// Search Example See Log of output.
-		
+
 		//AdventureApplication.getWebServiceController().publish(tStory);
 		//AdventureApplication.getWebServiceController().publish(tStory);
 		HttpObjectStory httpStory = new HttpObjectStory();
-		
+
 		// This method will get all, and call the all method in dataReturn()..
-		
-		
+
+
 		// This method will call the get method in dataReturn() when done loading...
-		this.httpRequest(httpStory.searchObject("Chris"), GET_METHOD);
+		this.httpRequest(httpStory.fetchAll(), GET_ALL_METHOD);
 
 	}
 
@@ -100,8 +101,8 @@ public class BrowserActivity extends AdventureActivity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-	    MenuInflater inflater = getMenuInflater();
-	    inflater.inflate(R.menu.main, menu);
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.main, menu);
 		return super.onCreateOptionsMenu(menu);
 	}
 	@Override
@@ -124,8 +125,10 @@ public class BrowserActivity extends AdventureActivity {
 		return super.onOptionsItemSelected(item);
 	}
 	public void newStory() {
-
+	
 		Intent myIntent = new Intent(this, EditFragementActivity.class);
+		int i = 0;
+		myIntent.putExtra("frag_id", i);
 		this.startActivity(myIntent);
 		//Testing
 		//LocalStorageController localStorageController = new LocalStorageController(this);
@@ -149,11 +152,11 @@ public class BrowserActivity extends AdventureActivity {
 		//
 		//Cursor c=localStorageController.openForRead().db.rawQuery("select * from images where is_annotation=1", null);
 		//c.moveToFirst();		
-				//mydb.rawQuery("select DISTINCT tbl_name from sqlite_master", null);
+		//mydb.rawQuery("select DISTINCT tbl_name from sqlite_master", null);
 		/*if (c != null ) {
 			if  (c.moveToFirst()) {
 				do {
-					
+
 					String one = c.getString(0);
 					Toast.makeText(this, one, 2).show();
 					String two = c.getString(1);
@@ -168,18 +171,18 @@ public class BrowserActivity extends AdventureActivity {
 		c.close();
 		//String title = c.getString(0);
 		localStorageController.close();
-		*/
+		 */
 
 	}
-	
+
 	public void viewStory(View v) {
-		
+
 		Intent myIntent = new Intent(this, StoryActivity.class);
 		this.startActivity(myIntent);
 	}
-	
+
 	public void updateView(){
-		
+
 	}
 
 	@Override
@@ -190,7 +193,7 @@ public class BrowserActivity extends AdventureActivity {
 			ArrayList<String> strings = new ArrayList<String>();
 			for(Story s: result) {
 				if(s != null) {
-				strings.add(s.title());
+					strings.add(s.title());
 				}
 			}
 			for(int i = 0; i <strings.size(); i++) {
@@ -201,32 +204,33 @@ public class BrowserActivity extends AdventureActivity {
 						strings.remove(i);
 					}
 
-				
+
 			}
-			System.out.println("0: " + strings.get(0)+"/");
-			
 
 
-			
+
+
+
 
 			grid = (GridView) findViewById(R.id.gridView1);
-
-
+			//Testing to see if firstRunOnly screen works properly.
+			//strings.add(getSharedPreferences("PREFERENCE", MODE_PRIVATE).getString("username", null));
 			strings.add("" + strings.size());
 			storyGridAdapter = new ArrayAdapter<String>(this,
 					R.layout.list_item, strings);
 			grid = (GridView) findViewById(R.id.gridView1);
 			grid.setAdapter(storyGridAdapter);
 			grid.setOnItemClickListener(new 
-			GridView.OnItemClickListener() {
-			       // @Override
-			        public void onItemClick(AdapterView<?> a, View v, int i, long l) {
-			         
-			        	viewStory(v);
-			          
-			        }
-			    });
-			 
+					GridView.OnItemClickListener() {
+				// @Override
+				public void onItemClick(AdapterView<?> a, View v, int i, long l) {
+
+
+					viewStory(v);
+
+				}
+			});
+
 			System.out.println(result);
 
 		}
@@ -243,36 +247,41 @@ public class BrowserActivity extends AdventureActivity {
 	public void onCreateContextMenu(ContextMenu menu, View v,
 			ContextMenuInfo menuInfo) {
 		super.onCreateContextMenu(menu, v, menuInfo);
-			AdapterContextMenuInfo aInfo = (AdapterContextMenuInfo) menuInfo;
+		AdapterContextMenuInfo aInfo = (AdapterContextMenuInfo) menuInfo;
 
-		
-			// Style our context menu
-			menu.setHeaderIcon(android.R.drawable.ic_input_get);
-			menu.setHeaderTitle("Please enter your Name:");
-			MenuInflater inflater1 = getMenuInflater();
 
-			// Open Menu
-			inflater1.inflate(R.menu.firstcontext, menu);
+		// Style our context menu
+		menu.setHeaderIcon(android.R.drawable.ic_input_get);
+		menu.setHeaderTitle("Please enter your Name:");
+		MenuInflater inflater1 = getMenuInflater();
 
-		
+		// Open Menu
+		inflater1.inflate(R.menu.firstcontext, menu);
+
+
 	}
 	public void openFirstContext(View v) {
-		
+		System.out.println("openFirst before");
 		registerForContextMenu( v );
-        openContextMenu( v );  
+		System.out.println("openFirst after");
+		openContextMenu( v );  
+		System.out.println("openFirst after after");
 	}
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.ok:
-			
+
 			break;
 
 		default:
 			return super.onContextItemSelected(item);
+		}
+		return super.onContextItemSelected(item);
+
 	}
-	return super.onContextItemSelected(item);
-		
-	}
-	
+
+
+
 }
+
