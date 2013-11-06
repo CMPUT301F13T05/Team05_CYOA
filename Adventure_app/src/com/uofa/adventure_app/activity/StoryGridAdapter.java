@@ -44,7 +44,7 @@ public class StoryGridAdapter extends BaseAdapter {
 		this.stories = new ArrayList<Story>(stories);
 
 	}
-
+	
 	@Override
 	public int getCount() {
 			return this.stories.size();

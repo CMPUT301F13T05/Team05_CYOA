@@ -56,7 +56,7 @@ public class BrowserActivity extends AdventureActivity {
 
 	ArrayList<String> List;
 	GridView grid;
-
+	LocalStorageController localStorageController;
 	User username;
 	View v;
 
@@ -65,13 +65,13 @@ public class BrowserActivity extends AdventureActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_browser);
 		v = this.findViewById(android.R.id.content);
+		localStorageController = new LocalStorageController(this);
+		localStorageController.openForWrite();
 		username = new User();
 		boolean firstrun = getSharedPreferences("PREFERENCE", MODE_PRIVATE).getBoolean("firstrun", true);
 		if (firstrun){
-			System.out.println(v);
 			Intent myIntent = new Intent(this, FirstRunOnlyActivity.class);
 			this.startActivity(myIntent);
-			System.out.println("here");
 			// Save the state
 			getSharedPreferences("PREFERENCE", MODE_PRIVATE)
 			.edit()
@@ -123,7 +123,6 @@ public class BrowserActivity extends AdventureActivity {
 			newStory();
 			break;
 		case R.id.refresh:
-			System.out.println("Here before call");
 			HttpObjectStory httpStory = new HttpObjectStory();
 			this.httpRequest(httpStory.fetchAll(), GET_ALL_METHOD);
 			break;
@@ -134,14 +133,14 @@ public class BrowserActivity extends AdventureActivity {
 		return super.onOptionsItemSelected(item);
 	}
 	public void newStory() {
-	
+		Toast.makeText(this, localStorageController.setStory("new story", "ulvi")+"", 2).show();
 		Intent myIntent = new Intent(this, EditFragementActivity.class);
 		int i = 0;
 		myIntent.putExtra("frag_id", i);
 		this.startActivity(myIntent);
 		//Testing
-		LocalStorageController localStorageController = new LocalStorageController(this);
-		Toast.makeText(this, localStorageController.setStory("new story", "Ulvi")+"", 2).show();
+
+
 		//localStorageController.getStory(1);
 		//HashMap<Integer, List<String>> newMap =localStorageController.getBrowserViewInfo();
 		//newMap.get(4).get(0);
@@ -220,7 +219,6 @@ public class BrowserActivity extends AdventureActivity {
 
 
 
-
 			grid = (GridView) findViewById(R.id.gridView1);
 			//Testing to see if firstRunOnly screen works properly.
 			//strings.add(getSharedPreferences("PREFERENCE", MODE_PRIVATE).getString("username", null));e 
@@ -287,6 +285,16 @@ public class BrowserActivity extends AdventureActivity {
 		}
 		return super.onContextItemSelected(item);
 
+	}
+
+
+
+	@Override
+	protected void onDestroy() {
+		// TODO Auto-generated method stub
+		super.onDestroy();
+		localStorageController.close();
+		
 	}
 
 

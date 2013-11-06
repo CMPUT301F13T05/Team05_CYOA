@@ -77,14 +77,16 @@ public class LocalStorageController {
 	 * Inserts values to the Stories table
 	 * tested, works*/
 	public void insertIntoStoriesTable(String title){
-		ContentValues values = new ContentValues();	
+		ContentValues values = new ContentValues();
+		System.out.println(title);
 	    values.put("title", title);
+	    System.out.println(values);
 	    db.insert("stories", null, values);
 	}
 	/**
 	 * Inserts values into users table
 	 * tested, works*/
-	public void insertIntoUsersTable(String name, int story_id,String fOrS){
+	public void insertIntoUsersTable(String name, int story_id, String fOrS){
 		ContentValues values = new ContentValues();	
 	    values.put("name", name);
 	    values.put("story_id", story_id);
@@ -312,10 +314,14 @@ public class LocalStorageController {
 	 * @return
 	 */
 	public int setStory(String title, String user){
+		this.openForWrite();
 		this.insertIntoStoriesTable(title);
+		this.close();
 		List<Integer> ids=this.getStoryIDs();
 		int story_id=ids.get(ids.size()-1);
+		this.openForWrite();
 		this.insertIntoUsersTable(user, story_id, "s");
+		this.close();
 		return story_id;
 	}
 	/***/

@@ -30,9 +30,9 @@ public class DbHelper extends SQLiteOpenHelper {
 	 * Strings to create tables
 	 */
 	static final String CreateStoryTable ="create table if not exists stories "+
-										  "(story_id integer primary key autoincrement,title VARCHAR not nul);";
+										  "(story_id integer primary key autoincrement,title VARCHAR not null);";
 	static final String CreateUsersTable="create table if not exists users "+
-										  "(user_id integer primary key autoincrement,name VARCHAR not null,story_id integer,f_or_s VARCHAR"+
+										  "(user_id integer primary key autoincrement,name VARCHAR not null,story_id integer,f_or_s VARCHAR,"+
 										  "FOREIGN KEY(story_id) REFERENCES stories(story_id));";
 	static final String CreateFragmentsTable="create table if not exists fragments "+
 										  "(fragment_id integer primary key,text VARCHAR,story_id integer,title VARCHAR,"+
