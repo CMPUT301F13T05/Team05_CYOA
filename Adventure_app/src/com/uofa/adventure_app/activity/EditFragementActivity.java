@@ -218,14 +218,7 @@ public class EditFragementActivity extends AdventureActivity {
 		return super.onContextItemSelected(item);
 
 	}
-
-	@Override
-	protected void onResume() {
-		// TODO Auto-generated method stub
-		super.onResume();
-		onBackPressed();
-		
-	}
+ 
 	@Override
     public void onBackPressed() {
         super.onBackPressed();   

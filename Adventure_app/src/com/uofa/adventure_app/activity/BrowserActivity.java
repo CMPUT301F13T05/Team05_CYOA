@@ -19,6 +19,7 @@
 package com.uofa.adventure_app.activity;
 import java.util.ArrayList;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.ContextMenu;
@@ -44,7 +45,7 @@ import com.uofa.adventure_app.model.User;
 
 public class BrowserActivity extends AdventureActivity {
 
-	private ArrayAdapter<String> storyGridAdapter;
+	private StoryGridAdapter storyGridAdapter;
 	ArrayList<String> List;
 	GridView grid;
 
@@ -214,11 +215,10 @@ public class BrowserActivity extends AdventureActivity {
 
 			grid = (GridView) findViewById(R.id.gridView1);
 			//Testing to see if firstRunOnly screen works properly.
-			//strings.add(getSharedPreferences("PREFERENCE", MODE_PRIVATE).getString("username", null));
-			strings.add("" + strings.size());
-			storyGridAdapter = new ArrayAdapter<String>(this,
-					R.layout.list_item, strings);
-			grid = (GridView) findViewById(R.id.gridView1);
+			//strings.add(getSharedPreferences("PREFERENCE", MODE_PRIVATE).getString("username", null));e 
+			
+
+			storyGridAdapter = new StoryGridAdapter(this, result);
 			grid.setAdapter(storyGridAdapter);
 			grid.setOnItemClickListener(new 
 					GridView.OnItemClickListener() {
