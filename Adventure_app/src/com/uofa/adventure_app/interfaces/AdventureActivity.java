@@ -108,12 +108,4 @@ public abstract class AdventureActivity extends Activity {
 		}
 	}
 	
-	
-<<<<<<< Updated upstream
-	
-=======
-
->>>>>>> Stashed changes
-
-	
 }

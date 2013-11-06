@@ -43,7 +43,9 @@ import com.uofa.adventure_app.model.Story;
 import com.uofa.adventure_app.model.User;
 
 public class BrowserActivity extends AdventureActivity {
+
 	private ArrayAdapter<String> storyGridAdapter;
+
 	ArrayList<String> List;
 	GridView grid;
 
@@ -205,16 +207,15 @@ public class BrowserActivity extends AdventureActivity {
 			}
 			System.out.println("0: " + strings.get(0)+"/");
 			
-
-
-			
-
 			grid = (GridView) findViewById(R.id.gridView1);
 
 
 			strings.add("" + strings.size());
 			storyGridAdapter = new ArrayAdapter<String>(this,
 					R.layout.list_item, strings);
+
+			//adapter = new StoryGridAdapter(this, result);
+
 			grid = (GridView) findViewById(R.id.gridView1);
 			grid.setAdapter(storyGridAdapter);
 			grid.setOnItemClickListener(new 
