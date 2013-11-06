@@ -33,9 +33,13 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 
 import android.widget.GridView;
+
 import android.widget.AdapterView.AdapterContextMenuInfo;
 
+import android.widget.Toast;
+
 import com.uofa.adventure_app.R;
+import com.uofa.adventure_app.controller.LocalStorageController;
 import com.uofa.adventure_app.controller.http.HttpObjectStory;
 import com.uofa.adventure_app.interfaces.AdventureActivity;
 import com.uofa.adventure_app.model.Choice;
@@ -45,7 +49,11 @@ import com.uofa.adventure_app.model.User;
 
 public class BrowserActivity extends AdventureActivity {
 
+
 	private StoryGridAdapter storyGridAdapter;
+
+	//private StoryGridAdapter;
+
 	ArrayList<String> List;
 	GridView grid;
 
@@ -132,8 +140,8 @@ public class BrowserActivity extends AdventureActivity {
 		myIntent.putExtra("frag_id", i);
 		this.startActivity(myIntent);
 		//Testing
-		//LocalStorageController localStorageController = new LocalStorageController(this);
-		//Toast.makeText(this, localStorageController.getStory(1).get(3).get(0), 2).show();
+		LocalStorageController localStorageController = new LocalStorageController(this);
+		Toast.makeText(this, localStorageController.setStory("new story", "Ulvi")+"", 2).show();
 		//localStorageController.getStory(1);
 		//HashMap<Integer, List<String>> newMap =localStorageController.getBrowserViewInfo();
 		//newMap.get(4).get(0);
