@@ -34,7 +34,10 @@ public class Fragement  {
 		this.annotations = new ArrayList<Annotation>();
 		this.choices = new ArrayList<Choice>(); 
 	}	
-	
+	/**
+	 * adds a choice to the fragment
+	 * @param choice
+	 */
 	public void addChoice(Choice choice) {
 		this.choices.add(choice);
 	}

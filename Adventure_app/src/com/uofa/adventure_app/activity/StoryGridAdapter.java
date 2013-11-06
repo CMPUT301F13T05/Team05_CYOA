@@ -79,7 +79,7 @@ public class StoryGridAdapter extends BaseAdapter {
 	        	String authors = new String();
 	        	// TODO: Format this better!
 	        	for(User u: story.users()) {
-	        		authors += u.getName();
+	        		authors += "By: " + u.getName();
 	        	}
 	        	sub.setText(authors);
 	        	

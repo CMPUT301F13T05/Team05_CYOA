@@ -22,11 +22,18 @@ public enum HttpRequestType {
 	GET("GET"), POST("POST");
 	
 	private String statusCode;
-	
+	/**
+	 * takes a string as a Status code
+	 * @param s
+	 */
 	private HttpRequestType (String s) {
 		statusCode = s;
 	}
-	
+	/**
+	 * 
+	 *  Returns the Status Code.
+	 * @return String
+	 */
 	public String getStatusCode() {
 		return statusCode;
 	}

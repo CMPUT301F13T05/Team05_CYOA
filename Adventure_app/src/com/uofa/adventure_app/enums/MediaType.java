@@ -22,11 +22,17 @@ public enum MediaType {
 	MUSIC("M"), VIDEO("V"), AUDIO("A");
 	
 	private String statusCode;
-	
+	/**
+	 * Takes a string as a status code
+	 * @param s
+	 */
 	private MediaType (String s) {
 		statusCode = s;
 	}
-	
+	/**
+	 * Gets the status code.
+	 * @return String
+	 */
 	public String getStatusCode() {
 		return statusCode;
 	}

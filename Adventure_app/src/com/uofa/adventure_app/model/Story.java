@@ -66,7 +66,10 @@ public class Story {
 			this.users.add(user);
 		}
 	}
-	
+	/**
+	 * returns list of users for a story
+	 * @return
+	 */
 	public ArrayList<User> users() {
 		return this.users;
 	}
@@ -77,11 +80,17 @@ public class Story {
 	public void setFragements(ArrayList<Fragement> fragements) {
 		this.fragements = fragements;
 	}
-	
+	/**
+	 * adds a fragment to a story
+	 * @param fragement
+	 */
 	public void addFragement(Fragement fragement) {
 		this.fragements.add(fragement);
 	}
-
+	/**
+	 * Returns a list of fragments for a story
+	 * @return ArrayList<fragment>
+	 */
 	public ArrayList<Fragement> getFragements()
 	{	
 		return this.fragements;	
@@ -92,7 +101,10 @@ public class Story {
 	public void setId(UUID id) {
 		this.id = id;
 	}
-	
+	/**
+	 * 
+	 * @return UUID
+	 */
 	public UUID id() {
 		return this.id;
 	}

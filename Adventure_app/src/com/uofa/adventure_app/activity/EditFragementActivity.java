@@ -126,10 +126,11 @@ public class EditFragementActivity extends AdventureActivity {
 			choice = false;
 		}
 	}
-
+	/**
+	 * Takes the photo with the camera
+	 */
 	public void takeAPhoto() {
 		Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-
 		String folder = Environment.getExternalStorageDirectory()
 				.getAbsolutePath() + "/tmp";
 		File folderF = new File(folder);
@@ -145,7 +146,7 @@ public class EditFragementActivity extends AdventureActivity {
 		intent.putExtra(MediaStore.EXTRA_OUTPUT, imageFileUri);
 		startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
 	}
-
+	
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
 			// TextView tv = (TextView) findViewById(R.id.status);
