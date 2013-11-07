@@ -40,27 +40,48 @@ public class FragementTest extends TestCase {
 		Fragement testFragement = new Fragement();
 		// test if a user was made.
 		assertNotNull(testFragement);
-		
+	}// testFragment end
+	
+	public void testGetFragmentMedia()
+	{
+		fail("No getter implemented for getFragment");
 		// test if media was defined
 		//assertNotNull(testFragement.getMedia());
+	}
+
+	public void testFragmentGetAnnotation()
+	{
+		fail("No getter for annotation list for Fragment");
 		// test if annotations were defined
 		//assertNotNull(testFragement.getAnnotations());
+	}
+	
+	public void testFragmentChoices()
+	{
+		fail("No getter for choice list for Fragment");
 		// test if choices were defined
 		//assertNotNull(testFragement.getChoices();
-		
+	}
+
+	public void testFragmentSetMedia()
+	{
+		fail("No setter for media within Fragment");
 		// test if setting/getting media works
 		//testFragement.setMedia();
 		//assertEquals(, testFragement.getMedia());
-		
+	}
+
+	public void testFragmentSetAnnotation(){
+		fail("No setter for annotations within Fragment");
 		// test if setting/getting of a annotations works
 		// testFragement.setAnnotations();
 		// assertEquals(, testFragement.getAnnotaions());
-		
+	}
+	
+	public void testFragmentSetChoice(){
+		fail("No setter for choices within Fragment");
 		// test if adding a choice works
 		// testFragement.addChoice(testChoice);
 		// assertTrue(testFragement.getChoices.contains(testChoice));
-		
 	}
-	
-	
 }
