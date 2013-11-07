@@ -28,11 +28,17 @@ public class Fragement  {
 	private SortedMap<Integer, Media> media; // Key will be a line number
 	private ArrayList<Annotation> annotations;
 	private ArrayList<Choice> choices;
+	private String body;
 
 	public Fragement() {
 		super();
 		this.annotations = new ArrayList<Annotation>();
 		this.choices = new ArrayList<Choice>(); 
+	}	
+	
+	public Fragement(String body) {
+		this();
+		this.body = body;
 	}	
 	
 	public void addChoice(Choice choice) {

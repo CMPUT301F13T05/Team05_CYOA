@@ -223,7 +223,6 @@ public class EditFragementActivity extends AdventureActivity {
 	protected void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
-		onBackPressed();
 		
 	}
 	@Override

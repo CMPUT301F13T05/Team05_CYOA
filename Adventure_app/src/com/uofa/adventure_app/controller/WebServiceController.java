@@ -74,14 +74,13 @@ public class WebServiceController {
 			// Gets a Response Code.
 			int status = conn.getResponseCode();
 
-			if (status / 100 != 2) {
+			if (status / 100 != 2 && requestType.equals(HttpRequestType.POST)) {
 				responseMessage = conn.getResponseMessage();
 			}
 			}
 			// response = new Response(status, new Hashtable<String,
 			// List<String>>(), conn.getResponseMessage().getBytes());
-
-			if (responseMessage == null) {
+			if (responseMessage == null && requestType.equals(HttpRequestType.POST)) {
 				InputStream in = new BufferedInputStream(conn.getInputStream());
 				responseMessage = readStream(in);
 				}

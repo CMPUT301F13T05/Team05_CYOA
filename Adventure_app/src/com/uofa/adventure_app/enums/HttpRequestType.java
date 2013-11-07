@@ -1,7 +1,7 @@
 package com.uofa.adventure_app.enums;
 
 public enum HttpRequestType {
-	GET("GET"), POST("POST");
+	GET("GET"), POST("POST"), DELETE("DELETE");
 	
 	private String statusCode;
 	

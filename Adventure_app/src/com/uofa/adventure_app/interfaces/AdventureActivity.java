@@ -67,15 +67,17 @@ public abstract class AdventureActivity extends Activity {
 		AdventureActivity activity = null;
 		String method = null;
 		public PerformHttp(AdventureActivity activity, String method) {
-			System.out.println("Here perform async");
 			this.activity = activity;
 			this.method = method;
 		}
 		
 		protected ArrayList<Story> doInBackground(HttpObject... httpObj) {
-			System.out.println("Here in back");
 			StoryParser parser = new StoryParser();
-			return parser.parseStory(webServiceController.httpWithType(httpObj[0]));
+			
+			if(httpObj[0] != null)
+				return parser.parseStory(webServiceController.httpWithType(httpObj[0]));
+			
+			return null;
 			
 		}
 

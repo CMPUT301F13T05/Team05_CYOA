@@ -87,4 +87,17 @@ import com.uofa.adventure_app.model.Story;
 		return obj;
 	}
 
+	public HttpObject deleteObject(String id) {
+		
+		String searchQuery = "";
+		HttpObject obj = null;
+		try {
+			obj = new HttpObject(HttpRequestType.DELETE,searchQuery , new URL(commonUrlString + "_query?q=_id:" + id));
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return obj;
+	}
+	
 }

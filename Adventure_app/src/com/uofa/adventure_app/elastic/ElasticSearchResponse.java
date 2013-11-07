@@ -7,6 +7,7 @@ public class ElasticSearchResponse<T> {
 	String _index;
 	String _type;
 	String _id;
+	String ok;
 	int _version;
 	boolean exists;
 	T _source;
@@ -22,11 +23,14 @@ public class ElasticSearchResponse<T> {
 	}
 
 	public Collection<T> getFields() {
-		Collection<T> out = new ArrayList<T>();
-		for (ElasticSearchResponse<T> essrt : getHits()) {
-			out.add(essrt.getObject());
-		}
-		return out;
+		if(hits != null) {
+			Collection<T> out = new ArrayList<T>();
+			for (ElasticSearchResponse<T> essrt : getHits()) {
+				out.add(essrt.getObject());
+			}
+			return out;
+		} 
+		return new ArrayList<T>();
 	}
 
 	public String toString() {

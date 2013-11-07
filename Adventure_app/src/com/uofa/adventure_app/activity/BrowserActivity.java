@@ -18,6 +18,7 @@
  */
 package com.uofa.adventure_app.activity;
 import java.util.ArrayList;
+import java.util.UUID;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -70,24 +71,37 @@ public class BrowserActivity extends AdventureActivity {
 			.commit();
 		}
 		//TESTING
+		HttpObjectStory httpStory = new HttpObjectStory();
+		for(int i = 12; i < 15; i++) {
 		Story tStory = new Story();
 		tStory.addUser(new User("Chris"));
-		tStory.setTitle("This is A TITLE");
+		tStory.setTitle("Tile for Story Number " + i);
+		// Blank Fragement with no choices
 		tStory.addFragement(new Fragement());
-		Fragement tFrag = new Fragement();
-		tFrag.addChoice(new Choice(new Fragement()));
-		tFrag.addChoice(new Choice(new Fragement()));
-		tFrag.addChoice(new Choice(new Fragement()));
-		tFrag.addChoice(new Choice(new Fragement()));
-		tFrag.addChoice(new Choice(new Fragement()));
-		tStory.addFragement(tFrag);
+		
+		Fragement Frag1 = new Fragement("Fragement 1 Body");
+		Fragement Frag2 = new Fragement("Fragement 2 Body");
+		Fragement Frag3 = new Fragement("Fragement 3 Body");
+		Fragement Frag4 = new Fragement("Fragement 4 Body");
+			Frag1.addChoice(new Choice(Frag2));
+			Frag1.addChoice(new Choice(Frag3));
+		Frag3.addChoice(new Choice(new Fragement("A Choice")));
+		Frag4.addChoice(new Choice(new Fragement("B Choice")));
+		tStory.addFragement(Frag1);
+		tStory.addFragement(Frag2);
+		tStory.addFragement(Frag3);
+		tStory.addFragement(Frag4);
+		this.httpRequest(httpStory.publishObject(tStory), "NO_RETURN");
+		}
 
 		// Search Example See Log of output.
 
-		//AdventureApplication.getWebServiceController().publish(tStory);
-		//AdventureApplication.getWebServiceController().publish(tStory);
-		HttpObjectStory httpStory = new HttpObjectStory();
 
+		//AdventureApplication.getWebServiceController().publish(tStory);
+		
+
+		//this.httpRequest(httpStory.deleteObject("nmKNN_z9Sb6awP39uH_9nA"), "Don't care...");
+		
 		// This method will get all, and call the all method in dataReturn()..
 
 
@@ -111,10 +125,9 @@ public class BrowserActivity extends AdventureActivity {
 		// Handle presses on the action bar items
 		switch (item.getItemId()) {
 		case R.id.new_story:
-			newStory();
+			this.newStory();
 			break;
 		case R.id.refresh:
-			System.out.println("Here before call");
 			HttpObjectStory httpStory = new HttpObjectStory();
 			this.httpRequest(httpStory.fetchAll(), GET_ALL_METHOD);
 			break;
@@ -125,11 +138,9 @@ public class BrowserActivity extends AdventureActivity {
 		return super.onOptionsItemSelected(item);
 	}
 	public void newStory() {
-	
-		Intent myIntent = new Intent(this, EditFragementActivity.class);
-		int i = 0;
-		myIntent.putExtra("frag_id", i);
+		Intent myIntent = new Intent(this, EditStoryActivity.class);
 		this.startActivity(myIntent);
+		
 		//Testing
 		//LocalStorageController localStorageController = new LocalStorageController(this);
 		//Toast.makeText(this, localStorageController.getStory(1).get(3).get(0), 2).show();
