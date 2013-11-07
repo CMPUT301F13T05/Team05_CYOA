@@ -101,7 +101,7 @@ public class BrowserActivity extends AdventureActivity {
 
 
 		// This method will call the get method in dataReturn() when done loading...
-		this.httpRequest(httpStory.fetchAll(), GET_ALL_METHOD);
+		//this.httpRequest(httpStory.fetchAll(), GET_ALL_METHOD);
 
 	}
 
@@ -140,7 +140,16 @@ public class BrowserActivity extends AdventureActivity {
 		this.startActivity(myIntent);
 		//Testing
 
-
+		LocalStorageController localStorageController = new LocalStorageController(this);
+		//localStorageController.openForWrite();
+		//int test=localStorageController.setStory("Test Story", "Ulvi");
+		//System.out.println(test);
+		//localStorageController.insertIntoUsersTable("Ulvi", 1, "s");// insertIntoStoriesTable("Test story","Ulvi");
+		//localStorageController.setStory("New Story", "Ulvi");
+		localStorageController.setFragment(1, "Fragment1", "Ulvi", "testning set fragment", 0);
+		//localStorageController.close();
+		//localStorageController.insertIntoImagesTable(1, "test", true, 1)
+		//Toast.makeText(this, localStorageController.setStory("new story", "Ulvi")+"", 2).show();
 		//localStorageController.getStory(1);
 		//HashMap<Integer, List<String>> newMap =localStorageController.getBrowserViewInfo();
 		//newMap.get(4).get(0);

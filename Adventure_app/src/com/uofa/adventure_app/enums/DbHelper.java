@@ -23,11 +23,15 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.widget.Toast;
-
+/**
+ * 
+ * @author ulvi
+ *
+ */
 public class DbHelper extends SQLiteOpenHelper {
 	
 	/**
-	 * Strings to create tables
+	 * Stores strings to create tables
 	 */
 	static final String CreateStoryTable ="create table if not exists stories "+
 										  "(story_id integer primary key autoincrement,title VARCHAR not null);";
@@ -48,10 +52,16 @@ public class DbHelper extends SQLiteOpenHelper {
     // If you change the database schema, you must increment the database version.
     public static final int DATABASE_VERSION = 1;
     public static final String DATABASE_NAME = "LocalStorage.db";
-
+/**
+ * 
+ * @param context
+ */
     public DbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
+   /**
+    * Creates tables
+    */
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(CreateStoryTable);
         db.execSQL(CreateUsersTable);
