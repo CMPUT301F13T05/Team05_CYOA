@@ -35,12 +35,19 @@ public class Fragement  {
 		this.annotations = new ArrayList<Annotation>();
 		this.choices = new ArrayList<Choice>(); 
 	}	
+<<<<<<< HEAD
 	
 	public Fragement(String body) {
 		this();
 		this.body = body;
 	}	
 	
+=======
+	/**
+	 * adds a choice to the fragment
+	 * @param choice
+	 */
+>>>>>>> b80500aa0ffc017ad0cf815de8d0770eb7b32f13
 	public void addChoice(Choice choice) {
 		this.choices.add(choice);
 	}

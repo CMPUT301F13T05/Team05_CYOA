@@ -20,6 +20,7 @@ package com.uofa.adventure_app.activity;
 import java.util.ArrayList;
 import java.util.UUID;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.ContextMenu;
@@ -33,9 +34,13 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 
 import android.widget.GridView;
+
 import android.widget.AdapterView.AdapterContextMenuInfo;
 
+import android.widget.Toast;
+
 import com.uofa.adventure_app.R;
+import com.uofa.adventure_app.controller.LocalStorageController;
 import com.uofa.adventure_app.controller.http.HttpObjectStory;
 import com.uofa.adventure_app.interfaces.AdventureActivity;
 import com.uofa.adventure_app.model.Choice;
@@ -45,10 +50,14 @@ import com.uofa.adventure_app.model.User;
 
 public class BrowserActivity extends AdventureActivity {
 
-	private ArrayAdapter<String> storyGridAdapter;
+
+	private StoryGridAdapter storyGridAdapter;
+
+	//private StoryGridAdapter;
+
 	ArrayList<String> List;
 	GridView grid;
-
+	LocalStorageController localStorageController;
 	User username;
 	View v;
 
@@ -57,13 +66,13 @@ public class BrowserActivity extends AdventureActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_browser);
 		v = this.findViewById(android.R.id.content);
+		localStorageController = new LocalStorageController(this);
+		localStorageController.openForWrite();
 		username = new User();
 		boolean firstrun = getSharedPreferences("PREFERENCE", MODE_PRIVATE).getBoolean("firstrun", true);
 		if (firstrun){
-			System.out.println(v);
 			Intent myIntent = new Intent(this, FirstRunOnlyActivity.class);
 			this.startActivity(myIntent);
-			System.out.println("here");
 			// Save the state
 			getSharedPreferences("PREFERENCE", MODE_PRIVATE)
 			.edit()
@@ -139,11 +148,15 @@ public class BrowserActivity extends AdventureActivity {
 	}
 	public void newStory() {
 		Intent myIntent = new Intent(this, EditStoryActivity.class);
+		Toast.makeText(this, localStorageController.setStory("new story", "ulvi")+"", 2).show();
+		Intent myIntent = new Intent(this, EditFragementActivity.class);
+		int i = 0;
+		myIntent.putExtra("frag_id", i);
 		this.startActivity(myIntent);
 		
 		//Testing
-		//LocalStorageController localStorageController = new LocalStorageController(this);
-		//Toast.makeText(this, localStorageController.getStory(1).get(3).get(0), 2).show();
+
+
 		//localStorageController.getStory(1);
 		//HashMap<Integer, List<String>> newMap =localStorageController.getBrowserViewInfo();
 		//newMap.get(4).get(0);
@@ -222,14 +235,12 @@ public class BrowserActivity extends AdventureActivity {
 
 
 
-
 			grid = (GridView) findViewById(R.id.gridView1);
 			//Testing to see if firstRunOnly screen works properly.
-			//strings.add(getSharedPreferences("PREFERENCE", MODE_PRIVATE).getString("username", null));
-			strings.add("" + strings.size());
-			storyGridAdapter = new ArrayAdapter<String>(this,
-					R.layout.list_item, strings);
-			grid = (GridView) findViewById(R.id.gridView1);
+			//strings.add(getSharedPreferences("PREFERENCE", MODE_PRIVATE).getString("username", null));e 
+			
+
+			storyGridAdapter = new StoryGridAdapter(this, result);
 			grid.setAdapter(storyGridAdapter);
 			grid.setOnItemClickListener(new 
 					GridView.OnItemClickListener() {
@@ -290,6 +301,16 @@ public class BrowserActivity extends AdventureActivity {
 		}
 		return super.onContextItemSelected(item);
 
+	}
+
+
+
+	@Override
+	protected void onDestroy() {
+		// TODO Auto-generated method stub
+		super.onDestroy();
+		localStorageController.close();
+		
 	}
 
 
