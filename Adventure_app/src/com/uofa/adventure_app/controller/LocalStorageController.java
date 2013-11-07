@@ -178,7 +178,7 @@ public class LocalStorageController {
 		for (int i =0;i<length;i++){
 			List<String> output = new ArrayList<String>();
 			output.add(this.getTitle(ids.get(i)));
-			getUsers=temp+Integer.toString(ids.get(i));
+			getUsers=temp+Integer.toString(ids.get(i)) + " and f_or_s='s'";
 			Cursor c=db.rawQuery(getUsers, null);
 			c.moveToFirst();
 			if (c != null ) {
@@ -236,8 +236,11 @@ public class LocalStorageController {
 		userc.close();
 		return users;
 	}
-	/**returns ids of choices as a List<String> of a fragment, given fragment_id
-	 * tested, works*/
+	/**
+	 * 
+	 * @param fragment_id
+	 * @return
+	 */
 	public List<String> getChoices(int fragment_id){
 		String getChoicesString="select choice_id from choices where fragment_id="+fragment_id;
 		List<String> choices = new ArrayList<String>();
@@ -326,11 +329,15 @@ public class LocalStorageController {
 	}
 	/***/
 	public int setFragment(int story_id,String fragmentTitle,String user,String fragmentBody,int prevFragmentId){
+			this.openForWrite();
 			this.insertIntoFragmentsTable(fragmentBody, story_id, fragmentTitle);
+			this.close();
 			List<Integer> ids=this.getFragmentIDs();
 			int currentFragmentID=ids.get(ids.size()-1);
 			if(prevFragmentId!=0){
+				this.openForWrite();
 				this.insertIntoChoicesTable(prevFragmentId, currentFragmentID);
+				this.close();
 			}
 			return currentFragmentID;
 	}

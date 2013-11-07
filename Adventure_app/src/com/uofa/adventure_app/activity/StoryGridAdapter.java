@@ -19,6 +19,8 @@
 package com.uofa.adventure_app.activity;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 import android.R;
 import android.content.Context;
@@ -29,6 +31,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.uofa.adventure_app.controller.LocalStorageController;
 import com.uofa.adventure_app.model.Story;
 import com.uofa.adventure_app.model.User;
 
@@ -64,6 +67,7 @@ public class StoryGridAdapter extends BaseAdapter {
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		// Setup the multi line items in a listview
+    	String authors = new String();
 	       if (convertView == null) {
 	            convertView = mInflater.inflate(android.R.layout.two_line_list_item, parent, false);
 	        }
@@ -72,18 +76,29 @@ public class StoryGridAdapter extends BaseAdapter {
 	        TextView sub = (TextView) convertView.findViewById(R.id.text2);
 	 
 	        //Set the text
+	        LocalStorageController localStorageController = new LocalStorageController(context);
+			HashMap<Integer, List<String>> map = new HashMap<Integer, List<String>>();
+			map = localStorageController.getBrowserViewInfo();
 	        Story story = this.stories.get(position);
 	        if(story != null) {
 	        	title.setText(story.title());
 	        	
-	        	String authors = new String();
+
 	        	// TODO: Format this better!
 	        	for(User u: story.users()) {
+
 	        		authors += "By: " + u.getName();
 	        	}
 	        	sub.setText(authors);
 	        	
-	        } 
+	        }
+//			for(int i = 1; i<map.size(); i++){
+//				title.setText(map.get(i).get(0));
+//			}
+//				
+//			for(int i = 1; i<map.size(); i++)
+//				authors += "By: " + map.get(i).get(1);
+			
 	        return convertView;
 	}
 
