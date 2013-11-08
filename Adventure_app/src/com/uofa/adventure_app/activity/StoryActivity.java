@@ -83,41 +83,39 @@ public class StoryActivity extends AdventureActivity {
 	public void onCreateContextMenu(ContextMenu menu, View v,
 			ContextMenuInfo menuInfo) {
 		super.onCreateContextMenu(menu, v, menuInfo);
-		MenuInflater inflater = getMenuInflater();
 		if (choice == false){
+			AdapterContextMenuInfo aInfo = (AdapterContextMenuInfo) menuInfo;
+
+		
 			// Style our context menu
 			menu.setHeaderIcon(android.R.drawable.ic_input_get);
 			menu.setHeaderTitle("Annotate");
-			
+			MenuInflater inflater1 = getMenuInflater();
 
 			// Open Menu
-			inflater.inflate(R.menu.annotatemenu, menu);
-		} else{
+			inflater1.inflate(R.menu.annotatemenu, menu);
+		}else{
 			choice = false;
+			AdapterContextMenuInfo aInfo = (AdapterContextMenuInfo) menuInfo;
+
 			
 			// Style our context menu
 			menu.setHeaderIcon(android.R.drawable.ic_input_get);
 			menu.setHeaderTitle("Choices");
-			inflater.inflate(R.menu.choices, menu);
+			MenuInflater inflater2 = getMenuInflater();
+			inflater2.inflate(R.menu.choices, menu);
 
 		}
 		
 	}
-	@Override
-	public void onContextMenuClosed(Menu menu) {
-		// TODO Auto-generated method stub
-		super.onContextMenuClosed(menu);
-		menu.clear();
-	}
-
 	public void openAnnotateContext(View v) {
-		this.closeContextMenu();
+		
 		registerForContextMenu( v );
         openContextMenu( v );  
 	}
 	
 	public void openChoices(View v) {
-		this.closeContextMenu();
+		currentView.getRootView().dispatchKeyEvent(new KeyEvent (KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_BACK));
 		choice = true;
 		registerForContextMenu( v );
         openContextMenu( v );  
@@ -130,7 +128,7 @@ public class StoryActivity extends AdventureActivity {
 				editStory();
 				break;
 			case R.id.annotatem:	
-
+				currentView.getRootView().dispatchKeyEvent(new KeyEvent (KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_BACK));
 				openAnnotateContext(currentView);
 				//takeAPhoto();
 				break;
