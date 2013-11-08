@@ -106,7 +106,6 @@ public class LocalStorageController {
 	    values.put("story_id", story_id);
 	    values.put("fragment_id", fragmentId);
 	    values.put("f_or_s", fOrS);
-	    System.out.println(values);
 	    db.insert("users", null, values);
 	}
 	
@@ -204,31 +203,19 @@ public class LocalStorageController {
 		HashMap<String, List<String>> map = new HashMap<String, List<String>>();
 		List<String> ids= this.getStoryIDs();
 		String temp="select name from users where story_id=";
-		String getUsers;
+		List<String> users = new ArrayList<String>();
 		int length=ids.size();
 		this.openForRead();
 		for (int i =0;i<length;i++){
 			List<String> output = new ArrayList<String>();
 			output.add(this.getTitle(ids.get(i)));
-
-			getUsers=temp+ids.get(i) + " and f_or_s='s'";
-			Cursor c=db.rawQuery(getUsers, null);
-			c.moveToFirst();
-			if (c != null ) {
-				if  (c.moveToFirst()) {
-					do {
-						
-						String user = c.getString(0);
-						output.add(user);
-					}while (c.moveToNext());
-					map.put(ids.get(i), output);
-				}
-			}  
-			c.close();
-			
+			users=this.getUsers(ids.get(i), "s");
+			output.addAll(users);
+			map.put(ids.get(i), output);	
 		}
 		
 		db.close();
+		//System.out.println(map);
 		return map;
 	}
 	/**
@@ -262,10 +249,10 @@ public class LocalStorageController {
 	public List<String> getUsers(String id, String fOrs){
 		String getUsersString = new String();
 		if(fOrs=="s")
-			getUsersString="select name from users where story_id="+id+" and f_or_s="+fOrs;
+			getUsersString="select name from users where story_id='"+id+"' and f_or_s='"+fOrs+"'";
 		else if(fOrs=="f"){
 			int f_id=Integer.parseInt(id);
-			getUsersString="select name from users where fragment_id="+f_id+" and f_or_s="+fOrs;
+			getUsersString="select name from users where fragment_id="+f_id+" and f_or_s='"+fOrs+"'";
 		}
 		List<String> users = new ArrayList<String>();
 		this.openForRead();
@@ -324,7 +311,7 @@ public class LocalStorageController {
 		List<String> users = new ArrayList<String>();
 		users=this.getUsers(story_id,"s");
 		
-		String firstFragment="select fragment_id from fragments where story_id="+story_id+" limit 1";
+		String firstFragment="select fragment_id from fragments where story_id='"+story_id+"' limit 1";
 		int firstFragmentID=0;
 		Cursor fragc=db.rawQuery(firstFragment, null);
 		fragc.moveToFirst();
