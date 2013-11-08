@@ -128,8 +128,11 @@ public abstract class AdventureActivity extends Activity {
 		}
 	}
 	
+<<<<<<< HEAD
+=======
 	
 
 
 	
+>>>>>>> origin/master
 }

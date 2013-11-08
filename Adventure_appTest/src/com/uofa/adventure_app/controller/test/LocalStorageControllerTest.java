@@ -48,7 +48,11 @@ public class LocalStorageControllerTest extends
 		// get a writeable database?
 		testLocalStorageController = testLocalStorageController.openForWrite();
 		// write to the database?
+<<<<<<< HEAD
 		testLocalStorageController.setStory("Man in the middle", "Papa Joel");
+=======
+		testLocalStorageController.setStory("1","Man in the middle", "Papa Joel");
+>>>>>>> AppTest
 		// test if the database has a storyID
 		
 		// close the connection to the database?

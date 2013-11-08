@@ -53,10 +53,14 @@ import com.uofa.adventure_app.model.User;
 
 public class BrowserActivity extends AdventureActivity {
 
+<<<<<<< HEAD
+	private ArrayAdapter<String> storyGridAdapter;
+=======
 
 	private StoryGridAdapter storyGridAdapter;
 
 	//private StoryGridAdapter;
+>>>>>>> origin/master
 
 	ArrayList<String> List;
 	GridView grid;
@@ -233,11 +237,25 @@ public class BrowserActivity extends AdventureActivity {
 
 
 			}
+<<<<<<< HEAD
+			System.out.println("0: " + strings.get(0)+"/");
+			
+			grid = (GridView) findViewById(R.id.gridView1);
+
+
+			strings.add("" + strings.size());
+			storyGridAdapter = new ArrayAdapter<String>(this,
+					R.layout.list_item, strings);
+
+			//adapter = new StoryGridAdapter(this, result);
+
+=======
 
 
 
 
 
+>>>>>>> origin/master
 			grid = (GridView) findViewById(R.id.gridView1);
 			//Testing to see if firstRunOnly screen works properly.
 			//strings.add(getSharedPreferences("PREFERENCE", MODE_PRIVATE).getString("username", null));e 
