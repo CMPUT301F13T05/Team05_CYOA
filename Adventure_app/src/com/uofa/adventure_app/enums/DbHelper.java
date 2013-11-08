@@ -34,13 +34,13 @@ public class DbHelper extends SQLiteOpenHelper {
 	 * Stores strings to create tables
 	 */
 	static final String CreateStoryTable ="create table if not exists stories "+
-										  "(story_id integer primary key autoincrement,title VARCHAR not null);";
+										  "(story_id VARCHAR primary key,title VARCHAR not null);";
 	static final String CreateUsersTable="create table if not exists users "+
-										  "(user_id integer primary key autoincrement,name VARCHAR not null,story_id integer,"+
+										  "(user_id integer primary key autoincrement,name VARCHAR not null,story_id VARCHAR,"+
 										  "fragment_id integer,f_or_s VARCHAR,"+
 										  "FOREIGN KEY(story_id) REFERENCES stories(story_id));";
 	static final String CreateFragmentsTable="create table if not exists fragments "+
-										  "(fragment_id integer primary key,text VARCHAR,story_id integer,title VARCHAR,"+
+										  "(fragment_id integer primary key,text VARCHAR,story_id VARCHAR,title VARCHAR,"+
 										  "FOREIGN KEY(story_id) REFERENCES stories(story_id));";
 	static final String CreateImagesTable = "create table if not exists images "+
 										  "(image_id integer primary key,pointer VARCHAR,is_annotation boolean,fragment_id integer,"+
