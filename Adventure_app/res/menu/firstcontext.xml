@@ -1,6 +1,0 @@
-<menu xmlns:android="http://schemas.android.com/apk/res/android" >
-         <item android:id="@+id/username" android:title="Search"  android:showAsAction="ifRoom|withText" android:actionViewClass="android.widget.SearchView"></item>
-        <item android:id="@+id/ok" android:showAsAction="never" android:title="OK"></item>
-        
-		
-</menu>
