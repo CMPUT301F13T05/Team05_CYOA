@@ -53,6 +53,10 @@ public class FirstRunOnlyActivity extends Activity {
         //    finish();
 
     }
+	/**
+	 * Called to set the user name to the input information.
+	 * @param View v
+	 */
 	public void okClicked(View v){
 		EditText usern = (EditText) findViewById(R.id.usern);
 		String username = getSharedPreferences("PREFERENCE", MODE_PRIVATE).getString("username", null);

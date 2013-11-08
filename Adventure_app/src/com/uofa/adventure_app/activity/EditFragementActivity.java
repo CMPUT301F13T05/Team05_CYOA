@@ -194,7 +194,6 @@ public class EditFragementActivity extends AdventureActivity {
 				currentView.getRootView().dispatchKeyEvent(new KeyEvent (KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_BACK));
 				break;
 			case R.id.newchoice:
-				System.out.println("in new choice");
 				EditText newtitle = (EditText) findViewById(R.id.newtitle);
 				EditText newauthor = (EditText) findViewById(R.id.newauthor);
 				EditText newbody = (EditText) findViewById(R.id.newbody);
@@ -227,19 +226,5 @@ public class EditFragementActivity extends AdventureActivity {
 		return super.onContextItemSelected(item);
 
 	}
-
-	@Override
-	protected void onResume() {
-		// TODO Auto-generated method stub
-		super.onResume();
-		
-	}
- 
-	@Override
-    public void onBackPressed() {
-        super.onBackPressed();   
-        //    finish();
-
-    }
 
 }

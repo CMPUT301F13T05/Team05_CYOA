@@ -41,13 +41,19 @@ public class StoryGridAdapter extends BaseAdapter {
 	private ArrayList<Story> stories;
 	private Context context;
 	private LayoutInflater mInflater;
+	private String query;
 	
 	public StoryGridAdapter(Context context, ArrayList<Story> stories) {
 		this.context = context;
         mInflater = LayoutInflater.from(this.context);
 		this.stories = new ArrayList<Story>(stories);
-
-
+	}
+	
+	public StoryGridAdapter(Context context, ArrayList<Story> stories, String stringQuery) {
+		this.query = stringQuery;
+		this.context = context;
+        mInflater = LayoutInflater.from(this.context);
+		this.stories = new ArrayList<Story>(stories);
 	}
 	
 	@Override
@@ -69,29 +75,6 @@ public class StoryGridAdapter extends BaseAdapter {
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		// Setup the multi line items in a listview
-		HashMap<String, List<String>> map = new HashMap<String, List<String>>();
-		LocalStorageController localStorageController = new LocalStorageController(context);
-		map = localStorageController.getBrowserViewInfo();
-		ArrayList<String> keys = new ArrayList<String>();
-		
-		keys.addAll(map.keySet());
-		for(int i = 0; i<keys.size(); i++){
-			Story s = new Story(UUID.randomUUID());
-			ArrayList<String> list = new ArrayList<String>(); 
-			
-			list.addAll(map.get(keys.get(i)));
-			s.setTitle(list.get(0));
-			ArrayList<User> users = new ArrayList<User>();
-			for(int j = 1; j<map.get(keys.get(i)).size(); j++){
-				User user = new User(map.get(keys.get(i)).get(j));
-				users.add(user);
-			}
-			
-			s.setUsers(users);
-			stories.add(s);
-			
-		
-		}
 	       if (convertView == null) {
 	            convertView = mInflater.inflate(android.R.layout.two_line_list_item, parent, false);
 	        }
@@ -102,6 +85,7 @@ public class StoryGridAdapter extends BaseAdapter {
 	        //Set the text
 	        Story story = stories.get(position);
 	        if(story != null) {
+	        	if(story.title().contains(query)) {
 	        	title.setText(story.title());
 	        	
 	        	String authors = new String();
@@ -110,7 +94,7 @@ public class StoryGridAdapter extends BaseAdapter {
 	        		authors += "By: " + u.getName();
 	        	}
 	        	sub.setText(authors);
-	        	
+	        	}
 	        }
 	        
 	        return convertView;

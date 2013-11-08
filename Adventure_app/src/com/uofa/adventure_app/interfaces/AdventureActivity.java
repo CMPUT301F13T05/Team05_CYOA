@@ -19,6 +19,7 @@
 package com.uofa.adventure_app.interfaces;
 
 import java.util.ArrayList;
+import java.util.Timer;
 
 import android.app.Activity;
 import android.content.Context;
@@ -91,15 +92,16 @@ public abstract class AdventureActivity extends Activity {
 		
 		protected ArrayList<Story> doInBackground(HttpObject... httpObj) {
 			StoryParser parser = new StoryParser();
-			
+			ArrayList<Story> stories = new ArrayList<Story>();
 			if(httpObj[0] != null)
 				return parser.parseStory(webServiceController.httpWithType(httpObj[0]));
-			
-			return null;
+			else
+				return stories;
 			
 		}
 
 		protected void onPostExecute(ArrayList<Story> result) {
+			
 			activity.dataReturn(result,method); 
 		}
 

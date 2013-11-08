@@ -20,6 +20,7 @@ package com.uofa.adventure_app.activity;
 import java.io.File;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 import android.app.Activity;
@@ -48,7 +49,9 @@ import android.widget.TextView;
 
 import com.uofa.adventure_app.R;
 import com.uofa.adventure_app.application.AdventureApplication;
+import com.uofa.adventure_app.controller.LocalStorageController;
 import com.uofa.adventure_app.interfaces.AdventureActivity;
+import com.uofa.adventure_app.model.Fragement;
 import com.uofa.adventure_app.model.Story;
 
 public class StoryActivity extends AdventureActivity {
@@ -61,13 +64,36 @@ public class StoryActivity extends AdventureActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		String storyID = null;
 		setContentView(R.layout.activity_story);
 		testtitle = (TextView) findViewById(R.id.titleview);
 		testAuthor = (TextView) findViewById(R.id.authorview);
 		testBody = (TextView) findViewById(R.id.storyview);
-		testBody.setText("This story isn't very good.");
-		testAuthor.setText("Author 1 edited by User 1");
-		testtitle.setText("Story 1");
+		List<List<String>> fragment =new ArrayList<List<String>>();//Title, Users, Choices, Body
+		List<String> fragmentTitle = new ArrayList<String>();
+		List<String> fragmentUsers = new ArrayList<String>();
+		List<String> fragmentBody = new ArrayList<String>();
+		List<String> fragmentChoices = new ArrayList<String>();
+		LocalStorageController localStorageController = new LocalStorageController(this);
+		Bundle extras = extras = getIntent().getExtras();
+		if (extras != null){
+			storyID = extras.getString("StoryID");
+
+			Integer frag_id = localStorageController.getFirstFragment(storyID);
+			System.out.println(frag_id);
+			fragment = localStorageController.getFragment(frag_id);
+			testBody.setText(fragment.get(3).get(0));
+			testAuthor.setText(fragment.get(1).get(0));
+			testtitle.setText(fragment.get(0).get(0));
+			//ArrayList<Fragement> fragements = new ArrayList<Fragement>();
+			//fragements.addAll(storyID.getFragements());
+			
+			
+		}else{
+			testBody.setText("This story isn't very good.");
+			testAuthor.setText("");
+			testtitle.setText("Sorry the story Could not be loaded");
+		}
 		currentView = this.findViewById(android.R.id.content);
 	}
 
@@ -108,12 +134,22 @@ public class StoryActivity extends AdventureActivity {
 		}
 		
 	}
+	/**
+	 * Called to open the context view that allows the user to open
+	 * the camera or browse their own pictures.
+	 * 
+	 * @param View v
+	 */
 	public void openAnnotateContext(View v) {
 		
 		registerForContextMenu( v );
         openContextMenu( v );  
 	}
-	
+	/**
+	 *  Opens a context view with a list of choices for the user to 
+	 *  move on in the story.
+	 * @param View v
+	 */
 	public void openChoices(View v) {
 		currentView.getRootView().dispatchKeyEvent(new KeyEvent (KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_BACK));
 		choice = true;
@@ -162,24 +198,32 @@ public class StoryActivity extends AdventureActivity {
 	return super.onContextItemSelected(item);
 		
 	}
-	
+	/**
+	 * changes the screen to the Edit Story Screen
+	 */
 	public void editStory() {
 		Intent myIntent = new Intent(this, EditStoryActivity.class);
 		this.startActivity(myIntent);
 	}
-	
+	/**
+	 * Changes the screen to the Edit Fragment Screen.
+	 */
 	public void editFragment(){
 		Intent myIntent = new Intent(this, EditFragementActivity.class);
 		this.startActivity(myIntent);
 	}
-	
+	/**
+	 * CHanges the screen to the Browse View
+	 */
 	public void browseView(){
 		Intent myIntent = new Intent(this, BrowserActivity.class);
 		this.startActivity(myIntent);
 	}
 
 	 private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
-	    
+	    /**
+	     * Opens the camera and allows the user to take a picture if they so choose
+	     */
 	    public void takeAPhoto() {
 	        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 	        
@@ -212,7 +256,9 @@ public class StoryActivity extends AdventureActivity {
 	        }
 	    }
 
-	
+	    /**
+	     * updates the view
+	     */
 		public void updateView(){
 		AdventureApplication.getStoryController();
 	}

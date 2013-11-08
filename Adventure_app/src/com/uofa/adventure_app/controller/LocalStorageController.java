@@ -423,4 +423,27 @@ public class LocalStorageController {
 		
 		return fragment;
 	}
+	/**
+	 * This method will return the fragment is of the first fragment of a story
+	 * @param String s_id
+	 * @return Integer
+	 */
+	public Integer getFirstFragment(String s_id){
+		Integer frag_id = null;
+		String getFragmentSql="select fragment_id from fragments where story_id='"+s_id+"'";
+		this.openForRead();
+		Cursor c = db.rawQuery(getFragmentSql, null);
+		List<Integer> ids = new ArrayList<Integer>();
+		c.moveToFirst();
+		if (c != null ) {
+			if  (c.moveToFirst()) {
+				do {
+					frag_id = c.getInt(0);
+					ids.add(frag_id);
+				}while (c.moveToNext());
+			}
+		} 
+		c.close();
+		return ids.get(0);
+	}
 }

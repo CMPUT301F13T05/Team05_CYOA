@@ -26,6 +26,8 @@ import java.util.List;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.ContextMenu;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -35,6 +37,9 @@ import android.view.View;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
+import android.widget.SearchView;
+import android.widget.TextView;
 
 import android.widget.GridView;
 
@@ -55,15 +60,13 @@ public class BrowserActivity extends AdventureActivity {
 
 
 	private StoryGridAdapter storyGridAdapter;
-
-
-
-
 	ArrayList<String> List;
-	GridView grid;
 	LocalStorageController localStorageController;
 	User username;
 	View v;
+	TextView search;
+	String searchQuery = "";
+	private ArrayList<Story> stories;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +74,8 @@ public class BrowserActivity extends AdventureActivity {
 		setContentView(R.layout.activity_browser);
 		v = this.findViewById(android.R.id.content);
 		localStorageController = new LocalStorageController(this);
+		search = (EditText) findViewById(R.id.search);
+		search.addTextChangedListener(new GenericTextWatcher(search));
 		username = new User();
 		boolean firstrun = getSharedPreferences("PREFERENCE", MODE_PRIVATE).getBoolean("firstrun", true);
 		if (firstrun){
@@ -105,12 +110,20 @@ public class BrowserActivity extends AdventureActivity {
 			HttpObjectStory httpStory = new HttpObjectStory();
 			this.httpRequest(httpStory.fetchAll(), GET_ALL_METHOD);
 			break;
+		case R.id.search:
 
+			searchQuery = search.getQuery().toString();
+			HttpObjectStory http = new HttpObjectStory();
+			this.httpRequest(http.fetchAll(), GET_ALL_METHOD);
 		default:
 			return super.onOptionsItemSelected(item);
 		}
 		return super.onOptionsItemSelected(item);
 	}
+	/**
+	 * called when the user clicks Create a new story.
+	 * Creates and calls the intent that calls the Edit Fragment screen.
+	 */
 	public void newStory() {
 		Intent myIntent = new Intent(this, EditFragementActivity.class);
 		int i = 0;
@@ -119,38 +132,69 @@ public class BrowserActivity extends AdventureActivity {
 		
 
 	}
-
-	public void viewStory(View v) {
+	/**
+	 * This creates and calls an intent to open the Activity that allows you to view the stories.
+	 * 
+	 * @param View v
+	 * @param Story s
+	 */
+	public void viewStory(View v, Story s) {
 
 		Intent myIntent = new Intent(this, StoryActivity.class);
+		String id = s.id().toString();
+		myIntent.putExtra("StoryID", id);
 		this.startActivity(myIntent);
 	}
-
+	/**
+	 * Updates the view
+	 */
 	public void updateView(){
 
 	}
 
 	@Override
+	/**
+	 * 
+	 * This is called every time the code checks json for an update.
+	 * 
+	 * @param String method
+	 * @param ArrayList<Story> result
+	 */
 	public void dataReturn(ArrayList<Story> result, String method) {
+		stories = new ArrayList<Story>();
+		for(int i = 0; i<result.size(); i++ )
+			stories.addAll(result);
 		if(method.equals(GET_ALL_METHOD)) {
-			System.out.println("We got some data here!");
-			// Need to parse the Data, or Maybe I will change this to an array always..?
-			grid = (GridView) findViewById(R.id.gridView1);
-			storyGridAdapter = new StoryGridAdapter(this, result);
+			HashMap<String, List<String>> map = new HashMap<String, List<String>>();
+			LocalStorageController localStorageController = new LocalStorageController(this);
+			map = localStorageController.getBrowserViewInfo();
+			ArrayList<String> keys = new ArrayList<String>();
+			keys.addAll(map.keySet());
+			for(int i = 0; i<keys.size(); i++){
+				Story s = new Story(UUID.randomUUID());
+				ArrayList<String> list = new ArrayList<String>(); 
+				
+				list.addAll(map.get(keys.get(i)));
+				s.setTitle(list.get(0));
+				ArrayList<User> users = new ArrayList<User>();
+				for(int j = 1; j<map.get(keys.get(i)).size(); j++){
+					User user = new User(map.get(keys.get(i)).get(j));
+					users.add(user);
+				}
+				
+				s.setUsers(users);
+				stories.add(s);
+			}
+			GridView grid = (GridView) findViewById(R.id.gridView1);
+			storyGridAdapter = new StoryGridAdapter(this, stories,searchQuery);
 			grid.setAdapter(storyGridAdapter);
 			grid.setOnItemClickListener(new 
 					GridView.OnItemClickListener() {
 				// @Override
-				public void onItemClick(AdapterView<?> a, View v, int i, long l) {
-
-
-					viewStory(v);
-
+				public void onItemClick(AdapterView<?> a, View v, int i, long l) {					
+					viewStory(v, stories.get(i));
 				}
 			});
-
-			System.out.println(result);
-
 		}
 		if(method.equals(GET_METHOD)) {
 			System.out.println("We got some data here!");
@@ -176,30 +220,45 @@ public class BrowserActivity extends AdventureActivity {
 
 
 	}
-	public void openFirstContext(View v) {
-		System.out.println("openFirst before");
-		registerForContextMenu( v );
-		System.out.println("openFirst after");
-		openContextMenu( v );  
-		System.out.println("openFirst after after");
-	}
-	@Override
-	public boolean onContextItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case R.id.ok:
+	// Inline Class to Watch our text editing
+		// Code Taken From:
+		// http://stackoverflow.com/questions/5702771/how-to-use-single-textwatcher-for-multiple-edittexts
+		// On Monday Septemeber 23, 2013
+		// Modified for my Use
+		private class GenericTextWatcher implements TextWatcher {
+			// View that is Being Edited
+			private EditText view;
 
-			break;
+			private GenericTextWatcher(TextView search) {
+				this.view = search;
+			}
 
-		default:
-			return super.onContextItemSelected(item);
+			public void beforeTextChanged(CharSequence charSequence, int i, int i1,
+					int i2) {
+			}
+
+			public void onTextChanged(CharSequence charSequence, int i, int i1,
+					int i2) {
+			}
+
+			// When Text is changed this is called.
+			
+			public void afterTextChanged(EditText editable) {
+				// get string
+				String text = editable.toString();
+				
+				// Get the current note
+				// Update the proper view for subject or body
+				switch (view.getId()) {
+				case R.id.search:
+					searchQuery = search.getText().toString();
+					HttpObjectStory http = new HttpObjectStory();
+					httpRequest(http.fetchAll(), GET_ALL_METHOD);
+					break;
+
+				}
+			}
+
 		}
-		return super.onContextItemSelected(item);
-
-	}
-
-
-
-
-
 }
 

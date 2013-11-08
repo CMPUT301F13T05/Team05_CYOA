@@ -20,17 +20,18 @@ package com.uofa.adventure_app.controller;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Timer;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.uofa.adventure_app.elastic.ElasticSearchResponse;
 import com.uofa.adventure_app.model.Story;
+import java.util.TimerTask;
 
 public class StoryParser {
 
 	public ArrayList<Story> parseStory(String parseString) {
 		ArrayList<Story> stories = new ArrayList<Story>();
-		System.out.println(parseString);
 		if (parseString != null) {
 			Gson gson = new Gson();
 			Type elasticSearchResponseType = new TypeToken<ElasticSearchResponse<Story>>() {
@@ -48,4 +49,6 @@ public class StoryParser {
 
 	}
 
+
 }
+
