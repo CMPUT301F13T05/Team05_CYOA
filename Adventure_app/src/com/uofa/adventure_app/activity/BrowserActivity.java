@@ -149,7 +149,6 @@ public class BrowserActivity extends AdventureActivity {
 	public void newStory() {
 		Intent myIntent = new Intent(this, EditStoryActivity.class);
 		Toast.makeText(this, localStorageController.setStory("new story", "ulvi")+"", 2).show();
-		Intent myIntent = new Intent(this, EditFragementActivity.class);
 		int i = 0;
 		myIntent.putExtra("frag_id", i);
 		this.startActivity(myIntent);

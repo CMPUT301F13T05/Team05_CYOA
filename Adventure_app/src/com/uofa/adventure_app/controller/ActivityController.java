@@ -29,8 +29,7 @@ import com.uofa.adventure_app.interfaces.AdventureActivity;
  * This class should not be called...
  * @author chris
  */
-public class ActivityController implements Handler.Callback {
-	
+public class ActivityController {
 	// Every activity should be added to here.
 	private final ArrayList<AdventureActivity> activities = new ArrayList<AdventureActivity>();
 	
@@ -55,27 +54,6 @@ public class ActivityController implements Handler.Callback {
 		activities.remove(activity);
 	}
 	
-	public Handler handler() {
-		return this.handler;
-	}
-	
-	public HandlerThread handlerThread() {
-		return this.handlerThread;
-	}
-	
-	/* (non-Javadoc)
-	 * @see android.os.Handler.Callback#handleMessage(android.os.Message)
-	 */
-	@Override
-	public boolean handleMessage(Message msg) {
-		if(!activities.isEmpty()) {
-			for(AdventureActivity a: activities) {
-				a.updateView();
-			}
-		}
-		return false;
-	}
-
 	
 	
 }

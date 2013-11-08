@@ -28,11 +28,19 @@ public class Story {
 	private ArrayList<User> users; 
 	private ArrayList<Fragement> fragements;
 	private UUID id;
+	private boolean isLocal;
 	
 	public Story() {
 		this.users = new ArrayList<User>();
 		this.fragements = new ArrayList<Fragement>();
 		this.id = UUID.randomUUID();
+		this.title = "";
+	}
+	
+	public Story(UUID uniqueId) {
+		this.users = new ArrayList<User>();
+		this.fragements = new ArrayList<Fragement>();
+		this.id = uniqueId;
 		this.title = "";
 	}
 	

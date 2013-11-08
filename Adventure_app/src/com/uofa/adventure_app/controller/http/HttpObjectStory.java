@@ -105,7 +105,7 @@ import com.uofa.adventure_app.model.Story;
 		return obj;
 	}
 
-	public HttpObject deleteObject(String id) {
+	/*public HttpObject deleteObject(String id) {
 		
 		String searchQuery = "";
 		HttpObject obj = null;
@@ -116,6 +116,6 @@ import com.uofa.adventure_app.model.Story;
 			e.printStackTrace();
 		}
 		return obj;
-	}
+	}*/
 	
 }
