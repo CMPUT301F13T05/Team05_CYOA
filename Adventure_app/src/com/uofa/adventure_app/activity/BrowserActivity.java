@@ -163,7 +163,7 @@ public class BrowserActivity extends AdventureActivity {
 	public void dataReturn(ArrayList<Story> result, String method) {
 		this.stories.clear();
 		for(int i = 0; i<result.size(); i++ )
-			stories.addAll(result);
+			stories.add(result.get(i));
 		if(method.equals(GET_ALL_METHOD)) {
 			HashMap<String, List<String>> map = new HashMap<String, List<String>>();
 			LocalStorageController localStorageController = new LocalStorageController(this);
