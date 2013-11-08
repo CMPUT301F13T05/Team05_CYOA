@@ -84,11 +84,20 @@ public abstract class AdventureActivity extends Activity {
 
 		AdventureActivity activity = null;
 		String method = null;
+		
+		/**
+		 * Sets the Method, and Activity needed for AsyncTask
+		 * @param activity
+		 * @param method
+		 */
 		public PerformHttp(AdventureActivity activity, String method) {
 			this.activity = activity;
 			this.method = method;
 		}
 		
+		/**
+		 * Does the HttpRequest for the activities in the Background
+		 */
 		protected ArrayList<Story> doInBackground(HttpObject... httpObj) {
 			StoryParser parser = new StoryParser();
 			
@@ -99,6 +108,9 @@ public abstract class AdventureActivity extends Activity {
 			
 		}
 
+		/**
+		 * How we get results back from httpRequests
+		 */
 		protected void onPostExecute(ArrayList<Story> result) {
 			activity.dataReturn(result,method); 
 		}
@@ -113,6 +125,10 @@ public abstract class AdventureActivity extends Activity {
 	
 	public abstract void dataReturn(ArrayList<Story> result, String method);
 	
+	/**
+	 * Activity can find out if it is connected to the internet
+	 * @return boolean
+	 */
 	protected boolean isNetworkAvailable() {
 	    ConnectivityManager connectivityManager 
 	          = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -120,6 +136,11 @@ public abstract class AdventureActivity extends Activity {
 	    return activeNetworkInfo != null && activeNetworkInfo.isConnected();
 	}
 	
+	/**
+	 * Perform and httpRequest using AsyncTask
+	 * @param httpObject
+	 * @param method
+	 */
 	protected void httpRequest(HttpObject httpObject, String method) {
 		if(this.isNetworkAvailable()) {
 		new PerformHttp(this, method).execute(httpObject);

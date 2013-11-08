@@ -30,12 +30,19 @@ public class Fragement  {
 	private ArrayList<Choice> choices;
 	private String body;
 
+	/**
+	 * Initializes an empty Fragement
+	 */
 	public Fragement() {
 		super();
 		this.annotations = new ArrayList<Annotation>();
 		this.choices = new ArrayList<Choice>(); 
 	}	
 	
+/**
+ * Initializes a Fragement with the body text.
+ * @param body
+ */
 	public Fragement(String body) {
 		this();
 		this.body = body;

@@ -27,21 +27,38 @@ public class HttpObject {
 	private HttpRequestType type;
 	private String postString;
 	private URL url;
-	
+	/**
+	 * Creates a HttpObject with the Parameters
+	 * @param type
+	 * @param postString
+	 * @param url
+	 */
 	public HttpObject(HttpRequestType type, String postString, URL url) {
 		this.type = type;
 		this.postString = postString;
 		this.url = url;
 	}
 	
+	/**
+	 * Returns the Type
+	 * @return
+	 */
 	public HttpRequestType type() {
 		return this.type;
 	}
 	
+	/**
+	 * Returns the Post String
+	 * @return String
+	 */
 	public String postString() {
 		return this.postString;
 	}
 	
+	/**
+	 * Returns the URL
+	 * @return URL
+	 */
 	public URL url() {
 		return this.url;
 	}

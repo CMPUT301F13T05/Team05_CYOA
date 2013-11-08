@@ -26,11 +26,19 @@ public class StoryController {
 	
 	ArrayList<Story> stories;
 	
+	/**
+	 * Adds a story to the controller
+	 * @param story
+	 */
 	public void addStory(Story story) {
 		if(!stories.contains(story.id()))
 			this.stories.add(story);
 	}
 	
+	/**
+	 * Gets all stories from the controller
+	 * @return
+	 */
 	public ArrayList<Story> getStories() {
 		return this.stories;
 	}

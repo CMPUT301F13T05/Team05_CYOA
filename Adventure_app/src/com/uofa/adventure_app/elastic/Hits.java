@@ -28,6 +28,10 @@ public class Hits<T> {
     public Collection<ElasticSearchResponse<T>> getHits() {
         return hits;
     }
+    
+    /**
+     * Returns the String for a Hit
+     */
     public String toString() {
         return (super.toString()+","+total+","+max_score+","+hits);
     }

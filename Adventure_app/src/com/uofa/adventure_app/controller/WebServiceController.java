@@ -35,6 +35,11 @@ import com.uofa.adventure_app.enums.HttpRequestType;
 
 public class WebServiceController {
 	
+	/**
+	 * Performs an HttpRequest with the HttpObject
+	 * @param HttpObject obj
+	 * @return String
+	 */
 	public String httpWithType(HttpObject obj) {
 		
 		//String ErrorMessage = null;
@@ -100,7 +105,12 @@ public class WebServiceController {
 	}
 	
 
-	// utilities
+	/**
+	 * Reads an Input stream and returns a string
+	 * @param in
+	 * @return
+	 * @throws IOException
+	 */
 	private static String readStream(InputStream in) throws IOException {
         byte[] contents = new byte[1024];
          int bytesRead=0;

@@ -29,14 +29,19 @@ public class Story {
 	private ArrayList<Fragement> fragements;
 	private UUID id;
 	private boolean isLocal;
-	
+	/**
+	 * Creates an empty story
+	 */
 	public Story() {
 		this.users = new ArrayList<User>();
 		this.fragements = new ArrayList<Fragement>();
 		this.id = UUID.randomUUID();
 		this.title = "";
 	}
-	
+	/**
+	 * Creates an empty story with the specified uniqueId
+	 * @param uniqueId
+	 */
 	public Story(UUID uniqueId) {
 		this.users = new ArrayList<User>();
 		this.fragements = new ArrayList<Fragement>();
@@ -45,28 +50,31 @@ public class Story {
 	}
 	
 	/**
-	 * @param title the title to set
+	 * Sets the title of the story
+	 * @param title
 	 */
 	public void setTitle(String title) {
 		this.title = title;
 	}
-	
-	/**
-	 * @param title the title of the story
-	 */
+
+/**
+ * Gets the Title from the story
+ * @return String
+ */
 	public String title() {
 		return this.title;
 	}
 
 	/**
-	 * @param users the users to set
+	 * Sets the users of the story to the users
+	 * @param users
 	 */
 	public void setUsers(ArrayList<User> users) {
 		this.users = users;
 	}
 /**
  * Adds an User to the Current List of users
- * @param author
+ * @param user
  */
 	public void addUser(User user) {
 		
@@ -76,15 +84,16 @@ public class Story {
 	}
 	/**
 	 * returns list of users for a story
-	 * @return
+	 * @return ArrayList<User>
 	 */
 	public ArrayList<User> users() {
 		return this.users;
 	}
 	
-	/**
-	 * @param fragements the fragements to set
-	 */
+/**
+ * Sets the list of Fragements in the story to a specific list
+ * @param fragements
+ */
 	public void setFragements(ArrayList<Fragement> fragements) {
 		this.fragements = fragements;
 	}
@@ -104,13 +113,9 @@ public class Story {
 		return this.fragements;	
 	}
 	
-	// shouldn't this be private?!
-	// cause i can set two story id's to be the same otherwise!!
-	public void setId(UUID id) {
-		this.id = id;
-	}
+	
 	/**
-	 * 
+	 * Returns the id for the story
 	 * @return UUID
 	 */
 	public UUID id() {

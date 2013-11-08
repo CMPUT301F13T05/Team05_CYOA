@@ -28,6 +28,12 @@ import com.uofa.adventure_app.model.Story;
 
 public class StoryParser {
 
+	
+	/**
+	 * Parses a String (JSON format) and returns an array containing the story or stories
+	 * @param parseString
+	 * @return ArrayList<Story>
+	 */
 	public ArrayList<Story> parseStory(String parseString) {
 		ArrayList<Story> stories = new ArrayList<Story>();
 		System.out.println(parseString);

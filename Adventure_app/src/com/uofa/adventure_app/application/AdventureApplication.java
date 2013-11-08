@@ -37,8 +37,10 @@ public class AdventureApplication extends Application {
 
 	transient private static ActivityController activityController;
 	
-
-	// Usable controller - singelton for all classes
+	/**
+	 * Returns the StoryController
+	 * @return StoryController
+	 */
 	public static StoryController getStoryController() {
 		if(storyController == null) {
 			storyController = new StoryController();
@@ -46,7 +48,10 @@ public class AdventureApplication extends Application {
 		return storyController;	
 	}
 	
-	// Usable controller - singelton for all classes
+	/**
+	 * Returns the WebServiceController
+	 * @return WebServiceController
+	 */
 	public static WebServiceController getWebServiceController() {
 		if(webServiceController == null) {
 			webServiceController = new WebServiceController();
@@ -54,7 +59,10 @@ public class AdventureApplication extends Application {
 		return webServiceController;	
 	}
 	
-
+/**
+ * Returns the LocalStoryController
+ * @return LocalStorageController
+ */
 	public  LocalStorageController getLocalStorageController(){
 		if(localStorageController == null) {
 			localStorageController = new LocalStorageController(this);
@@ -62,6 +70,10 @@ public class AdventureApplication extends Application {
 		return localStorageController;	
 	}
 
+	/**
+	 * Returns the ActivityController
+	 * @return ActivityController
+	 */
 	public static ActivityController getActivityController() {
 		if(activityController == null) {
 			activityController = new ActivityController();

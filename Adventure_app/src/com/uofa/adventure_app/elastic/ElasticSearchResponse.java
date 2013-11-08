@@ -35,11 +35,18 @@ public class ElasticSearchResponse<T> {
 	boolean timed_out;
 	transient Object _shards;
 	Hits<T> hits;
-
+/**
+ * Gets the hits
+ * @return Collection<ElasticSearchResponse<T>>
+ */
 	public Collection<ElasticSearchResponse<T>> getHits() {
 		return hits.getHits();
 	}
 
+	/**
+	 * Gets the Fields from the Response
+	 * @return Collection<T>
+	 */
 	public Collection<T> getFields() {
 		if(hits != null) {
 			Collection<T> out = new ArrayList<T>();
@@ -51,18 +58,35 @@ public class ElasticSearchResponse<T> {
 		return new ArrayList<T>();
 	}
 
+	/**
+	 * Returns the string format of the Response
+	 * @return String
+	 */
 	public String toString() {
 		return (super.toString() + ":" + took + "," + _shards + "," + exists
 				+ "," + hits);
 	}
 
+	/**
+	 * Returns the Source
+	 * @return T
+	 */
 	public T getSource() {
 		return _source;
 	}
 	
+	/**
+	 * Returns the Field parameted
+	 * @return T
+	 */ 
 	public T getField() {
 		return fields;
 	}
+	
+	/**
+	 * Gets the Object
+	 * @return T
+	 */
 	public T getObject() {
 		if(_source != null) {
 			return this.getSource();

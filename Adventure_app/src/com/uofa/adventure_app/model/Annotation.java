@@ -20,14 +20,14 @@ package com.uofa.adventure_app.model;
 
 
 public class Annotation {
-	
-	// the video, audio, or image 
+
 	private Media media;
 	
 	// same as user
 	private User author;
+	
 	/**
-	 * creates annotation Object
+	 * Creates an Annotation object with the Specified {@link User}
 	 * @param author
 	 */
 	public Annotation(User author) {

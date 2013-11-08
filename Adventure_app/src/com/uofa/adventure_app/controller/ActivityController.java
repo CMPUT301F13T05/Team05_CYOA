@@ -32,24 +32,25 @@ import com.uofa.adventure_app.interfaces.AdventureActivity;
 public class ActivityController {
 	// Every activity should be added to here.
 	private final ArrayList<AdventureActivity> activities = new ArrayList<AdventureActivity>();
-	
-	// Holds the universal handler thread
-	private HandlerThread handlerThread = null;
-	
-	// Holds the universal handler
-	private Handler handler = null;
 
+	/**
+	 * Creates a new activity controller
+	 */
 	public ActivityController() {
-	     this.handlerThread = new HandlerThread("Message Thread");
-         // Start the thread that will handle messages
-         this.handlerThread.start();
-         this.handler = new Handler(handlerThread.getLooper());
 	}
 	
+	/**
+	 * Adds an activity to the controller
+	 * @param activity
+	 */
 	public void addActivity(AdventureActivity activity) {
 		activities.add(activity);
 	}
 	
+	/**
+	 * Removes an activity from the controller
+	 * @param activity
+	 */
 	public void removeActivitiy(AdventureActivity activity) {
 		activities.remove(activity);
 	}

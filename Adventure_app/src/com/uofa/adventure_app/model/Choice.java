@@ -31,17 +31,17 @@ public class Choice {
 	private Fragement fragment;
 	
 	/**
-	 * 
-	 * @param frag the frag you want to create
+	 * Creates a choice with the Specific {@link Fragement}
+	 * @param frag 
 	 */
 	public Choice(Fragement frag) {
 		this.fragment = frag;
 	}
 	
-	// setter
+
 	/**
-	 * 
-	 * @param frag the frag you want to set
+	 * Sets the Choice to a specific {@link Fragement}
+	 * @param frag
 	 */
 	public void setChoice(Fragement frag) {
 		this.fragment = frag;
@@ -49,8 +49,8 @@ public class Choice {
 
 	// getter
 	/**
-	 * 
-	 * @return the choice for this fragment
+	 * Returns the Fragement that the choice is pointing to
+	 * @return Fragement
 	 */
 	public Fragement getChoice() {
 		 return this.fragment;
