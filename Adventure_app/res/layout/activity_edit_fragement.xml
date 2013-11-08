@@ -1,0 +1,53 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context=".Edit_Fragment" >
+
+    <Button
+        android:id="@+id/bchoice"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:text="Choice" 
+        android:onClick="openChoices"/>
+
+    <EditText
+        android:id="@+id/newtitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/okbutton"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="51dp"
+        android:ems="10"
+        android:text="Title" />
+
+    <EditText
+        android:id="@+id/newauthor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/newtitle"
+        android:layout_below="@+id/newtitle"
+        android:ems="10"
+        android:text="User name" />
+
+    <EditText
+        android:id="@+id/newbody"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/okbutton"
+        android:layout_below="@+id/newauthor"
+        android:layout_marginTop="27dp"
+        android:ems="10"
+        android:text="New fragment" >
+
+        <requestFocus />
+    </EditText>
+
+</RelativeLayout>
