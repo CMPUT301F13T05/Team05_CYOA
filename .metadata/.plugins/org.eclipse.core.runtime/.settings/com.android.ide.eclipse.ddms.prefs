@@ -1,0 +1,10 @@
+ddms.logcat.auotmonitor.level=error
+ddms.logcat.automonitor.userprompt=true
+eclipse.preferences.version=1
+logcat.view.colsize.Application=165
+logcat.view.colsize.Level=24
+logcat.view.colsize.PID=56
+logcat.view.colsize.TID=56
+logcat.view.colsize.Tag=122
+logcat.view.colsize.Text=661
+logcat.view.colsize.Time=161
