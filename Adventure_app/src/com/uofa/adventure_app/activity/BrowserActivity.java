@@ -19,6 +19,9 @@
 package com.uofa.adventure_app.activity;
 import java.util.ArrayList;
 import java.util.UUID;
+import java.util.HashMap;
+import java.util.List;
+
 
 import android.content.Context;
 import android.content.Intent;
@@ -67,7 +70,6 @@ public class BrowserActivity extends AdventureActivity {
 		setContentView(R.layout.activity_browser);
 		v = this.findViewById(android.R.id.content);
 		localStorageController = new LocalStorageController(this);
-		localStorageController.openForWrite();
 		username = new User();
 		boolean firstrun = getSharedPreferences("PREFERENCE", MODE_PRIVATE).getBoolean("firstrun", true);
 		if (firstrun){
@@ -149,6 +151,8 @@ public class BrowserActivity extends AdventureActivity {
 	public void newStory() {
 		Intent myIntent = new Intent(this, EditStoryActivity.class);
 		Toast.makeText(this, localStorageController.setStory("new story", "ulvi")+"", 2).show();
+		//Toast.makeText(this, localStorageController.setStory("Story 1", "Ulvi")+"", 2).show();
+		Toast.makeText(this, localStorageController.setFragment(1, "Fragment 1 of Story 1", "Ulvi", "test frag body", 0)+"", 2).show();
 		int i = 0;
 		myIntent.putExtra("frag_id", i);
 		this.startActivity(myIntent);
@@ -237,7 +241,9 @@ public class BrowserActivity extends AdventureActivity {
 			grid = (GridView) findViewById(R.id.gridView1);
 			//Testing to see if firstRunOnly screen works properly.
 			//strings.add(getSharedPreferences("PREFERENCE", MODE_PRIVATE).getString("username", null));e 
-			
+
+
+					
 
 			storyGridAdapter = new StoryGridAdapter(this, result);
 			grid.setAdapter(storyGridAdapter);
@@ -303,14 +309,6 @@ public class BrowserActivity extends AdventureActivity {
 	}
 
 
-
-	@Override
-	protected void onDestroy() {
-		// TODO Auto-generated method stub
-		super.onDestroy();
-		localStorageController.close();
-		
-	}
 
 
 
