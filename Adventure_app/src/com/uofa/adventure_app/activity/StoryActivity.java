@@ -21,6 +21,7 @@ import java.io.File;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 
 import android.app.Activity;
@@ -64,12 +65,12 @@ public class StoryActivity extends AdventureActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		String storyID = null;
+		UUID storyID = null;
 		setContentView(R.layout.activity_story);
 		testtitle = (TextView) findViewById(R.id.titleview);
 		testAuthor = (TextView) findViewById(R.id.authorview);
 		testBody = (TextView) findViewById(R.id.storyview);
-		List<List<String>> fragment =new ArrayList<List<String>>();//Title, Users, Choices, Body
+		List<List<String>> fragment =new ArrayList<List<String>>();//Title, Users, Choices, Body is the order given
 		List<String> fragmentTitle = new ArrayList<String>();
 		List<String> fragmentUsers = new ArrayList<String>();
 		List<String> fragmentBody = new ArrayList<String>();
@@ -77,17 +78,8 @@ public class StoryActivity extends AdventureActivity {
 		LocalStorageController localStorageController = new LocalStorageController(this);
 		Bundle extras = extras = getIntent().getExtras();
 		if (extras != null){
-			storyID = extras.getString("StoryID");
+			storyID = UUID.fromString(extras.getString("StoryID"));
 
-			Integer frag_id = localStorageController.getFirstFragment(storyID);
-			System.out.println(frag_id);
-			fragment = localStorageController.getFragment(frag_id);
-			testBody.setText(fragment.get(3).get(0));
-			testAuthor.setText(fragment.get(1).get(0));
-			testtitle.setText(fragment.get(0).get(0));
-			//ArrayList<Fragement> fragements = new ArrayList<Fragement>();
-			//fragements.addAll(storyID.getFragements());
-			
 			
 		}else{
 			testBody.setText("This story isn't very good.");

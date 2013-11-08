@@ -74,6 +74,9 @@ public class BrowserActivity extends AdventureActivity {
 		setContentView(R.layout.activity_browser);
 		v = this.findViewById(android.R.id.content);
 		localStorageController = new LocalStorageController(this);
+		search = (EditText) findViewById(R.id.search);
+		stories = new ArrayList<Story>();
+		//search.addTextChangedListener(new GenericTextWatcher(search));
 		username = new User();
 		boolean firstrun = getSharedPreferences("PREFERENCE", MODE_PRIVATE).getBoolean("firstrun", true);
 		if (firstrun){
@@ -108,6 +111,10 @@ public class BrowserActivity extends AdventureActivity {
 			HttpObjectStory httpStory = new HttpObjectStory();
 			this.httpRequest(httpStory.fetchAll(), GET_ALL_METHOD);
 			break;
+
+		case R.id.search:
+
+			//searchQuery = search.getQuery().toString();
 		default:
 			return super.onOptionsItemSelected(item);
 		}
@@ -154,7 +161,7 @@ public class BrowserActivity extends AdventureActivity {
 	 * @param ArrayList<Story> result
 	 */
 	public void dataReturn(ArrayList<Story> result, String method) {
-		stories = new ArrayList<Story>();
+		this.stories.clear();
 		for(int i = 0; i<result.size(); i++ )
 			stories.addAll(result);
 		if(method.equals(GET_ALL_METHOD)) {
@@ -213,5 +220,6 @@ public class BrowserActivity extends AdventureActivity {
 
 
 	}
+
 }
 

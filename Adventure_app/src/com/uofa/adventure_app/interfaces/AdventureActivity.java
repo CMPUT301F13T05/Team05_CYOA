@@ -93,6 +93,7 @@ public abstract class AdventureActivity extends Activity {
 		protected ArrayList<Story> doInBackground(HttpObject... httpObj) {
 			StoryParser parser = new StoryParser();
 			ArrayList<Story> stories = new ArrayList<Story>();
+			stories.clear();
 			if(httpObj[0] != null)
 				return parser.parseStory(webServiceController.httpWithType(httpObj[0]));
 			else
