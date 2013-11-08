@@ -32,6 +32,7 @@ public class StoryParser {
 
 	public ArrayList<Story> parseStory(String parseString) {
 		ArrayList<Story> stories = new ArrayList<Story>();
+		stories.clear();
 		if (parseString != null) {
 			Gson gson = new Gson();
 			Type elasticSearchResponseType = new TypeToken<ElasticSearchResponse<Story>>() {

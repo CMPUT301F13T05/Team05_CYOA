@@ -75,7 +75,8 @@ public class BrowserActivity extends AdventureActivity {
 		v = this.findViewById(android.R.id.content);
 		localStorageController = new LocalStorageController(this);
 		search = (EditText) findViewById(R.id.search);
-		search.addTextChangedListener(new GenericTextWatcher(search));
+		stories = new ArrayList<Story>();
+		//search.addTextChangedListener(new GenericTextWatcher(search));
 		username = new User();
 		boolean firstrun = getSharedPreferences("PREFERENCE", MODE_PRIVATE).getBoolean("firstrun", true);
 		if (firstrun){
@@ -112,7 +113,7 @@ public class BrowserActivity extends AdventureActivity {
 			break;
 		case R.id.search:
 
-			searchQuery = search.getQuery().toString();
+			//searchQuery = search.getQuery().toString();
 			HttpObjectStory http = new HttpObjectStory();
 			this.httpRequest(http.fetchAll(), GET_ALL_METHOD);
 		default:
@@ -161,7 +162,7 @@ public class BrowserActivity extends AdventureActivity {
 	 * @param ArrayList<Story> result
 	 */
 	public void dataReturn(ArrayList<Story> result, String method) {
-		stories = new ArrayList<Story>();
+		this.stories.clear();
 		for(int i = 0; i<result.size(); i++ )
 			stories.addAll(result);
 		if(method.equals(GET_ALL_METHOD)) {
@@ -220,45 +221,6 @@ public class BrowserActivity extends AdventureActivity {
 
 
 	}
-	// Inline Class to Watch our text editing
-		// Code Taken From:
-		// http://stackoverflow.com/questions/5702771/how-to-use-single-textwatcher-for-multiple-edittexts
-		// On Monday Septemeber 23, 2013
-		// Modified for my Use
-		private class GenericTextWatcher implements TextWatcher {
-			// View that is Being Edited
-			private EditText view;
 
-			private GenericTextWatcher(TextView search) {
-				this.view = search;
-			}
-
-			public void beforeTextChanged(CharSequence charSequence, int i, int i1,
-					int i2) {
-			}
-
-			public void onTextChanged(CharSequence charSequence, int i, int i1,
-					int i2) {
-			}
-
-			// When Text is changed this is called.
-			
-			public void afterTextChanged(EditText editable) {
-				// get string
-				String text = editable.toString();
-				
-				// Get the current note
-				// Update the proper view for subject or body
-				switch (view.getId()) {
-				case R.id.search:
-					searchQuery = search.getText().toString();
-					HttpObjectStory http = new HttpObjectStory();
-					httpRequest(http.fetchAll(), GET_ALL_METHOD);
-					break;
-
-				}
-			}
-
-		}
 }
 

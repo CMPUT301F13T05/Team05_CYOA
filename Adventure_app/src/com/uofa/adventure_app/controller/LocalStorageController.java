@@ -224,6 +224,7 @@ public class LocalStorageController {
 	 * @return String title
 	 */
 	public String getTitle(String story_id){
+		System.out.println(story_id);
 		String getTitleString="select title from stories where story_id="+"'"+story_id+"'";
 		String title=null;
 		this.openForRead();
@@ -237,7 +238,7 @@ public class LocalStorageController {
 			}
 		}  
 		titlec.close();
-		
+		System.out.println("title: " + title);
 		return title;
 	}
 	/**
@@ -308,6 +309,7 @@ public class LocalStorageController {
 		List<List<String>> storyInfo =new ArrayList<List<String>>();
 		List<String> storyTitle = new ArrayList<String>();
 		storyTitle.add(this.getTitle(story_id));
+		System.out.println(storyTitle);
 		List<String> users = new ArrayList<String>();
 		users=this.getUsers(story_id,"s");
 		

@@ -35,4 +35,5 @@ public class StoryController {
 		return this.stories;
 	}
 
+	
 }
