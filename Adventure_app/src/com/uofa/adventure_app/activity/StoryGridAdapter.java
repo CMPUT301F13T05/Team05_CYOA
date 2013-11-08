@@ -19,6 +19,9 @@
 package com.uofa.adventure_app.activity;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.UUID;
 
 import android.R;
 import android.content.Context;
@@ -29,6 +32,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.uofa.adventure_app.controller.LocalStorageController;
 import com.uofa.adventure_app.model.Story;
 import com.uofa.adventure_app.model.User;
 
@@ -42,6 +46,7 @@ public class StoryGridAdapter extends BaseAdapter {
 		this.context = context;
         mInflater = LayoutInflater.from(this.context);
 		this.stories = new ArrayList<Story>(stories);
+
 
 	}
 	
@@ -64,6 +69,31 @@ public class StoryGridAdapter extends BaseAdapter {
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		// Setup the multi line items in a listview
+		HashMap<String, List<String>> map = new HashMap<String, List<String>>();
+		LocalStorageController localStorageController = new LocalStorageController(context);
+		map = localStorageController.getBrowserViewInfo();
+		ArrayList<String> keys = new ArrayList<String>();
+		
+		keys.addAll(map.keySet());
+		for(int i = 0; i<keys.size(); i++){
+			System.out.println("Start of FOR:" + i);
+			Story s = new Story(UUID.randomUUID());
+			ArrayList<String> list = new ArrayList<String>(); 
+			
+			list.addAll(map.get(keys.get(i)));
+			s.setTitle(list.get(0));
+			ArrayList<User> users = new ArrayList<User>();
+			for(int j = 1; j<map.get(keys.get(i)).size(); j++){
+				User user = new User(map.get(keys.get(i)).get(j));
+				users.add(user);
+			}
+			
+			s.setUsers(users);
+			System.out.println("Story:" + s);
+			stories.add(s);
+			
+		
+		}
 	       if (convertView == null) {
 	            convertView = mInflater.inflate(android.R.layout.two_line_list_item, parent, false);
 	        }
@@ -72,7 +102,7 @@ public class StoryGridAdapter extends BaseAdapter {
 	        TextView sub = (TextView) convertView.findViewById(R.id.text2);
 	 
 	        //Set the text
-	        Story story = this.stories.get(position);
+	        Story story = stories.get(position);
 	        if(story != null) {
 	        	title.setText(story.title());
 	        	
@@ -83,7 +113,8 @@ public class StoryGridAdapter extends BaseAdapter {
 	        	}
 	        	sub.setText(authors);
 	        	
-	        } 
+	        }
+	        
 	        return convertView;
 	}
 

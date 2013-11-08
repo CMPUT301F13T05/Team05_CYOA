@@ -237,7 +237,7 @@ public class LocalStorageController {
 	 * @return String title
 	 */
 	public String getTitle(String story_id){
-		String getTitleString="select title from stories where story_id="+story_id;
+		String getTitleString="select title from stories where story_id="+"'"+story_id+"'";
 		String title=null;
 		this.openForRead();
 		Cursor titlec = db.rawQuery(getTitleString, null);

@@ -51,6 +51,9 @@ public class EditFragementActivity extends AdventureActivity {
 	String title;
 	String user;
 	String body;
+	int frag_id;
+	String s_id;
+	int old_frag;
 	private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
 	boolean choice = false;
 
@@ -62,6 +65,8 @@ public class EditFragementActivity extends AdventureActivity {
 		extras = getIntent().getExtras();
 		EditText newauthor = (EditText) findViewById(R.id.newauthor);
 		newauthor.setText(getSharedPreferences("PREFERENCE", MODE_PRIVATE).getString("username", null));
+		if (extras != null)
+			old_frag = extras.getInt("frag_id");
 		
 	}
 
@@ -73,14 +78,19 @@ public class EditFragementActivity extends AdventureActivity {
 	}
 
 	// We want to create a context Menu when the user long click on an item
-
+	/**
+	 * Opens the menu of possible choices to add to the Fragment.
+	 * @param View v
+	 */
 	public void openChoices(View v) {
 		choice = true;
 		registerForContextMenu(v);
 		openContextMenu(v);
 
 	}
-
+	/**
+	 * Updates the view.
+	 */
 	public void updateView() {
 
 	}
@@ -103,7 +113,13 @@ public class EditFragementActivity extends AdventureActivity {
 		}
 		return super.onOptionsItemSelected(item);
 	}
-
+	/**
+	 * Method that is called to open the context view to 
+	 * allow the user to open the camera or choose an existing
+	 * piece of media.
+	 * 
+	 * @param View v
+	 */
 	public void openMediaContext(View v) {
 
 		registerForContextMenu(v);
@@ -177,38 +193,29 @@ public class EditFragementActivity extends AdventureActivity {
 			case R.id.choosemedia:
 				currentView.getRootView().dispatchKeyEvent(new KeyEvent (KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_BACK));
 				break;
-			default:
-				currentView.getRootView().dispatchKeyEvent(new KeyEvent (KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_BACK));
-				return super.onContextItemSelected(item);
-			}
-		}else{
-			switch (item.getItemId()) {
 			case R.id.newchoice:
+				System.out.println("in new choice");
 				EditText newtitle = (EditText) findViewById(R.id.newtitle);
 				EditText newauthor = (EditText) findViewById(R.id.newauthor);
 				EditText newbody = (EditText) findViewById(R.id.newbody);
 				title = newtitle.getText().toString();
-				body = newauthor.getText().toString();
-				user = newbody.getText().toString();
+				user = newauthor.getText().toString();
+				body = newbody.getText().toString();
 				LocalStorageController localStorageController = new LocalStorageController(this);
-				int old_frag;
+
 				System.out.println(extras);
 				if (extras != null){
-					old_frag = extras.getInt("frag_id");
 					if (old_frag == 0){
-						int s_id = localStorageController.setStory(title, user);
-						int frag_id = localStorageController.setFragment(s_id, title, user, body, old_frag);
-						Intent myIntent = new Intent(this, EditFragementActivity.class);
-						myIntent.putExtra("frag_id", frag_id);
-						this.startActivity(myIntent);
+						Story s = new Story();
+						s_id = s.id().toString();
+						localStorageController.setStory(s_id, title, user);
+						old_frag = localStorageController.setFragment(s_id, title, user, body, old_frag);
+						newtitle.setText("");
+						newbody.setText("");
 					}else{
-
-						int s_id = localStorageController.setStory(title, user);
-						int frag_id = localStorageController.setFragment(s_id, title, user, body, old_frag);
-						Intent myIntent = new Intent(this, EditFragementActivity.class);
-						myIntent.putExtra("frag_id", frag_id);
-						this.startActivity(myIntent);
-
+						frag_id = localStorageController.setFragment(s_id, title, user, body, old_frag);
+						newtitle.setText("");
+						newbody.setText("there");
 					}
 				}
 

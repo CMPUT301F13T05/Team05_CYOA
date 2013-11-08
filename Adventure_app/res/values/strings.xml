@@ -6,10 +6,7 @@
     <string name="title_activity_browser">View Stories</string>
     <string name="title_activity_story">Story</string>
     <string name="title_activity_edit_story">Edit Story</string>
-    <string name="title_section1">Section 1</string>
-    <string name="title_section2">Section 2</string>
-    <string name="title_section3">Section 3</string>
-    <string name="title_activity_edit_fragement">Edit Fragement</string>
+    <string name="title_activity_edit_fragement">Edit Fragment</string>
     <string name="title_activity_first_run_only">Username</string>
 
 

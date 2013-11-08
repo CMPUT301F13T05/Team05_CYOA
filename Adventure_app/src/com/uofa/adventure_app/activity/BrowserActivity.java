@@ -55,9 +55,6 @@ public class BrowserActivity extends AdventureActivity {
 
 
 	private StoryGridAdapter storyGridAdapter;
-
-	//private StoryGridAdapter;
-
 	ArrayList<String> List;
 	GridView grid;
 	LocalStorageController localStorageController;
@@ -76,34 +73,31 @@ public class BrowserActivity extends AdventureActivity {
 			Intent myIntent = new Intent(this, FirstRunOnlyActivity.class);
 			this.startActivity(myIntent);
 			// Save the state
-			getSharedPreferences("PREFERENCE", MODE_PRIVATE)
-			.edit()
-			.putBoolean("firstrun", false)
-			.commit();
+			getSharedPreferences("PREFERENCE", MODE_PRIVATE).edit().putBoolean("firstrun", false).commit();
 		}
 		//TESTING
 		HttpObjectStory httpStory = new HttpObjectStory();
-		for(int i = 12; i < 15; i++) {
-		Story tStory = new Story();
-		tStory.addUser(new User("Chris"));
-		tStory.setTitle("Tile for Story Number " + i);
-		// Blank Fragement with no choices
-		tStory.addFragement(new Fragement());
-		
-		Fragement Frag1 = new Fragement("Fragement 1 Body");
-		Fragement Frag2 = new Fragement("Fragement 2 Body");
-		Fragement Frag3 = new Fragement("Fragement 3 Body");
-		Fragement Frag4 = new Fragement("Fragement 4 Body");
-			Frag1.addChoice(new Choice(Frag2));
-			Frag1.addChoice(new Choice(Frag3));
-		Frag3.addChoice(new Choice(new Fragement("A Choice")));
-		Frag4.addChoice(new Choice(new Fragement("B Choice")));
-		tStory.addFragement(Frag1);
-		tStory.addFragement(Frag2);
-		tStory.addFragement(Frag3);
-		tStory.addFragement(Frag4);
-		this.httpRequest(httpStory.publishObject(tStory), "NO_RETURN");
-		}
+//		for(int i = 12; i < 15; i++) {
+//		Story tStory = new Story();
+//		tStory.addUser(new User("Chris"));
+//		tStory.setTitle("Tile for Story Number " + i);
+//		// Blank Fragement with no choices
+//		tStory.addFragement(new Fragement());
+//		
+//		Fragement Frag1 = new Fragement("Fragement 1 Body");
+//		Fragement Frag2 = new Fragement("Fragement 2 Body");
+//		Fragement Frag3 = new Fragement("Fragement 3 Body");
+//		Fragement Frag4 = new Fragement("Fragement 4 Body");
+//			Frag1.addChoice(new Choice(Frag2));
+//			Frag1.addChoice(new Choice(Frag3));
+//		Frag3.addChoice(new Choice(new Fragement("A Choice")));
+//		Frag4.addChoice(new Choice(new Fragement("B Choice")));
+//		tStory.addFragement(Frag1);
+//		tStory.addFragement(Frag2);
+//		tStory.addFragement(Frag3);
+//		tStory.addFragement(Frag4);
+//		this.httpRequest(httpStory.publishObject(tStory), "NO_RETURN");
+//		}
 
 		// Search Example See Log of output.
 
@@ -149,56 +143,11 @@ public class BrowserActivity extends AdventureActivity {
 		return super.onOptionsItemSelected(item);
 	}
 	public void newStory() {
-		Intent myIntent = new Intent(this, EditStoryActivity.class);
-		Toast.makeText(this, localStorageController.setStory("new story", "ulvi")+"", 2).show();
-		//Toast.makeText(this, localStorageController.setStory("Story 1", "Ulvi")+"", 2).show();
-		Toast.makeText(this, localStorageController.setFragment(1, "Fragment 1 of Story 1", "Ulvi", "test frag body", 0)+"", 2).show();
+		Intent myIntent = new Intent(this, EditFragementActivity.class);
 		int i = 0;
 		myIntent.putExtra("frag_id", i);
 		this.startActivity(myIntent);
 		
-		//Testing
-
-
-		//localStorageController.getStory(1);
-		//HashMap<Integer, List<String>> newMap =localStorageController.getBrowserViewInfo();
-		//newMap.get(4).get(0);
-		//Toast.makeText(this, localStorageController.getChoices(1).get(2)+"", 2).show();
-		//localStorageController.openForWrite();
-		//localStorageController.insertIntoStoriesTable(4, "test", "This is test");
-		//localStorageController.insertIntoUsersTable(2, "Chris", 2);
-		//localStorageController.insertIntoUsersTable(3, "Kevin", 3);
-		//localStorageController.insertIntoUsersTable(4, "Joel", 2);
-		//localStorageController.insertIntoUsersTable(5, "Ulvi", 2);
-		//localStorageController.insertIntoUsersTable(6, "Ulvi", 4);
-		//localStorageController.insertIntoChoicesTable(1, 1);
-		//localStorageController.insertIntoChoicesTable(3, 1);
-		//localStorageController.insertIntoFragmentsTable(1, "test fragment", 1);
-		//localStorageController.insertIntoImagesTable(3, "pointer1", false, 3);
-		//localStorageController.close();
-		//
-		//Cursor c=localStorageController.openForRead().db.rawQuery("select * from images where is_annotation=1", null);
-		//c.moveToFirst();		
-		//mydb.rawQuery("select DISTINCT tbl_name from sqlite_master", null);
-		/*if (c != null ) {
-			if  (c.moveToFirst()) {
-				do {
-
-					String one = c.getString(0);
-					Toast.makeText(this, one, 2).show();
-					String two = c.getString(1);
-					Toast.makeText(this, two, 2).show();
-					String three = c.getString(2);
-					Toast.makeText(this, three, 2).show();
-					String four = c.getString(3);
-					Toast.makeText(this, four, 2).show();
-				}while (c.moveToNext());
-			}
-		}  
-		c.close();
-		//String title = c.getString(0);
-		localStorageController.close();
-		 */
 
 	}
 
@@ -217,34 +166,11 @@ public class BrowserActivity extends AdventureActivity {
 		if(method.equals(GET_ALL_METHOD)) {
 			System.out.println("We got some data here!");
 			// Need to parse the Data, or Maybe I will change this to an array always..?
-			ArrayList<String> strings = new ArrayList<String>();
-			for(Story s: result) {
-				if(s != null) {
-					strings.add(s.title());
-				}
-			}
-			for(int i = 0; i <strings.size(); i++) {
-				if(strings.get(i).equals("")) {
-					strings.remove(i);
-				}else 
-					if (strings.get(i).equals(" ")){
-						strings.remove(i);
-					}
-
-
-			}
-
-
-
-
-
+	
 			grid = (GridView) findViewById(R.id.gridView1);
 			//Testing to see if firstRunOnly screen works properly.
 			//strings.add(getSharedPreferences("PREFERENCE", MODE_PRIVATE).getString("username", null));e 
-
-
-					
-
+	
 			storyGridAdapter = new StoryGridAdapter(this, result);
 			grid.setAdapter(storyGridAdapter);
 			grid.setOnItemClickListener(new 
@@ -264,9 +190,7 @@ public class BrowserActivity extends AdventureActivity {
 		if(method.equals(GET_METHOD)) {
 			System.out.println("We got some data here!");
 			// Need to parse the Data, or Maybe I will change this to an array always..?
-			for(Story s: result) {
-				System.out.println(s.title());
-			}
+
 		}
 	}
 	// We want to create a context Menu when the user long click on an item
