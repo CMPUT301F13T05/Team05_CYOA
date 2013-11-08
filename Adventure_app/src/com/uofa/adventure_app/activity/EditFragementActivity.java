@@ -213,7 +213,7 @@ public class EditFragementActivity extends AdventureActivity {
 					}else{
 						frag_id = localStorageController.setFragment(s_id, title, user, body, old_frag);
 						newtitle.setText("");
-						newbody.setText("there");
+						newbody.setText("");
 					}
 				}
 
