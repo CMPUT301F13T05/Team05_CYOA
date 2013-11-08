@@ -76,7 +76,6 @@ public class StoryGridAdapter extends BaseAdapter {
 		
 		keys.addAll(map.keySet());
 		for(int i = 0; i<keys.size(); i++){
-			System.out.println("Start of FOR:" + i);
 			Story s = new Story(UUID.randomUUID());
 			ArrayList<String> list = new ArrayList<String>(); 
 			
@@ -89,7 +88,6 @@ public class StoryGridAdapter extends BaseAdapter {
 			}
 			
 			s.setUsers(users);
-			System.out.println("Story:" + s);
 			stories.add(s);
 			
 		

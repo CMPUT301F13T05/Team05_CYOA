@@ -127,9 +127,5 @@ public abstract class AdventureActivity extends Activity {
 			// do nothing...
 		}
 	}
-	
-	
 
-
-	
 }

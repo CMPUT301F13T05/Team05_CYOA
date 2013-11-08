@@ -202,8 +202,6 @@ public class EditFragementActivity extends AdventureActivity {
 				user = newauthor.getText().toString();
 				body = newbody.getText().toString();
 				LocalStorageController localStorageController = new LocalStorageController(this);
-
-				System.out.println(extras);
 				if (extras != null){
 					if (old_frag == 0){
 						Story s = new Story();

@@ -55,6 +55,10 @@ public class BrowserActivity extends AdventureActivity {
 
 
 	private StoryGridAdapter storyGridAdapter;
+
+
+
+
 	ArrayList<String> List;
 	GridView grid;
 	LocalStorageController localStorageController;
@@ -75,42 +79,7 @@ public class BrowserActivity extends AdventureActivity {
 			// Save the state
 			getSharedPreferences("PREFERENCE", MODE_PRIVATE).edit().putBoolean("firstrun", false).commit();
 		}
-		//TESTING
 		HttpObjectStory httpStory = new HttpObjectStory();
-//		for(int i = 12; i < 15; i++) {
-//		Story tStory = new Story();
-//		tStory.addUser(new User("Chris"));
-//		tStory.setTitle("Tile for Story Number " + i);
-//		// Blank Fragement with no choices
-//		tStory.addFragement(new Fragement());
-//		
-//		Fragement Frag1 = new Fragement("Fragement 1 Body");
-//		Fragement Frag2 = new Fragement("Fragement 2 Body");
-//		Fragement Frag3 = new Fragement("Fragement 3 Body");
-//		Fragement Frag4 = new Fragement("Fragement 4 Body");
-//			Frag1.addChoice(new Choice(Frag2));
-//			Frag1.addChoice(new Choice(Frag3));
-//		Frag3.addChoice(new Choice(new Fragement("A Choice")));
-//		Frag4.addChoice(new Choice(new Fragement("B Choice")));
-//		tStory.addFragement(Frag1);
-//		tStory.addFragement(Frag2);
-//		tStory.addFragement(Frag3);
-//		tStory.addFragement(Frag4);
-//		this.httpRequest(httpStory.publishObject(tStory), "NO_RETURN");
-//		}
-
-		// Search Example See Log of output.
-
-
-		//AdventureApplication.getWebServiceController().publish(tStory);
-		
-
-		//this.httpRequest(httpStory.deleteObject("nmKNN_z9Sb6awP39uH_9nA"), "Don't care...");
-		
-		// This method will get all, and call the all method in dataReturn()..
-
-
-		// This method will call the get method in dataReturn() when done loading...
 		this.httpRequest(httpStory.fetchAll(), GET_ALL_METHOD);
 
 	}
@@ -166,11 +135,7 @@ public class BrowserActivity extends AdventureActivity {
 		if(method.equals(GET_ALL_METHOD)) {
 			System.out.println("We got some data here!");
 			// Need to parse the Data, or Maybe I will change this to an array always..?
-	
 			grid = (GridView) findViewById(R.id.gridView1);
-			//Testing to see if firstRunOnly screen works properly.
-			//strings.add(getSharedPreferences("PREFERENCE", MODE_PRIVATE).getString("username", null));e 
-	
 			storyGridAdapter = new StoryGridAdapter(this, result);
 			grid.setAdapter(storyGridAdapter);
 			grid.setOnItemClickListener(new 
