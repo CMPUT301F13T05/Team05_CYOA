@@ -76,19 +76,17 @@ public class LocalStorageController {
 	public void close(){
     	DBHelper.close();
 	}
-	/**
-	 * 
-	 * @return
-	 */
-	public int deleteAll(){
-    	return db.delete(DbHelper.DATABASE_NAME, null, null);
-    	}
+	public void dropTable(String tableName){
+		String dropString="DROP TABLE IF EXISTS "+ tableName;
+		db.execSQL(dropString);
+	}
 	/**
 	 * inserts values into stories table
 	 * @param title
 	 */
-	public void insertIntoStoriesTable(String title){
+	public void insertIntoStoriesTable(String storyId,String title){
 		ContentValues values = new ContentValues();
+		values.put("story_id", storyId);
 	    values.put("title", title);
 	    db.insert("stories", null, values);
 
@@ -96,13 +94,13 @@ public class LocalStorageController {
 	/**
 
 	 * Inserts values into users table, If the user is author of story, insert 0 into fragment_id column, 
-	 * If user is author of fragment, insert 0 into story_id column
+	 * If user is author of fragment, insert '0' into story_id column
 	 * @param name
 	 * @param story_id
 	 * @param fragmentId
 	 * @param fOrS
 	 */
-	public void insertIntoUsersTable(String name, int story_id, int fragmentId,String fOrS){
+	public void insertIntoUsersTable(String name, String story_id, int fragmentId,String fOrS){
 		ContentValues values = new ContentValues();	
 	    values.put("name", name);
 	    values.put("story_id", story_id);
@@ -118,7 +116,7 @@ public class LocalStorageController {
 	 * @param story_id
 	 * @param title
 	 */
-	public void insertIntoFragmentsTable(String text, int story_id,String title){
+	public void insertIntoFragmentsTable(String text, String story_id,String title){
 		ContentValues values = new ContentValues();	
 	    values.put("text", text);
 	    values.put("story_id", story_id);
@@ -158,15 +156,15 @@ public class LocalStorageController {
 	 * @return List<Integer> ids
 
 	 */
-	public List<Integer> getStoryIDs(){
+	public List<String> getStoryIDs(){
 		String getIDs="select story_id from stories";
 		Cursor c=openForRead().db.rawQuery(getIDs, null);
-		List<Integer> ids = new ArrayList<Integer>();
+		List<String> ids = new ArrayList<String>();
 		c.moveToFirst();
 		if (c != null ) {
 			if  (c.moveToFirst()) {
 				do {
-					int id = c.getInt(0);
+					String id = c.getString(0);
 					ids.add(id);
 				}while (c.moveToNext());
 			}
@@ -202,9 +200,9 @@ public class LocalStorageController {
  * the rest of the elements are users associated with the given story id
  * @return HashMap<Integer, List<String>> map
  */
-	public  HashMap<Integer, List<String>> getBrowserViewInfo(){
-		HashMap<Integer, List<String>> map = new HashMap<Integer, List<String>>();
-		List<Integer> ids= this.getStoryIDs();
+	public  HashMap<String, List<String>> getBrowserViewInfo(){
+		HashMap<String, List<String>> map = new HashMap<String, List<String>>();
+		List<String> ids= this.getStoryIDs();
 		String temp="select name from users where story_id=";
 		String getUsers;
 		int length=ids.size();
@@ -213,7 +211,7 @@ public class LocalStorageController {
 			List<String> output = new ArrayList<String>();
 			output.add(this.getTitle(ids.get(i)));
 
-			getUsers=temp+Integer.toString(ids.get(i)) + " and f_or_s='s'";
+			getUsers=temp+ids.get(i) + " and f_or_s='s'";
 			Cursor c=db.rawQuery(getUsers, null);
 			c.moveToFirst();
 			if (c != null ) {
@@ -238,7 +236,7 @@ public class LocalStorageController {
 	 * @param story_id
 	 * @return String title
 	 */
-	public String getTitle(int story_id){
+	public String getTitle(String story_id){
 		String getTitleString="select title from stories where story_id="+story_id;
 		String title=null;
 		this.openForRead();
@@ -261,12 +259,14 @@ public class LocalStorageController {
 	 * @param fOrs
 	 * @return List<String> users
 	 */
-	public List<String> getUsers(int id, String fOrs){
+	public List<String> getUsers(String id, String fOrs){
 		String getUsersString = new String();
 		if(fOrs=="s")
 			getUsersString="select name from users where story_id="+id+" and f_or_s="+fOrs;
-		else if(fOrs=="f")
-			getUsersString="select name from users where fragment_id="+id+" and f_or_s="+fOrs;
+		else if(fOrs=="f"){
+			int f_id=Integer.parseInt(id);
+			getUsersString="select name from users where fragment_id="+f_id+" and f_or_s="+fOrs;
+		}
 		List<String> users = new ArrayList<String>();
 		this.openForRead();
 		Cursor userc=db.rawQuery(getUsersString, null);
@@ -306,7 +306,6 @@ public class LocalStorageController {
 	}
 	/**
 	 * * returns List of Lists (String)
->>>>>>> testbranch
 	 * 1st element is Story title, has type of List<String>, use getStory(story_id).get(0).get(0) to get title as String
 	 * 2nd element is Story users, has type of List<String>
 	 * 3rd element is 1st fragments' choices, has type of List<String>
@@ -318,7 +317,7 @@ public class LocalStorageController {
 	 * @return List<List<String>> storyInfo
 	 */
 	
-	public List<List<String>> getStory(int story_id){
+	public List<List<String>> getStory(String story_id){
 		List<List<String>> storyInfo =new ArrayList<List<String>>();
 		List<String> storyTitle = new ArrayList<String>();
 		storyTitle.add(this.getTitle(story_id));
@@ -365,18 +364,13 @@ public class LocalStorageController {
 	 * @param userStory
 	 * @return story_id
 	 */
-	public int setStory(String title, String user){
+	public void setStory(String storyId, String title, String user){
 		this.openForWrite();
-		this.insertIntoStoriesTable(title);
+		this.insertIntoStoriesTable(storyId,title);
 		this.close();
-		List<Integer> ids=this.getStoryIDs();
-		int story_id=ids.get(ids.size()-1);
 		this.openForWrite();
-		this.insertIntoUsersTable(user, story_id, 0,"s");
+		this.insertIntoUsersTable(user, storyId, 0,"s");
 		this.close();
-		//this.insertIntoUsersTable(user, story_id, "s");
-
-		return story_id;
 	}
 	/**
 	 * Inserts fragment body, story id, fragment title into fragments table
@@ -389,14 +383,14 @@ public class LocalStorageController {
 	 * @param prevFragmentId
 	 * @return current Fragment id
 	 */
-	public int setFragment(int story_id,String fragmentTitle,String user,String fragmentBody,int prevFragmentId){
+	public int setFragment(String story_id,String fragmentTitle,String user,String fragmentBody,int prevFragmentId){
 			this.openForWrite();
 			this.insertIntoFragmentsTable(fragmentBody, story_id, fragmentTitle);
 			this.close();
 			List<Integer> ids=this.getFragmentIDs();
 			int currentFragmentID=ids.get(ids.size()-1);
 			this.openForWrite();
-			this.insertIntoUsersTable(user, 0, currentFragmentID, "f");
+			this.insertIntoUsersTable(user, "0", currentFragmentID, "f");
 			this.close();
 			if(prevFragmentId!=0){
 				this.openForWrite();
@@ -432,7 +426,7 @@ public class LocalStorageController {
 				}while (fc.moveToNext());
 			}
 		}  
-		fragmentUsers=this.getUsers(fragmentId, "f");
+		fragmentUsers=this.getUsers(fragmentId+"", "f");
 		fragmentChoices=this.getChoices(fragmentId);
 		fragment.add(fragmentTitle);
 		fragment.add(fragmentUsers);
