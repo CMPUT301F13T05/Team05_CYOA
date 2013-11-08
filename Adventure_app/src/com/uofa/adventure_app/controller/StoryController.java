@@ -18,6 +18,21 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 package com.uofa.adventure_app.controller;
 
+import java.util.ArrayList;
+
+import com.uofa.adventure_app.model.Story;
+
 public class StoryController {
+	
+	ArrayList<Story> stories;
+	
+	public void addStory(Story story) {
+		if(!stories.contains(story.id()))
+			this.stories.add(story);
+	}
+	
+	public ArrayList<Story> getStories() {
+		return this.stories;
+	}
 
 }

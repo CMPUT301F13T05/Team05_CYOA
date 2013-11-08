@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
-    
-<item android:id="@+id/takepic" android:title="Fragment 2"></item>
-<item android:id="@+id/choosemedia" android:title="Fragment 3"></item>
-<item android:id="@+id/choosemedia" android:title="Create New Fragment as Choice"></item>
+
+<item android:id="@+id/newchoice" android:title="Create New Fragment as Choice"></item>
 <item android:id="@+id/cancel" android:title="Cancel"></item>
 </menu>

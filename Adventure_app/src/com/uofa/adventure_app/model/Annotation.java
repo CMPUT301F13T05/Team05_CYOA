@@ -26,7 +26,10 @@ public class Annotation {
 	
 	// same as user
 	private User author;
-
+	/**
+	 * creates annotation Object
+	 * @param author
+	 */
 	public Annotation(User author) {
 		this.author = author;
 	}

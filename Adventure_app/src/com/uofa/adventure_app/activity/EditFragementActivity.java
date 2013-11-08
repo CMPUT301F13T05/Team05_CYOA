@@ -35,16 +35,22 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 
 import com.uofa.adventure_app.R;
+import com.uofa.adventure_app.controller.LocalStorageController;
 import com.uofa.adventure_app.interfaces.AdventureActivity;
 import com.uofa.adventure_app.model.Story;
 
 public class EditFragementActivity extends AdventureActivity {
 	View currentView;
 	Uri imageFileUri;
+	Bundle extras;
+	String title;
+	String user;
+	String body;
 	private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
 	boolean choice = false;
 
@@ -53,6 +59,10 @@ public class EditFragementActivity extends AdventureActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_edit_fragement);
 		currentView = this.findViewById(android.R.id.content);
+		extras = getIntent().getExtras();
+		EditText newauthor = (EditText) findViewById(R.id.newauthor);
+		newauthor.setText(getSharedPreferences("PREFERENCE", MODE_PRIVATE).getString("username", null));
+		
 	}
 
 	@Override
@@ -119,10 +129,11 @@ public class EditFragementActivity extends AdventureActivity {
 			choice = false;
 		}
 	}
-
+	/**
+	 * Takes the photo with the camera
+	 */
 	public void takeAPhoto() {
 		Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-
 		String folder = Environment.getExternalStorageDirectory()
 				.getAbsolutePath() + "/tmp";
 		File folderF = new File(folder);
@@ -138,7 +149,7 @@ public class EditFragementActivity extends AdventureActivity {
 		intent.putExtra(MediaStore.EXTRA_OUTPUT, imageFileUri);
 		startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
 	}
-
+	
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
 			// TextView tv = (TextView) findViewById(R.id.status);
@@ -157,20 +168,73 @@ public class EditFragementActivity extends AdventureActivity {
 	
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case R.id.takepic:
-			takeAPhoto();
-			currentView.getRootView().dispatchKeyEvent(new KeyEvent (KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_BACK));
-			break;
-		case R.id.choosemedia:
-			currentView.getRootView().dispatchKeyEvent(new KeyEvent (KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_BACK));
-			break;
-		default:
-			currentView.getRootView().dispatchKeyEvent(new KeyEvent (KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_BACK));
-			return super.onContextItemSelected(item);
+		if (choice == false){
+			switch (item.getItemId()) {
+			case R.id.takepic:
+				takeAPhoto();
+				currentView.getRootView().dispatchKeyEvent(new KeyEvent (KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_BACK));
+				break;
+			case R.id.choosemedia:
+				currentView.getRootView().dispatchKeyEvent(new KeyEvent (KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_BACK));
+				break;
+			default:
+				currentView.getRootView().dispatchKeyEvent(new KeyEvent (KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_BACK));
+				return super.onContextItemSelected(item);
+			}
+		}else{
+			switch (item.getItemId()) {
+			case R.id.newchoice:
+				EditText newtitle = (EditText) findViewById(R.id.newtitle);
+				EditText newauthor = (EditText) findViewById(R.id.newauthor);
+				EditText newbody = (EditText) findViewById(R.id.newbody);
+				title = newtitle.getText().toString();
+				body = newauthor.getText().toString();
+				user = newbody.getText().toString();
+				LocalStorageController localStorageController = new LocalStorageController(this);
+				int old_frag;
+				System.out.println(extras);
+				if (extras != null){
+					old_frag = extras.getInt("frag_id");
+					if (old_frag == 0){
+						int s_id = localStorageController.setStory(title, user);
+						int frag_id = localStorageController.setFragment(s_id, title, user, body, old_frag);
+						Intent myIntent = new Intent(this, EditFragementActivity.class);
+						myIntent.putExtra("frag_id", frag_id);
+						this.startActivity(myIntent);
+					}else{
+
+						int s_id = localStorageController.setStory(title, user);
+						int frag_id = localStorageController.setFragment(s_id, title, user, body, old_frag);
+						Intent myIntent = new Intent(this, EditFragementActivity.class);
+						myIntent.putExtra("frag_id", frag_id);
+						this.startActivity(myIntent);
+
+					}
+				}
+
+				break;
+			default:
+				currentView.getRootView().dispatchKeyEvent(new KeyEvent (KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_BACK));
+				return super.onContextItemSelected(item);
+			}
+		}
+
+		return super.onContextItemSelected(item);
+
 	}
-	return super.onContextItemSelected(item);
+
+	@Override
+	protected void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
 		
 	}
+ 
+	@Override
+    public void onBackPressed() {
+        super.onBackPressed();   
+        //    finish();
+
+    }
 
 }

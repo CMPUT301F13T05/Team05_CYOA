@@ -28,6 +28,7 @@ public class Fragement  {
 	private SortedMap<Integer, Media> media; // Key will be a line number
 	private ArrayList<Annotation> annotations;
 	private ArrayList<Choice> choices;
+	private String body;
 
 	public Fragement() {
 		super();
@@ -35,6 +36,15 @@ public class Fragement  {
 		this.choices = new ArrayList<Choice>(); 
 	}	
 	
+	public Fragement(String body) {
+		this();
+		this.body = body;
+	}	
+	
+	/**
+	 * adds a choice to the fragment
+	 * @param choice
+	 */
 	public void addChoice(Choice choice) {
 		this.choices.add(choice);
 	}

@@ -28,11 +28,19 @@ public class Story {
 	private ArrayList<User> users; 
 	private ArrayList<Fragement> fragements;
 	private UUID id;
+	private boolean isLocal;
 	
 	public Story() {
 		this.users = new ArrayList<User>();
 		this.fragements = new ArrayList<Fragement>();
 		this.id = UUID.randomUUID();
+		this.title = "";
+	}
+	
+	public Story(UUID uniqueId) {
+		this.users = new ArrayList<User>();
+		this.fragements = new ArrayList<Fragement>();
+		this.id = uniqueId;
 		this.title = "";
 	}
 	
@@ -66,7 +74,10 @@ public class Story {
 			this.users.add(user);
 		}
 	}
-	
+	/**
+	 * returns list of users for a story
+	 * @return
+	 */
 	public ArrayList<User> users() {
 		return this.users;
 	}
@@ -77,11 +88,17 @@ public class Story {
 	public void setFragements(ArrayList<Fragement> fragements) {
 		this.fragements = fragements;
 	}
-	
+	/**
+	 * adds a fragment to a story
+	 * @param fragement
+	 */
 	public void addFragement(Fragement fragement) {
 		this.fragements.add(fragement);
 	}
-
+	/**
+	 * Returns a list of fragments for a story
+	 * @return ArrayList<fragment>
+	 */
 	public ArrayList<Fragement> getFragements()
 	{	
 		return this.fragements;	
@@ -92,7 +109,10 @@ public class Story {
 	public void setId(UUID id) {
 		this.id = id;
 	}
-	
+	/**
+	 * 
+	 * @return UUID
+	 */
 	public UUID id() {
 		return this.id;
 	}

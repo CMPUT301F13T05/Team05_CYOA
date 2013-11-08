@@ -18,7 +18,12 @@
  */
 package com.uofa.adventure_app.activity;
 import java.util.ArrayList;
+import java.util.UUID;
+import java.util.HashMap;
+import java.util.List;
 
+
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.ContextMenu;
@@ -32,9 +37,13 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 
 import android.widget.GridView;
+
 import android.widget.AdapterView.AdapterContextMenuInfo;
 
+import android.widget.Toast;
+
 import com.uofa.adventure_app.R;
+import com.uofa.adventure_app.controller.LocalStorageController;
 import com.uofa.adventure_app.controller.http.HttpObjectStory;
 import com.uofa.adventure_app.interfaces.AdventureActivity;
 import com.uofa.adventure_app.model.Choice;
@@ -44,56 +53,75 @@ import com.uofa.adventure_app.model.User;
 
 public class BrowserActivity extends AdventureActivity {
 
+<<<<<<< HEAD
 	private ArrayAdapter<String> storyGridAdapter;
+=======
+
+	private StoryGridAdapter storyGridAdapter;
+
+	//private StoryGridAdapter;
+>>>>>>> origin/master
 
 	ArrayList<String> List;
 	GridView grid;
-
+	LocalStorageController localStorageController;
 	User username;
 	View v;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		//setContentView(R.layout.activity_browser);
+		setContentView(R.layout.activity_browser);
 		v = this.findViewById(android.R.id.content);
+		localStorageController = new LocalStorageController(this);
 		username = new User();
-//	    boolean firstrun = getSharedPreferences("PREFERENCE", MODE_PRIVATE).getBoolean("firstrun", true);
-//	    if (firstrun){
-//	    	System.out.println(v);
-//	    	//openFirstContext(v);
-//		    System.out.println("here");
-//	    // Save the state
-//	    getSharedPreferences("PREFERENCE", MODE_PRIVATE)
-//	        .edit()
-//	        .putBoolean("firstrun", false)
-//	        .commit();
-//	    }
-	    setContentView(R.layout.activity_browser);
-		 //TESTING
+		boolean firstrun = getSharedPreferences("PREFERENCE", MODE_PRIVATE).getBoolean("firstrun", true);
+		if (firstrun){
+			Intent myIntent = new Intent(this, FirstRunOnlyActivity.class);
+			this.startActivity(myIntent);
+			// Save the state
+			getSharedPreferences("PREFERENCE", MODE_PRIVATE)
+			.edit()
+			.putBoolean("firstrun", false)
+			.commit();
+		}
+		//TESTING
+		HttpObjectStory httpStory = new HttpObjectStory();
+		for(int i = 12; i < 15; i++) {
 		Story tStory = new Story();
 		tStory.addUser(new User("Chris"));
-		tStory.setTitle("This is A TITLE");
+		tStory.setTitle("Tile for Story Number " + i);
+		// Blank Fragement with no choices
 		tStory.addFragement(new Fragement());
-		Fragement tFrag = new Fragement();
-		tFrag.addChoice(new Choice(new Fragement()));
-		tFrag.addChoice(new Choice(new Fragement()));
-		tFrag.addChoice(new Choice(new Fragement()));
-		tFrag.addChoice(new Choice(new Fragement()));
-		tFrag.addChoice(new Choice(new Fragement()));
-		tStory.addFragement(tFrag);
 		
+		Fragement Frag1 = new Fragement("Fragement 1 Body");
+		Fragement Frag2 = new Fragement("Fragement 2 Body");
+		Fragement Frag3 = new Fragement("Fragement 3 Body");
+		Fragement Frag4 = new Fragement("Fragement 4 Body");
+			Frag1.addChoice(new Choice(Frag2));
+			Frag1.addChoice(new Choice(Frag3));
+		Frag3.addChoice(new Choice(new Fragement("A Choice")));
+		Frag4.addChoice(new Choice(new Fragement("B Choice")));
+		tStory.addFragement(Frag1);
+		tStory.addFragement(Frag2);
+		tStory.addFragement(Frag3);
+		tStory.addFragement(Frag4);
+		this.httpRequest(httpStory.publishObject(tStory), "NO_RETURN");
+		}
+
 		// Search Example See Log of output.
+
+
+		//AdventureApplication.getWebServiceController().publish(tStory);
 		
-		//AdventureApplication.getWebServiceController().publish(tStory);
-		//AdventureApplication.getWebServiceController().publish(tStory);
-		HttpObjectStory httpStory = new HttpObjectStory();
+
+		//this.httpRequest(httpStory.deleteObject("nmKNN_z9Sb6awP39uH_9nA"), "Don't care...");
 		
 		// This method will get all, and call the all method in dataReturn()..
-		
-		
+
+
 		// This method will call the get method in dataReturn() when done loading...
-		this.httpRequest(httpStory.searchObject("Chris"), GET_METHOD);
+		this.httpRequest(httpStory.fetchAll(), GET_ALL_METHOD);
 
 	}
 
@@ -102,8 +130,8 @@ public class BrowserActivity extends AdventureActivity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-	    MenuInflater inflater = getMenuInflater();
-	    inflater.inflate(R.menu.main, menu);
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.main, menu);
 		return super.onCreateOptionsMenu(menu);
 	}
 	@Override
@@ -112,10 +140,9 @@ public class BrowserActivity extends AdventureActivity {
 		// Handle presses on the action bar items
 		switch (item.getItemId()) {
 		case R.id.new_story:
-			newStory();
+			this.newStory();
 			break;
 		case R.id.refresh:
-			System.out.println("Here before call");
 			HttpObjectStory httpStory = new HttpObjectStory();
 			this.httpRequest(httpStory.fetchAll(), GET_ALL_METHOD);
 			break;
@@ -126,12 +153,17 @@ public class BrowserActivity extends AdventureActivity {
 		return super.onOptionsItemSelected(item);
 	}
 	public void newStory() {
-
-		Intent myIntent = new Intent(this, EditFragementActivity.class);
+		Intent myIntent = new Intent(this, EditStoryActivity.class);
+		Toast.makeText(this, localStorageController.setStory("new story", "ulvi")+"", 2).show();
+		//Toast.makeText(this, localStorageController.setStory("Story 1", "Ulvi")+"", 2).show();
+		Toast.makeText(this, localStorageController.setFragment(1, "Fragment 1 of Story 1", "Ulvi", "test frag body", 0)+"", 2).show();
+		int i = 0;
+		myIntent.putExtra("frag_id", i);
 		this.startActivity(myIntent);
+		
 		//Testing
-		//LocalStorageController localStorageController = new LocalStorageController(this);
-		//Toast.makeText(this, localStorageController.getStory(1).get(3).get(0), 2).show();
+
+
 		//localStorageController.getStory(1);
 		//HashMap<Integer, List<String>> newMap =localStorageController.getBrowserViewInfo();
 		//newMap.get(4).get(0);
@@ -151,11 +183,11 @@ public class BrowserActivity extends AdventureActivity {
 		//
 		//Cursor c=localStorageController.openForRead().db.rawQuery("select * from images where is_annotation=1", null);
 		//c.moveToFirst();		
-				//mydb.rawQuery("select DISTINCT tbl_name from sqlite_master", null);
+		//mydb.rawQuery("select DISTINCT tbl_name from sqlite_master", null);
 		/*if (c != null ) {
 			if  (c.moveToFirst()) {
 				do {
-					
+
 					String one = c.getString(0);
 					Toast.makeText(this, one, 2).show();
 					String two = c.getString(1);
@@ -170,18 +202,18 @@ public class BrowserActivity extends AdventureActivity {
 		c.close();
 		//String title = c.getString(0);
 		localStorageController.close();
-		*/
+		 */
 
 	}
-	
+
 	public void viewStory(View v) {
-		
+
 		Intent myIntent = new Intent(this, StoryActivity.class);
 		this.startActivity(myIntent);
 	}
-	
+
 	public void updateView(){
-		
+
 	}
 
 	@Override
@@ -192,7 +224,7 @@ public class BrowserActivity extends AdventureActivity {
 			ArrayList<String> strings = new ArrayList<String>();
 			for(Story s: result) {
 				if(s != null) {
-				strings.add(s.title());
+					strings.add(s.title());
 				}
 			}
 			for(int i = 0; i <strings.size(); i++) {
@@ -203,8 +235,9 @@ public class BrowserActivity extends AdventureActivity {
 						strings.remove(i);
 					}
 
-				
+
 			}
+<<<<<<< HEAD
 			System.out.println("0: " + strings.get(0)+"/");
 			
 			grid = (GridView) findViewById(R.id.gridView1);
@@ -216,18 +249,33 @@ public class BrowserActivity extends AdventureActivity {
 
 			//adapter = new StoryGridAdapter(this, result);
 
+=======
+
+
+
+
+
+>>>>>>> origin/master
 			grid = (GridView) findViewById(R.id.gridView1);
+			//Testing to see if firstRunOnly screen works properly.
+			//strings.add(getSharedPreferences("PREFERENCE", MODE_PRIVATE).getString("username", null));e 
+
+
+					
+
+			storyGridAdapter = new StoryGridAdapter(this, result);
 			grid.setAdapter(storyGridAdapter);
 			grid.setOnItemClickListener(new 
-			GridView.OnItemClickListener() {
-			       // @Override
-			        public void onItemClick(AdapterView<?> a, View v, int i, long l) {
-			         
-			        	viewStory(v);
-			          
-			        }
-			    });
-			 
+					GridView.OnItemClickListener() {
+				// @Override
+				public void onItemClick(AdapterView<?> a, View v, int i, long l) {
+
+
+					viewStory(v);
+
+				}
+			});
+
 			System.out.println(result);
 
 		}
@@ -244,36 +292,43 @@ public class BrowserActivity extends AdventureActivity {
 	public void onCreateContextMenu(ContextMenu menu, View v,
 			ContextMenuInfo menuInfo) {
 		super.onCreateContextMenu(menu, v, menuInfo);
-			AdapterContextMenuInfo aInfo = (AdapterContextMenuInfo) menuInfo;
+		AdapterContextMenuInfo aInfo = (AdapterContextMenuInfo) menuInfo;
 
-		
-			// Style our context menu
-			menu.setHeaderIcon(android.R.drawable.ic_input_get);
-			menu.setHeaderTitle("Please enter your Name:");
-			MenuInflater inflater1 = getMenuInflater();
 
-			// Open Menu
-			inflater1.inflate(R.menu.firstcontext, menu);
+		// Style our context menu
+		menu.setHeaderIcon(android.R.drawable.ic_input_get);
+		menu.setHeaderTitle("Please enter your Name:");
+		MenuInflater inflater1 = getMenuInflater();
 
-		
+		// Open Menu
+		inflater1.inflate(R.menu.firstcontext, menu);
+
+
 	}
 	public void openFirstContext(View v) {
-		
+		System.out.println("openFirst before");
 		registerForContextMenu( v );
-        openContextMenu( v );  
+		System.out.println("openFirst after");
+		openContextMenu( v );  
+		System.out.println("openFirst after after");
 	}
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.ok:
-			
+
 			break;
 
 		default:
 			return super.onContextItemSelected(item);
+		}
+		return super.onContextItemSelected(item);
+
 	}
-	return super.onContextItemSelected(item);
-		
-	}
-	
+
+
+
+
+
 }
+
