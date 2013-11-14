@@ -26,8 +26,12 @@ public class StoryController {
 	
 	ArrayList<Story> stories;
 	
+	public StoryController () {
+		this.stories = new ArrayList<Story>();
+	}
+	
 	public void addStory(Story story) {
-		if(!stories.contains(story.id()))
+		if(!stories.contains(story))
 			this.stories.add(story);
 	}
 	
