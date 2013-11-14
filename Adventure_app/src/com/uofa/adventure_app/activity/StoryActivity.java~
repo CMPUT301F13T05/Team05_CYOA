@@ -78,14 +78,8 @@ public class StoryActivity extends AdventureActivity {
 		LocalStorageController localStorageController = new LocalStorageController(this);
 		Bundle extras = extras = getIntent().getExtras();
 		if (extras != null){
-			System.out.println(extras.getString("StoryID"));
-			Story currentStory = new Story(UUID.fromString(extras.getString("StoryID")));
-			ArrayList<Story> stories = AdventureApplication.getStoryController().getStories();
-			System.out.println("Index: " + stories.indexOf(currentStory) + " ," + stories);
-			currentStory = stories.get(stories.indexOf(currentStory));
-			testBody.setText(currentStory.getFragements().toString());
-			testAuthor.setText(currentStory.users().toString());
-			testtitle.setText(currentStory.title());
+			storyID = UUID.fromString(extras.getString("StoryID"));
+
 			
 		}else{
 			testBody.setText("This story isn't very good.");
@@ -258,7 +252,7 @@ public class StoryActivity extends AdventureActivity {
 	     * updates the view
 	     */
 		public void updateView(){
-		//AdventureApplication.getStoryController();
+		AdventureApplication.getStoryController();
 	}
 
 		@Override

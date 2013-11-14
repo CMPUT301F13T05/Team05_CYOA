@@ -48,6 +48,7 @@ import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.Toast;
 
 import com.uofa.adventure_app.R;
+import com.uofa.adventure_app.application.AdventureApplication;
 import com.uofa.adventure_app.controller.LocalStorageController;
 import com.uofa.adventure_app.controller.http.HttpObjectStory;
 import com.uofa.adventure_app.interfaces.AdventureActivity;
@@ -66,7 +67,7 @@ public class BrowserActivity extends AdventureActivity {
 	View v;
 	TextView search;
 	String searchQuery = "";
-	private ArrayList<Story> stories;
+	private ArrayList<Story> stories = AdventureApplication.getStoryController().getStories();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -75,7 +76,6 @@ public class BrowserActivity extends AdventureActivity {
 		v = this.findViewById(android.R.id.content);
 		localStorageController = new LocalStorageController(this);
 		search = (EditText) findViewById(R.id.search);
-		stories = new ArrayList<Story>();
 		//search.addTextChangedListener(new GenericTextWatcher(search));
 		username = new User();
 		boolean firstrun = getSharedPreferences("PREFERENCE", MODE_PRIVATE).getBoolean("firstrun", true);
@@ -161,9 +161,12 @@ public class BrowserActivity extends AdventureActivity {
 	 * @param ArrayList<Story> result
 	 */
 	public void dataReturn(ArrayList<Story> result, String method) {
-		this.stories.clear();
-		for(int i = 0; i<result.size(); i++ )
+
+		
+		for(int i = 0; i<result.size(); i++ ) {
 			stories.add(result.get(i));
+		}
+		
 		if(method.equals(GET_ALL_METHOD)) {
 			HashMap<String, List<String>> map = new HashMap<String, List<String>>();
 			LocalStorageController localStorageController = new LocalStorageController(this);
@@ -171,7 +174,7 @@ public class BrowserActivity extends AdventureActivity {
 			ArrayList<String> keys = new ArrayList<String>();
 			keys.addAll(map.keySet());
 			for(int i = 0; i<keys.size(); i++){
-				Story s = new Story(UUID.randomUUID());
+				Story s = new Story(UUID.fromString(keys.get(i)));
 				ArrayList<String> list = new ArrayList<String>(); 
 				
 				list.addAll(map.get(keys.get(i)));
@@ -185,6 +188,7 @@ public class BrowserActivity extends AdventureActivity {
 				s.setUsers(users);
 				stories.add(s);
 			}
+			System.out.println(stories);
 			GridView grid = (GridView) findViewById(R.id.gridView1);
 			storyGridAdapter = new StoryGridAdapter(this, stories,searchQuery);
 			grid.setAdapter(storyGridAdapter);

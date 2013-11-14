@@ -46,6 +46,11 @@ public class User {
 		this.setUid(UUID.randomUUID());
 	}
 
+	@Override
+	public String toString() {
+		return this.getName();
+	}
+	
 	/**
 	 * Set the name of the User
 	 * @param name
