@@ -44,6 +44,8 @@ public class Story {
 		this.title = "";
 	}
 	
+	
+	
 	/**
 	 * @param title the title to set
 	 */

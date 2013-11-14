@@ -139,9 +139,9 @@ public class BrowserActivity extends AdventureActivity {
 	 * @param Story s
 	 */
 	public void viewStory(View v, Story s) {
-
-		Intent myIntent = new Intent(this, StoryActivity.class);
 		String id = s.id().toString();
+		System.out.println(id);
+		Intent myIntent = new Intent(this, StoryActivity.class);
 		myIntent.putExtra("StoryID", id);
 		this.startActivity(myIntent);
 	}

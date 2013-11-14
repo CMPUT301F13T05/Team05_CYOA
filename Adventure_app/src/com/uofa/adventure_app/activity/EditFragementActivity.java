@@ -205,6 +205,7 @@ public class EditFragementActivity extends AdventureActivity {
 					if (old_frag == 0){
 						Story s = new Story();
 						s_id = s.id().toString();
+						System.out.println(s_id);
 						localStorageController.setStory(s_id, title, user);
 						old_frag = localStorageController.setFragment(s_id, title, user, body, old_frag);
 						newtitle.setText("");

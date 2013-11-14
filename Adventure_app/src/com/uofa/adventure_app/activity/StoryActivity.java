@@ -79,7 +79,26 @@ public class StoryActivity extends AdventureActivity {
 		Bundle extras = extras = getIntent().getExtras();
 		if (extras != null){
 			storyID = UUID.fromString(extras.getString("StoryID"));
+			//This code will be used in project part 4
+			ArrayList<Fragement> fragements = new ArrayList<Fragement>();
+			fragment = localStorageController.getStory(storyID.toString());
+			//System.out.println("Story id: " +storyID);
+			//System.out.println(fragment);
+			//Story s = new Story(storyID);
+			//System.out.println("author id: " +fragment.get(1).get(0));
+			//System.out.println("title id: " +fragment.get(0).get(0));
+			testBody.setText(fragment.get(3).get(0));
+			testAuthor.setText(fragment.get(0).toString());
+			testtitle.setText(fragment.get(1).toString());
+			//This code will be used in project part 4 
+//			Story s = new Story(storyID);
 
+			//fragements.addAll(storyID.getFragements());
+			//testBody.setText(fragements.get(0).toString());
+			//testAuthor.setText(s.users().get(0).toString());
+			//testtitle.setText(s.title().toString());
+
+			System.out.println(storyID);
 			
 		}else{
 			testBody.setText("This story isn't very good.");
