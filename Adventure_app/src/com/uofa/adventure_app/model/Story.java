@@ -119,6 +119,23 @@ public class Story {
 		return this.id;
 	}
 	
+/**
+ * Returns the boolean true if the story is in the local storage
+ * otherwise false.
+ * @return
+ */
+	public boolean isLocal() {
+		return this.isLocal;
+	}
+	
+	/**
+	 * Set if the story is local or not.
+	 * @param value
+	 */
+	public void setIsLocal(boolean value) {
+		this.isLocal = value;
+	}
+	
 	@Override
 	public boolean equals(Object o) {
 		System.out.println("EQUALS");

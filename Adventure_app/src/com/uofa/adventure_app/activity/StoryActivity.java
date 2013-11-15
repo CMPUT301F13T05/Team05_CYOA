@@ -70,13 +70,8 @@ public class StoryActivity extends AdventureActivity {
 		testtitle = (TextView) findViewById(R.id.titleview);
 		testAuthor = (TextView) findViewById(R.id.authorview);
 		testBody = (TextView) findViewById(R.id.storyview);
-		List<List<String>> fragment =new ArrayList<List<String>>();//Title, Users, Choices, Body is the order given
-		List<String> fragmentTitle = new ArrayList<String>();
-		List<String> fragmentUsers = new ArrayList<String>();
-		List<String> fragmentBody = new ArrayList<String>();
-		List<String> fragmentChoices = new ArrayList<String>();
 		LocalStorageController localStorageController = new LocalStorageController(this);
-		Bundle extras = extras = getIntent().getExtras();
+		Bundle extras = getIntent().getExtras();
 		if (extras != null){
 			storyID = UUID.fromString(extras.getString("StoryID"));
 			System.out.println(extras.getString("StoryID"));

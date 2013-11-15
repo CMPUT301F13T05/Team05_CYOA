@@ -42,23 +42,23 @@ public class StoryGridAdapter extends BaseAdapter {
 	private Context context;
 	private LayoutInflater mInflater;
 	private String query;
-	
+
 	public StoryGridAdapter(Context context, ArrayList<Story> stories) {
 		this.context = context;
-        mInflater = LayoutInflater.from(this.context);
+		mInflater = LayoutInflater.from(this.context);
 		this.stories = new ArrayList<Story>(stories);
 	}
-	
-	public StoryGridAdapter(Context context, ArrayList<Story> stories, String stringQuery) {
-		this.query = stringQuery;
-		this.context = context;
-        mInflater = LayoutInflater.from(this.context);
-		this.stories = new ArrayList<Story>(stories);
+
+	public void filter(String query) {
+		if (query != null) {
+			this.query = query;
+			this.notifyDataSetChanged();
+		}
 	}
-	
+
 	@Override
 	public int getCount() {
-			return this.stories.size();
+		return this.stories.size();
 	}
 
 	@Override
@@ -75,29 +75,30 @@ public class StoryGridAdapter extends BaseAdapter {
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		// Setup the multi line items in a listview
-	       if (convertView == null) {
-	            convertView = mInflater.inflate(android.R.layout.two_line_list_item, parent, false);
-	        }
-	       // Get the views
-	        TextView title = (TextView) convertView.findViewById(R.id.text1);
-	        TextView sub = (TextView) convertView.findViewById(R.id.text2);
-	 
-	        //Set the text
-	        Story story = stories.get(position);
-	        if(story != null) {
-	        	if(story.title().contains(query)) {
-	        	title.setText(story.title());
-	        	
-	        	String authors = new String();
-	        	// TODO: Format this better!
-	        	for(User u: story.users()) {
-	        		authors += "By: " + u.getName();
-	        	}
-	        	sub.setText(authors);
-	        	}
-	        }
-	        
-	        return convertView;
+		if (convertView == null) {
+			convertView = mInflater.inflate(
+					android.R.layout.two_line_list_item, parent, false);
+		}
+		// Get the views
+		TextView title = (TextView) convertView.findViewById(R.id.text1);
+		TextView sub = (TextView) convertView.findViewById(R.id.text2);
+
+		// Set the text
+		Story story = stories.get(position);
+		if (story != null) {
+			if (story.title().contains(query)) {
+				title.setText(story.title());
+
+				String authors = new String();
+				// TODO: Format this better!
+				for (User u : story.users()) {
+					authors += "By: " + u.getName();
+				}
+				sub.setText(authors);
+			}
+		}
+
+		return convertView;
 	}
 
 }

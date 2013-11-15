@@ -54,10 +54,10 @@ import com.uofa.adventure_app.model.Story;
 	public HttpObject fetch(UUID id) {
 		// This should search all Fields
 		HttpObject obj = null;
-		String searchQuery = "{\"query\" : {\"term\" : {\"id\" : \"" + id.toString() + "\"}}}";
+		String searchQuery = "{\"query\" : {\"term\" : {\"_type\" : \"" + id.toString() + "\"}}}";
 		//String searchQuery = "{ \"query\": { \"match_all\": {}}}";
 		try {
-			obj = new HttpObject(HttpRequestType.POST,searchQuery , new URL(commonUrlString + "_search?pretty=1"));
+			obj = new HttpObject(HttpRequestType.POST,searchQuery , new URL(commonUrlString + "_search"));
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
