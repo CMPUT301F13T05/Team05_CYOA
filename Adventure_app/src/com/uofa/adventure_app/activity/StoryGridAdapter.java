@@ -49,11 +49,11 @@ public class StoryGridAdapter extends BaseAdapter {
 		this.stories = new ArrayList<Story>(stories);
 	}
 	
-	public StoryGridAdapter(Context context, ArrayList<Story> stories, String stringQuery) {
-		this.query = stringQuery;
-		this.context = context;
-        mInflater = LayoutInflater.from(this.context);
-		this.stories = new ArrayList<Story>(stories);
+	public void filter(String query) {
+		if(query != null) {
+			this.query = query;
+			this.notifyDataSetChanged();
+		}
 	}
 	
 	@Override
@@ -99,5 +99,6 @@ public class StoryGridAdapter extends BaseAdapter {
 	        
 	        return convertView;
 	}
+
 
 }

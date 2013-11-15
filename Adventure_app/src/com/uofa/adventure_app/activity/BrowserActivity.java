@@ -18,42 +18,30 @@
  */
 package com.uofa.adventure_app.activity;
 import java.util.ArrayList;
-import java.util.UUID;
 import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
 
-
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.ContextMenu;
-import android.view.KeyEvent;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ContextMenu.ContextMenuInfo;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
+import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.EditText;
+import android.widget.GridView;
 import android.widget.SearchView;
 import android.widget.TextView;
-
-import android.widget.GridView;
-
-import android.widget.AdapterView.AdapterContextMenuInfo;
-
-import android.widget.Toast;
 
 import com.uofa.adventure_app.R;
 import com.uofa.adventure_app.application.AdventureApplication;
 import com.uofa.adventure_app.controller.LocalStorageController;
 import com.uofa.adventure_app.controller.http.HttpObjectStory;
 import com.uofa.adventure_app.interfaces.AdventureActivity;
-import com.uofa.adventure_app.model.Choice;
-import com.uofa.adventure_app.model.Fragement;
 import com.uofa.adventure_app.model.Story;
 import com.uofa.adventure_app.model.User;
 
@@ -68,6 +56,7 @@ public class BrowserActivity extends AdventureActivity {
 	TextView search;
 	String searchQuery = "";
 	private ArrayList<Story> stories = AdventureApplication.getStoryController().getStories();
+	SearchView searchView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -75,10 +64,21 @@ public class BrowserActivity extends AdventureActivity {
 		setContentView(R.layout.activity_browser);
 		v = this.findViewById(android.R.id.content);
 		localStorageController = new LocalStorageController(this);
-		search = (EditText) findViewById(R.id.search);
-		//search.addTextChangedListener(new GenericTextWatcher(search));
 		username = new User();
+
 		boolean firstrun = getSharedPreferences("PREFERENCE", MODE_PRIVATE).getBoolean("firstrun", true);
+		
+		GridView grid = (GridView) findViewById(R.id.gridView1);
+		grid.setAdapter(storyGridAdapter);
+		
+		grid.setOnItemClickListener(new 
+				GridView.OnItemClickListener() {
+			// @Override
+			public void onItemClick(AdapterView<?> a, View v, int i, long l) {					
+				viewStory(v, stories.get(i));
+			}
+		});
+		
 		if (firstrun){
 			Intent myIntent = new Intent(this, FirstRunOnlyActivity.class);
 			this.startActivity(myIntent);
@@ -97,6 +97,24 @@ public class BrowserActivity extends AdventureActivity {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.main, menu);
+		searchView = (SearchView) menu.findItem(R.id.search).getActionView();
+		final SearchView.OnQueryTextListener queryTextListener = new SearchView.OnQueryTextListener() {
+		    @Override
+		    public boolean onQueryTextChange(String newText) {
+		        // Do something
+		    	storyGridAdapter.filter(newText);
+		        return true;
+		    }
+
+		    @Override
+		    public boolean onQueryTextSubmit(String query) {
+		        // Do something
+		    	storyGridAdapter.filter(query);
+		        return true;
+		    }
+		};
+		searchView.setOnQueryTextListener(queryTextListener);
+		
 		return super.onCreateOptionsMenu(menu);
 	}
 	@Override
@@ -205,15 +223,7 @@ public class BrowserActivity extends AdventureActivity {
 			}
 			System.out.println(stories);
 			GridView grid = (GridView) findViewById(R.id.gridView1);
-			storyGridAdapter = new StoryGridAdapter(this, stories,searchQuery);
 			grid.setAdapter(storyGridAdapter);
-			grid.setOnItemClickListener(new 
-					GridView.OnItemClickListener() {
-				// @Override
-				public void onItemClick(AdapterView<?> a, View v, int i, long l) {					
-					viewStory(v, stories.get(i));
-				}
-			});
 		}
 		if(method.equals(GET_METHOD)) {
 			System.out.println(result);
