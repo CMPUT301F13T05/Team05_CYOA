@@ -31,6 +31,7 @@ import java.util.TimerTask;
 public class StoryParser {
 
 	public ArrayList<Story> parseStory(String parseString) {
+		System.out.println(parseString);
 		ArrayList<Story> stories = new ArrayList<Story>();
 		stories.clear();
 		if (parseString != null) {
@@ -41,8 +42,10 @@ public class StoryParser {
 					parseString, elasticSearchResponseType);
 			if (esResponse.getHits() != null) {
 				for (ElasticSearchResponse<Story> s : esResponse.getHits()) {
-					if(s != null)
+					if(s != null) {
+						//s.getObject().setIsLocal(false);
 						stories.add(s.getObject());
+					}
 				}
 			}
 		}

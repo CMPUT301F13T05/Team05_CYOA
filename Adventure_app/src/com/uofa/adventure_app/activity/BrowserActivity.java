@@ -139,12 +139,25 @@ public class BrowserActivity extends AdventureActivity {
 	 * @param Story s
 	 */
 	public void viewStory(View v, Story s) {
-
+		if(!s.isLocal()) {
+			fetchStory(s);
+		} else {
+			this.openStory(s);
+		}
+	}
+	
+	public void fetchStory(Story s) {
+		HttpObjectStory httpStory = new HttpObjectStory();
+		this.httpRequest(httpStory.fetch(s.id()), GET_METHOD);
+	}
+	
+	public void openStory (Story s) {
 		Intent myIntent = new Intent(this, StoryActivity.class);
 		String id = s.id().toString();
 		myIntent.putExtra("StoryID", id);
 		this.startActivity(myIntent);
 	}
+	
 	/**
 	 * Updates the view
 	 */
@@ -164,7 +177,8 @@ public class BrowserActivity extends AdventureActivity {
 
 		
 		for(int i = 0; i<result.size(); i++ ) {
-			stories.add(result.get(i));
+			if(result.get(i).isLocal() == false) 
+				stories.add(result.get(i));
 		}
 		
 		if(method.equals(GET_ALL_METHOD)) {
@@ -186,6 +200,7 @@ public class BrowserActivity extends AdventureActivity {
 				}
 				
 				s.setUsers(users);
+				s.setIsLocal(true);
 				stories.add(s);
 			}
 			System.out.println(stories);
@@ -201,9 +216,18 @@ public class BrowserActivity extends AdventureActivity {
 			});
 		}
 		if(method.equals(GET_METHOD)) {
-			System.out.println("We got some data here!");
-			// Need to parse the Data, or Maybe I will change this to an array always..?
-
+			System.out.println(result);
+			Story currentStory = result.get(0);
+			if(currentStory != null) {
+				AdventureApplication.getStoryController().getStories().remove(currentStory);
+				currentStory.setIsLocal(true);
+				// Add story to local database
+				// Add the Local DB version to controller
+				// This is temp code below
+				AdventureApplication.getStoryController().addStory(currentStory);
+				
+				openStory(currentStory);
+			}
 		}
 	}
 	// We want to create a context Menu when the user long click on an item
