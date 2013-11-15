@@ -118,5 +118,23 @@ public class Story {
 	public UUID id() {
 		return this.id;
 	}
+	
+	@Override
+	public boolean equals(Object o) {
+		System.out.println("EQUALS");
+		// TODO Auto-generated method stub
+		if(o.getClass().equals(this.getClass())) {
+			Story story = (Story) o;
+			if (this.id().equals(story.id()))
+				return true;
+			else
+				return false;
+		}
+		
+		if (this == o)
+			return true;
+		else
+			return false;
+	} 
 
 }

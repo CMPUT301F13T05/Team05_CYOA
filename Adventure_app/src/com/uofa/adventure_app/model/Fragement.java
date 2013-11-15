@@ -34,6 +34,8 @@ public class Fragement  {
 		super();
 		this.annotations = new ArrayList<Annotation>();
 		this.choices = new ArrayList<Choice>(); 
+		this.media = null;
+
 	}	
 	
 	public Fragement(String body) {
