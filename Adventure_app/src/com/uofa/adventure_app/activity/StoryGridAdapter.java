@@ -19,20 +19,17 @@
 package com.uofa.adventure_app.activity;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import android.R;
 import android.content.Context;
-import android.provider.ContactsContract.CommonDataKinds.Note;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import com.uofa.adventure_app.controller.LocalStorageController;
 import com.uofa.adventure_app.model.Story;
 import com.uofa.adventure_app.model.User;
 
@@ -58,11 +55,10 @@ public class StoryGridAdapter extends BaseAdapter {
 			this.query = query;
 			this.stories.clear();
 			for (Story s : storiesClone) {
-				if(s.title().indexOf(query) != -1) {
+				if(s.title().matches("(?i)(.*)"+query+"(.*)")) {
 					this.stories.add(s);
 				}
 				}
-			System.out.println(stories);
 			this.notifyDataSetChanged();
 		}
 	}
