@@ -18,8 +18,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 package com.uofa.adventure_app.model;
 
+import com.uofa.adventure_app.interfaces.UniqueId;
 
-public class Annotation {
+
+public class Annotation extends UniqueId {
 	
 	// the video, audio, or image 
 	private Media media;

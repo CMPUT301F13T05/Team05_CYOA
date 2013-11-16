@@ -18,14 +18,37 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 package com.uofa.adventure_app.model;
 
-import org.json.JSONObject;
-
 import com.uofa.adventure_app.enums.MediaType;
+import com.uofa.adventure_app.interfaces.UniqueId;
 
-public class Media {
+public class Media extends UniqueId {
 	
 	private String path;
 	private MediaType mediaType;
+	/**
+	 * @return the path
+	 */
+	public String path() {
+		return path;
+	}
+	/**
+	 * @param path the path to set
+	 */
+	public void setPath(String path) {
+		this.path = path;
+	}
+	/**
+	 * @return the mediaType
+	 */
+	public MediaType mediaType() {
+		return mediaType;
+	}
+	/**
+	 * @param mediaType the mediaType to set
+	 */
+	public void setMediaType(MediaType mediaType) {
+		this.mediaType = mediaType;
+	}
 }
 	
 
