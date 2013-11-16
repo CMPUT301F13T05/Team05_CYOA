@@ -2,5 +2,6 @@
         <item android:id="@+id/search" android:title="Search"  android:showAsAction="ifRoom|withText" android:actionViewClass="android.widget.SearchView"></item>
         <item android:id="@+id/new_story" android:showAsAction="never" android:title="New Story"></item>
         <item android:id="@+id/refresh"  android:showAsAction="never" android:title="Refresh"></item>
+        <item android:id="@+id/random"  android:showAsAction="never" android:title="I'm feeling Lucky!"></item>
 		
 </menu>

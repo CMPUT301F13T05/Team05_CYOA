@@ -39,6 +39,7 @@ import com.uofa.adventure_app.model.User;
 public class StoryGridAdapter extends BaseAdapter {
 
 	private ArrayList<Story> stories;
+	private ArrayList<Story> storiesClone;
 	private Context context;
 	private LayoutInflater mInflater;
 	private String query;
@@ -47,11 +48,21 @@ public class StoryGridAdapter extends BaseAdapter {
 		this.context = context;
 		mInflater = LayoutInflater.from(this.context);
 		this.stories = new ArrayList<Story>(stories);
+		this.storiesClone = new ArrayList<Story>();
+		this.storiesClone.addAll(stories);
+		this.query = "";
 	}
 
 	public void filter(String query) {
 		if (query != null) {
 			this.query = query;
+			this.stories.clear();
+			for (Story s : storiesClone) {
+				if(s.title().indexOf(query) != -1) {
+					this.stories.add(s);
+				}
+				}
+			System.out.println(stories);
 			this.notifyDataSetChanged();
 		}
 	}
@@ -63,7 +74,9 @@ public class StoryGridAdapter extends BaseAdapter {
 
 	@Override
 	public Object getItem(int position) {
+
 		return this.stories.get(position);
+
 	}
 
 	@Override
@@ -83,12 +96,11 @@ public class StoryGridAdapter extends BaseAdapter {
 		TextView title = (TextView) convertView.findViewById(R.id.text1);
 		TextView sub = (TextView) convertView.findViewById(R.id.text2);
 
-		// Set the text
-		Story story = stories.get(position);
-		if (story != null) {
-			if (story.title().contains(query)) {
-				title.setText(story.title());
 
+		
+		Story story = stories.get(position);
+		if(story != null) {
+				title.setText(story.title());
 				String authors = new String();
 				// TODO: Format this better!
 				for (User u : story.users()) {
@@ -96,8 +108,7 @@ public class StoryGridAdapter extends BaseAdapter {
 				}
 				sub.setText(authors);
 			}
-		}
-
+	
 		return convertView;
 	}
 
