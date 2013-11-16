@@ -125,7 +125,11 @@ public class BrowserActivity extends AdventureActivity {
 			Random rand = new Random();
 			int  n = rand.nextInt(stories.size()) - 1;
 			viewStory(v, stories.get(n));
-
+		case R.id.logout:
+			getSharedPreferences("PREFERENCE", MODE_PRIVATE).edit().putBoolean("firstrun", true).commit();
+			Intent myIntent = new Intent(this, BrowserActivity.class);
+			this.startActivity(myIntent);
+			finish();
 		default:
 			return super.onOptionsItemSelected(item);
 		}
