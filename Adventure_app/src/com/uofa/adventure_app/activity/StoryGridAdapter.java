@@ -39,31 +39,51 @@ import com.uofa.adventure_app.model.User;
 public class StoryGridAdapter extends BaseAdapter {
 
 	private ArrayList<Story> stories;
+	private ArrayList<Story> storiesClone;
 	private Context context;
 	private LayoutInflater mInflater;
 	private String query;
-	
+
 	public StoryGridAdapter(Context context, ArrayList<Story> stories) {
 		this.context = context;
-        mInflater = LayoutInflater.from(this.context);
+		mInflater = LayoutInflater.from(this.context);
 		this.stories = new ArrayList<Story>(stories);
+		this.storiesClone = new ArrayList<Story>();
+		this.storiesClone.addAll(stories);
+		this.query = "";
 	}
-	
+
 	public void filter(String query) {
-		if(query != null) {
+		if (query != null) {
 			this.query = query;
+			stories.clear();
+			for (Story s : storiesClone) {
+				if(s.title().indexOf(query) != -1) {
+					stories.add(s);
+				}
+				}
 			this.notifyDataSetChanged();
 		}
 	}
-	
+
 	@Override
 	public int getCount() {
-			return this.stories.size();
+		return this.stories.size();
 	}
 
 	@Override
 	public Object getItem(int position) {
+		
+		if(query.equals("")) {
+			return this.stories.get(position);
+		} else {
+		for (Story s : storiesClone) {
+			if(s.title().indexOf(query) != -1) {
+				stories.add(s);
+			}
+			}
 		return this.stories.get(position);
+		}
 	}
 
 	@Override
@@ -75,30 +95,27 @@ public class StoryGridAdapter extends BaseAdapter {
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		// Setup the multi line items in a listview
-	       if (convertView == null) {
-	            convertView = mInflater.inflate(android.R.layout.two_line_list_item, parent, false);
-	        }
-	       // Get the views
-	        TextView title = (TextView) convertView.findViewById(R.id.text1);
-	        TextView sub = (TextView) convertView.findViewById(R.id.text2);
-	 
-	        //Set the text
-	        Story story = stories.get(position);
-	        if(story != null) {
-	        	if(story.title().contains(query)) {
-	        	title.setText(story.title());
-	        	
-	        	String authors = new String();
-	        	// TODO: Format this better!
-	        	for(User u: story.users()) {
-	        		authors += "By: " + u.getName();
-	        	}
-	        	sub.setText(authors);
-	        	}
-	        }
-	        
-	        return convertView;
-	}
+		if (convertView == null) {
+			convertView = mInflater.inflate(
+					android.R.layout.two_line_list_item, parent, false);
+		}
+		// Get the views
+		TextView title = (TextView) convertView.findViewById(R.id.text1);
+		TextView sub = (TextView) convertView.findViewById(R.id.text2);
+		
+		Story story = stories.get(position);
+		if(story != null) {
+				title.setText(story.title());
+				String authors = new String();
+				// TODO: Format this better!
+				for (User u : story.users()) {
+					authors += "By: " + u.getName();
+				}
+				sub.setText(authors);
+			}
+	
 
+		return convertView;
+	}
 
 }

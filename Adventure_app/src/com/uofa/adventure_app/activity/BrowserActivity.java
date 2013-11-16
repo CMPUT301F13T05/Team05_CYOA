@@ -68,16 +68,6 @@ public class BrowserActivity extends AdventureActivity {
 
 		boolean firstrun = getSharedPreferences("PREFERENCE", MODE_PRIVATE).getBoolean("firstrun", true);
 		
-		GridView grid = (GridView) findViewById(R.id.gridView1);
-		grid.setAdapter(storyGridAdapter);
-		
-		grid.setOnItemClickListener(new 
-				GridView.OnItemClickListener() {
-			// @Override
-			public void onItemClick(AdapterView<?> a, View v, int i, long l) {					
-				viewStory(v, stories.get(i));
-			}
-		});
 		
 		if (firstrun){
 			Intent myIntent = new Intent(this, FirstRunOnlyActivity.class);
@@ -193,10 +183,9 @@ public class BrowserActivity extends AdventureActivity {
 	 */
 	public void dataReturn(ArrayList<Story> result, String method) {
 
-		
 		for(int i = 0; i<result.size(); i++ ) {
 			if(result.get(i).isLocal() == false) 
-				stories.add(result.get(i));
+				AdventureApplication.getStoryController().addStory(result.get(i));
 		}
 		
 		if(method.equals(GET_ALL_METHOD)) {
@@ -221,9 +210,16 @@ public class BrowserActivity extends AdventureActivity {
 				s.setIsLocal(true);
 				stories.add(s);
 			}
-			System.out.println(stories);
-			GridView grid = (GridView) findViewById(R.id.gridView1);
-			grid.setAdapter(storyGridAdapter);
+		      GridView grid = (GridView) findViewById(R.id.gridView1);
+              storyGridAdapter = new StoryGridAdapter(this, stories);
+              grid.setAdapter(storyGridAdapter);
+              grid.setOnItemClickListener(new 
+                              GridView.OnItemClickListener() {
+                      // @Override
+                      public void onItemClick(AdapterView<?> a, View v, int i, long l) {                                        
+                              viewStory(v, stories.get(i));
+                      }
+              });
 		}
 		if(method.equals(GET_METHOD)) {
 			System.out.println(result);
