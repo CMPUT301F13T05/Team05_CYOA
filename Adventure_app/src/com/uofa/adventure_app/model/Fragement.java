@@ -21,9 +21,9 @@ package com.uofa.adventure_app.model;
 import java.util.ArrayList;
 import java.util.SortedMap;
 
-import org.json.JSONObject;
+import com.uofa.adventure_app.interfaces.UniqueId;
 
-public class Fragement  {
+public class Fragement extends UniqueId  {
 	
 	private SortedMap<Integer, Media> media; // Key will be a line number
 	private ArrayList<Annotation> annotations;
@@ -40,7 +40,7 @@ public class Fragement  {
 	
 	public Fragement(String body) {
 		this();
-		this.body = body;
+		this.setBody(body);
 	}	
 	
 	/**
@@ -50,6 +50,21 @@ public class Fragement  {
 	public void addChoice(Choice choice) {
 		this.choices.add(choice);
 	}
-	
+
+	/**
+	 * @return the body
+	 */
+	public String body() {
+		return body;
+	}
+
+	/**
+	 * @param body the body to set
+	 */
+	public void setBody(String body) {
+		this.body = body;
+	}
+
+
 
 }

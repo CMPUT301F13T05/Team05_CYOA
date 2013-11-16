@@ -18,22 +18,17 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 package com.uofa.adventure_app.model;
 
-import java.util.UUID;
+import com.uofa.adventure_app.interfaces.UniqueId;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-public class User {
+public class User extends UniqueId{
 	
 	private String name;
-	private UUID uid;
 	
 	/**
 	 * Generates an Empty User. A uid is always generated.
 	 */
 	public User() {
 		super();
-		this.setUid(UUID.randomUUID());
 	}
 	
 	/**
@@ -43,7 +38,6 @@ public class User {
 	public User(String name) {
 		super();
 		this.name = name;
-		this.setUid(UUID.randomUUID());
 	}
 
 	@Override
@@ -59,14 +53,7 @@ public class User {
 		this.name = name;
 	}
 	
-	/**
-	 * Set the uid of the User
-	 * @param uid
-	 */
-	private void setUid(UUID uid) {
-		this.uid = uid;
-	}
-	
+
 	/**
 	 * Get the name of the author
 	 * @return
@@ -75,13 +62,6 @@ public class User {
 		return this.name;
 	}
 	
-	/**
-	 * Get the Unique id of the User
-	 * @return
-	 */
-	public UUID getUid() {
-		return this.uid;
-	}
 
 	
 }
