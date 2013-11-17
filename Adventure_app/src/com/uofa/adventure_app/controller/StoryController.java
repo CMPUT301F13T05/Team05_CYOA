@@ -34,6 +34,14 @@ public class StoryController {
 		if(!stories.contains(story))
 			this.stories.add(story);
 	}
+
+	
+	public void replaceStory(Story story) {
+		if(stories.contains(story)) {
+			int index = this.stories.indexOf(story);
+			this.stories.set(index, story);
+		}
+	}
 	
 	public ArrayList<Story> getStories() {
 		return this.stories;

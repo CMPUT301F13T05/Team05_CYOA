@@ -25,15 +25,11 @@ import java.util.UUID;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.ContextMenu;
-import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.AdapterView.AdapterContextMenuInfo;
-import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.SearchView;
 import android.widget.TextView;
@@ -180,7 +176,7 @@ public class BrowserActivity extends AdventureActivity {
 	 * Updates the view
 	 */
 	public void updateView(){
-
+		storyGridAdapter.notifyDataSetChanged();
 	}
 
 	@Override
@@ -221,13 +217,13 @@ public class BrowserActivity extends AdventureActivity {
 				AdventureApplication.getStoryController().addStory(s);
 			}
 		      GridView grid = (GridView) findViewById(R.id.gridView1);
-              storyGridAdapter = new StoryGridAdapter(this, stories);
+              storyGridAdapter = new StoryGridAdapter(this, AdventureApplication.getStoryController().getStories());
               grid.setAdapter(storyGridAdapter);
               grid.setOnItemClickListener(new 
                               GridView.OnItemClickListener() {
                       // @Override
                       public void onItemClick(AdapterView<?> a, View v, int i, long l) {                                        
-                              viewStory(v, stories.get(i));
+                              viewStory(v, AdventureApplication.getStoryController().getStories().get(i));
                       }
               });
 		}
@@ -235,14 +231,14 @@ public class BrowserActivity extends AdventureActivity {
 			System.out.println(result);
 			Story currentStory = result.get(0);
 			if(currentStory != null) {
-				AdventureApplication.getStoryController().getStories().remove(currentStory);
 				currentStory.setIsLocal(true);
+				AdventureApplication.getStoryController().replaceStory(currentStory);
+				AdventureApplication.getActivityController().update();
 				// Add story to local database
 				// Add the Local DB version to controller
 				// This is temp code below
-				AdventureApplication.getStoryController().addStory(currentStory);
-				
 				openStory(currentStory);
+
 			}
 		}
 	}

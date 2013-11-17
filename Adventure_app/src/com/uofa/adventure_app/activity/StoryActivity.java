@@ -77,7 +77,6 @@ public class StoryActivity extends AdventureActivity {
 			System.out.println(extras.getString("StoryID"));
 			Story currentStory = new Story(UUID.fromString(extras.getString("StoryID")));
 			ArrayList<Story> stories = AdventureApplication.getStoryController().getStories();
-			System.out.println("Index: " + stories.indexOf(currentStory) + " ," + stories);
 			currentStory = stories.get(stories.indexOf(currentStory));
 			testBody.setText(currentStory.getFragements().toString());
 			testAuthor.setText(currentStory.users().toString());

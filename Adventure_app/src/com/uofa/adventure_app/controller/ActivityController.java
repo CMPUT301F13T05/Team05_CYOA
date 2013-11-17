@@ -54,6 +54,12 @@ public class ActivityController {
 		activities.remove(activity);
 	}
 	
+	public void update() {
+		for(AdventureActivity a: activities) {
+			a.updateView();
+		}
+	}
+	
 	
 	
 }
