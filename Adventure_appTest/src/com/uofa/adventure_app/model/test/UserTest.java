@@ -25,7 +25,7 @@ public class UserTest extends TestCase {
 		// test if a user was made.
 		assertNotNull(testUser);
 		// test if a Uid was made
-		assertNotNull(testUser.getUid());
+		assertNotNull(testUser.uid());
 		
 		// test if setting/getting a User name works
 		testUser.setName("Joel");
@@ -39,7 +39,7 @@ public class UserTest extends TestCase {
 		assertNotSame(testUser, testUserName);
 		
 		//test if they have the same Uid's
-		assertNotSame(testUser.getUid(), testUserName.getUid());
+		assertNotSame(testUser.uid(), testUserName.uid());
 	}
 	
 }
