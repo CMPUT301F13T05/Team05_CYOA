@@ -138,7 +138,6 @@ public class Story {
 	
 	@Override
 	public boolean equals(Object o) {
-		System.out.println("EQUALS");
 		// TODO Auto-generated method stub
 		if(o.getClass().equals(this.getClass())) {
 			Story story = (Story) o;

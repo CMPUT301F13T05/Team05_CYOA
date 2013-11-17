@@ -19,17 +19,18 @@
 package com.uofa.adventure_app.activity;
 
 import java.util.ArrayList;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-import android.R;
 import android.content.Context;
+import android.database.DataSetObserver;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.uofa.adventure_app.R;
 import com.uofa.adventure_app.model.Story;
 import com.uofa.adventure_app.model.User;
 
@@ -44,7 +45,7 @@ public class StoryGridAdapter extends BaseAdapter {
 	public StoryGridAdapter(Context context, ArrayList<Story> stories) {
 		this.context = context;
 		mInflater = LayoutInflater.from(this.context);
-		this.stories = new ArrayList<Story>(stories);
+		this.stories = stories;
 		this.storiesClone = new ArrayList<Story>();
 		this.storiesClone.addAll(stories);
 		this.query = "";
@@ -55,7 +56,8 @@ public class StoryGridAdapter extends BaseAdapter {
 			this.query = query;
 			this.stories.clear();
 			for (Story s : storiesClone) {
-				if(s.title().matches("(?i)(.*)"+query+"(.*)")) {
+				String searchString = s.title().concat(s.users().toString());
+				if(searchString.matches("(?i)(.*)"+query+"(.*)")) {
 					this.stories.add(s);
 				}
 				}
@@ -81,22 +83,42 @@ public class StoryGridAdapter extends BaseAdapter {
 		return position;
 	}
 
+	/* (non-Javadoc)
+	 * @see android.widget.BaseAdapter#notifyDataSetChanged()
+	 */
+	@Override
+	public void notifyDataSetChanged() {
+		// TODO Auto-generated method stub
+		super.notifyDataSetChanged();
+	
+
+	}
+
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
+
 		// Setup the multi line items in a listview
 		if (convertView == null) {
-			convertView = mInflater.inflate(
-					android.R.layout.two_line_list_item, parent, false);
+			
+			convertView = mInflater.inflate(R.layout.browser_item, parent, false);
 		}
 		// Get the views
-		TextView title = (TextView) convertView.findViewById(R.id.text1);
-		TextView sub = (TextView) convertView.findViewById(R.id.text2);
-
-
+		TextView title = (TextView) convertView.findViewById(R.id.line_a);
+		TextView sub = (TextView) convertView.findViewById(R.id.line_b);
 		
-		Story story = stories.get(position);
+		Story story = (Story) this.getItem(position);
 		if(story != null) {
+				
+				if(story.isLocal()) {
+					convertView.setBackgroundResource(R.drawable.gridbgdown);
+					convertView.setPadding(25, 20, 20, 25);
+				} else {
+					convertView.setBackgroundResource(R.drawable.gridbg);
+					convertView.setPadding(25, 20, 20, 25);
+				}
+				
 				title.setText(story.title());
+				
 				String authors = new String();
 				// TODO: Format this better!
 				for (User u : story.users()) {
