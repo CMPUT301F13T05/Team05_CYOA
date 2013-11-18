@@ -36,17 +36,16 @@ public class DbHelper extends SQLiteOpenHelper {
 	static final String CreateStoryTable ="create table if not exists stories "+
 										  "(story_id VARCHAR primary key,title VARCHAR not null);";
 	static final String CreateUsersTable="create table if not exists users "+
-										  "(user_id integer primary key autoincrement,name VARCHAR not null,story_id VARCHAR,"+
-										  "fragment_id integer,f_or_s VARCHAR,"+
+										  "(user_id VARCHAR primary key,name VARCHAR not null,story_id VARCHAR,"+
 										  "FOREIGN KEY(story_id) REFERENCES stories(story_id));";
 	static final String CreateFragmentsTable="create table if not exists fragments "+
-										  "(fragment_id integer primary key,text VARCHAR,story_id VARCHAR,title VARCHAR,"+
+										  "(fragment_id VARCHAR primary key,text VARCHAR,story_id VARCHAR,title VARCHAR,firstflag integer,"+
 										  "FOREIGN KEY(story_id) REFERENCES stories(story_id));";
-	static final String CreateImagesTable = "create table if not exists images "+
-										  "(image_id integer primary key,pointer VARCHAR,is_annotation boolean,fragment_id integer,"+
+	static final String CreateMediaTable = "create table if not exists media "+
+										  "(media_id VARCHAR primary key,pointer VARCHAR,is_annotation boolean,fragment_id integer,"+
 										  "FOREIGN KEY(fragment_id) REFERENCES fragments(fragment_id));";
 	static final String CreateChoicesTable= "create table if not exists choices "+
-										  "(fragment_id integer,choice_id integer,"+
+										  "(fragment_id VARCHAR,choice_id VARCHAR,"+
 										  "FOREIGN KEY(choice_id) REFERENCES fragments(fragments_id));";
 	
 	
@@ -67,7 +66,7 @@ public class DbHelper extends SQLiteOpenHelper {
         db.execSQL(CreateStoryTable);
         db.execSQL(CreateUsersTable);
         db.execSQL(CreateFragmentsTable);
-        db.execSQL(CreateImagesTable);
+        db.execSQL(CreateMediaTable);
         db.execSQL(CreateChoicesTable);
     }
 

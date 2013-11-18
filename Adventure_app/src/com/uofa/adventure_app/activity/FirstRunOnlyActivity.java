@@ -21,6 +21,7 @@ package com.uofa.adventure_app.activity;
 import com.uofa.adventure_app.R;
 import com.uofa.adventure_app.R.layout;
 import com.uofa.adventure_app.R.menu;
+import com.uofa.adventure_app.model.User;
 
 import android.os.Bundle;
 import android.app.Activity;
@@ -68,6 +69,8 @@ public class FirstRunOnlyActivity extends Activity {
 			.edit()
 			.putString("username", username)
 			.commit();
+			User user = new User();
+			user.setName(getSharedPreferences("PREFERENCE", MODE_PRIVATE).getString("username", null));
 			onBackPressed();
 		}
 			

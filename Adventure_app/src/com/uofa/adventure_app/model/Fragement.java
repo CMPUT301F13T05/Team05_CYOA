@@ -1,6 +1,6 @@
 /*
 Adventure App - Allows you to create an Adventure Book, or Download
-	books from other authors.
+        books from other authors.
 Copyright (C) Fall 2013 Team 5 CMPUT 301 University of Alberta
 
 This program is free software: you can redistribute it and/or modify
@@ -24,47 +24,75 @@ import java.util.SortedMap;
 import com.uofa.adventure_app.interfaces.UniqueId;
 
 public class Fragement extends UniqueId  {
-	
-	private SortedMap<Integer, Media> media; // Key will be a line number
-	private ArrayList<Annotation> annotations;
-	private ArrayList<Choice> choices;
-	private String body;
+        
+        private SortedMap<Integer, Media> media; // Key will be a line number
+        private ArrayList<Annotation> annotations;
+        private ArrayList<Choice> choices;
+        private String body;
+        private Integer flag;
+        private String title;
+        
+        public Fragement() {
+            super();
+            this.annotations = new ArrayList<Annotation>();
+            this.choices = new ArrayList<Choice>(); 
+            this.media = null;
+            this.flag = 0;
+            this.title = null;
+            this.body = null;
 
-	public Fragement() {
-		super();
-		this.annotations = new ArrayList<Annotation>();
-		this.choices = new ArrayList<Choice>(); 
-		this.media = null;
+    }      
 
-	}	
-	
-	public Fragement(String body) {
-		this();
-		this.setBody(body);
-	}	
-	
-	/**
-	 * adds a choice to the fragment
-	 * @param choice
-	 */
-	public void addChoice(Choice choice) {
-		this.choices.add(choice);
-	}
+        public Fragement(Integer flag) {
+                super();
+                this.annotations = new ArrayList<Annotation>();
+                this.choices = new ArrayList<Choice>(); 
+                this.media = null;
+                this.flag = flag;
+                
 
-	/**
-	 * @return the body
-	 */
-	public String body() {
-		return body;
-	}
+        }        
+        
+        public Fragement(String body, Integer flag) {
+                this();
+                this.setBody(body);
+                this.flag = flag;
+        }        
+        
+        /**
+         * adds a choice to the fragment
+         * @param choice
+         */
+        public void addChoice(Choice choice) {
+                this.choices.add(choice);
+        }
 
-	/**
-	 * @param body the body to set
-	 */
-	public void setBody(String body) {
-		this.body = body;
-	}
+        /**
+         * @return the body
+         */
+        public String body() {
+                return body;
+        }
 
-
+        /**
+         * @param body the body to set
+         */
+        public void setBody(String body) {
+                this.body = body;
+        }
+        
+        public ArrayList<Choice> choices(){
+        	return this.choices;
+        }
+        
+        public Integer getflag(){
+        	return this.flag;
+        }
+        public void setTitle(String Title){
+        	this.title = title;
+        }
+        public String getTitle(){
+        	return this.title;
+        }
 
 }

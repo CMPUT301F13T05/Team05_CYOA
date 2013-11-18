@@ -139,7 +139,7 @@ public class BrowserActivity extends AdventureActivity {
 	 */
 	public void newStory() {
 		Intent myIntent = new Intent(this, EditFragementActivity.class);
-		int i = 0;
+		String i = null;
 		myIntent.putExtra("frag_id", i);
 		this.startActivity(myIntent);
 		
@@ -228,15 +228,13 @@ public class BrowserActivity extends AdventureActivity {
               });
 		}
 		if(method.equals(GET_METHOD)) {
-			System.out.println(result);
 			Story currentStory = result.get(0);
 			if(currentStory != null) {
-				currentStory.setIsLocal(true);
+				//currentStory.setIsLocal(true);
 				AdventureApplication.getStoryController().replaceStory(currentStory);
 				AdventureApplication.getActivityController().update();
-				// Add story to local database
-				// Add the Local DB version to controller
-				// This is temp code below
+				LocalStorageController localStorageController = new LocalStorageController(this);
+				localStorageController.cacheStory(currentStory);
 				openStory(currentStory);
 
 			}

@@ -72,13 +72,21 @@ public class StoryActivity extends AdventureActivity {
 		testBody = (TextView) findViewById(R.id.storyview);
 		LocalStorageController localStorageController = new LocalStorageController(this);
 		Bundle extras = getIntent().getExtras();
+		List<List<String>> storyInfo =new ArrayList<List<String>>();
 		if (extras != null){
 			storyID = UUID.fromString(extras.getString("StoryID"));
-			System.out.println(extras.getString("StoryID"));
+			String s_id = storyID.toString();
 			Story currentStory = new Story(UUID.fromString(extras.getString("StoryID")));
 			ArrayList<Story> stories = AdventureApplication.getStoryController().getStories();
 			currentStory = stories.get(stories.indexOf(currentStory));
-			testBody.setText(currentStory.getFragements().toString());
+			if (currentStory.isLocal()) 
+				testBody.setText(localStorageController.getStory(s_id).get(3).get(0));
+			else{
+				testBody.setText(currentStory.getFragements().get(0).body());
+				currentStory.setIsLocal(true);
+				AdventureApplication.getStoryController().replaceStory(currentStory);
+				AdventureApplication.getActivityController().update();
+			}
 			testAuthor.setText(currentStory.users().toString());
 			testtitle.setText(currentStory.title());
 			
