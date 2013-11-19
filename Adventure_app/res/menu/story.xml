@@ -4,6 +4,7 @@
 	<item android:id="@+id/editfragment" android:showAsAction="never" android:title="Edit Fragement"></item>
 	<!-- <item android:id="@+id/store" android:showAsAction="never" android:title="Store in Favorites"></item> -->
 	<item android:id="@+id/publish" android:showAsAction="never" android:title="Publish"></item>
+	<item android:id="@+id/copy" android:showAsAction="never" android:title="Create Copy of Story"></item>
 	<item android:id="@+id/quit" android:showAsAction="never" android:title="Quit Story"></item>
 
 </menu>

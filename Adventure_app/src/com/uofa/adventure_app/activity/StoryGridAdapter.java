@@ -109,7 +109,7 @@ public class StoryGridAdapter extends BaseAdapter {
 		Story story = (Story) this.getItem(position);
 		if(story != null) {
 				
-				if(story.isLocal()) {
+				if(!story.isLocal()) {
 					convertView.setBackgroundResource(R.drawable.gridbgdown);
 					convertView.setPadding(25, 20, 20, 25);
 				} else {

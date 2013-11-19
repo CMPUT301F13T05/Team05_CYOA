@@ -84,7 +84,9 @@ public class Fragement extends UniqueId  {
         public ArrayList<Choice> choices(){
         	return this.choices;
         }
-        
+        public void setFlag(Integer flag){
+        	this.flag = flag;
+        }
         public Integer getflag(){
         	return this.flag;
         }
