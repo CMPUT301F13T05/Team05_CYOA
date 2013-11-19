@@ -38,7 +38,6 @@ import com.uofa.adventure_app.controller.http.HttpObject;
 		}
 
 		protected void onPostExecute(ArrayList<T> result) {
-			
 			activity.dataReturn(result,method); 
 		}
 

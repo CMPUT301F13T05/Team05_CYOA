@@ -81,7 +81,7 @@ public abstract class AdventureActivity extends Activity implements DataReturn<S
 	protected void httpRequest(HttpObject httpObject, String method) {
 		if(this.isNetworkAvailable()) {
 			WebServiceController wsc = AdventureApplication.getWebServiceController();
-		new PerformHttp<Story>(this, method,wsc, new StoryParser()).execute(httpObject);
+		new PerformHttp<Story>(this, method, wsc ,new StoryParser()).execute(httpObject);
 		} else {
 			// do nothing...
 		}

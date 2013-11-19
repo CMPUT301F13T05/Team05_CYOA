@@ -21,20 +21,24 @@ package com.uofa.adventure_app.activity;
 import java.util.ArrayList;
 
 import android.content.Context;
-import android.database.DataSetObserver;
-import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.uofa.adventure_app.R;
+import com.uofa.adventure_app.application.AdventureApplication;
+import com.uofa.adventure_app.controller.StoryParser;
+import com.uofa.adventure_app.controller.WebServiceController;
+import com.uofa.adventure_app.controller.http.HttpObject;
+import com.uofa.adventure_app.controller.http.HttpObjectStory;
+import com.uofa.adventure_app.interfaces.DataReturn;
+import com.uofa.adventure_app.interfaces.PerformHttp;
 import com.uofa.adventure_app.model.Story;
 import com.uofa.adventure_app.model.User;
 
-public class StoryGridAdapter extends BaseAdapter {
+public class StoryGridAdapter extends BaseAdapter implements DataReturn<Story> {
 
 	private ArrayList<Story> stories;
 	private ArrayList<Story> storiesClone;
@@ -55,13 +59,11 @@ public class StoryGridAdapter extends BaseAdapter {
 		if (query != null) {
 			this.query = query;
 			this.stories.clear();
-			for (Story s : storiesClone) {
-				String searchString = s.title().concat(s.users().toString());
-				if(searchString.matches("(?i)(.*)"+query+"(.*)")) {
-					this.stories.add(s);
-				}
-				}
-			this.notifyDataSetChanged();
+	
+				HttpObjectStory httpObject = new HttpObjectStory();
+				this.httpRequest(httpObject.searchObject(query), "");
+				
+
 		}
 	}
 
@@ -130,4 +132,24 @@ public class StoryGridAdapter extends BaseAdapter {
 		return convertView;
 	}
 
+	
+	
+	protected void httpRequest(HttpObject httpObject, String method) {
+		WebServiceController wsc = AdventureApplication.getWebServiceController();
+		new PerformHttp<Story>(this, method, wsc ,new StoryParser()).execute(httpObject);
+	}
+
+	/*
+	 * 		String searchString = s.title().concat(s.users().toString());
+		if(searchString.matches("(?i)(.*)"+query+"(.*)")) {
+			this.stories.add(s);
+		}*/
+	
+	@Override
+	public void dataReturn(ArrayList<Story> result, String method) {
+		for (Story s : result) {
+			this.stories.add(s);
+		}
+		this.notifyDataSetChanged();
+	}
 }

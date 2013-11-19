@@ -87,9 +87,6 @@ public class WebServiceController {
 
 		} catch (IOException e) {
 			e.printStackTrace(System.err);
-			 /*mErrorMessage = ((request instanceof POST) ? "POST " : "GET ") +
-			 str(R.string.aerc_failed) + ": " + e.getLocalizedMessage();*/
-
 		} finally {
 			// Disconnect!
 			if (conn != null)
