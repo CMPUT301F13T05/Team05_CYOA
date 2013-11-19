@@ -66,6 +66,7 @@ public class WebServiceController {
 				if(postString != null) {
 					conn.setFixedLengthStreamingMode(postString.length());
 					// Out put the post string in UTF-8
+					System.err.println(postString);
 					conn.getOutputStream().write(postString.getBytes(Charset.forName("UTF-8")));
 				} else {
 					throw new IOException("Invalid Post String");
@@ -87,9 +88,6 @@ public class WebServiceController {
 
 		} catch (IOException e) {
 			e.printStackTrace(System.err);
-			 /*mErrorMessage = ((request instanceof POST) ? "POST " : "GET ") +
-			 str(R.string.aerc_failed) + ": " + e.getLocalizedMessage();*/
-
 		} finally {
 			// Disconnect!
 			if (conn != null)

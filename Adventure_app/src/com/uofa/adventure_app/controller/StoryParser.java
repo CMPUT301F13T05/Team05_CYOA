@@ -20,15 +20,14 @@ package com.uofa.adventure_app.controller;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Timer;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.uofa.adventure_app.elastic.ElasticSearchResponse;
+import com.uofa.adventure_app.interfaces.Parser;
 import com.uofa.adventure_app.model.Story;
-import java.util.TimerTask;
 
-public class StoryParser {
+public class StoryParser implements Parser<Story> {
 
 	public ArrayList<Story> parseStory(String parseString) {
 		System.out.println(parseString);
@@ -51,6 +50,11 @@ public class StoryParser {
 		}
 		return stories;
 
+	}
+
+	@Override
+	public ArrayList<Story> parse(String string) {
+		return this.parseStory(string);
 	}
 
 
