@@ -56,14 +56,18 @@ public class StoryGridAdapter extends BaseAdapter implements DataReturn<Story> {
 	}
 
 	public void filter(String query) {
-		if (query != null) {
-			this.query = query;
+		System.err.println("Query:" + query + "END OF QUERY");
+		this.query = query;
+		if (query != null && !query.equalsIgnoreCase("")) {
 			this.stories.clear();
-	
-				HttpObjectStory httpObject = new HttpObjectStory();
-				this.httpRequest(httpObject.searchObject(query), "");
-				
-
+			this.notifyDataSetChanged();
+			
+			HttpObjectStory httpObject = new HttpObjectStory();
+			this.httpRequest(httpObject.searchObject(query), "");
+		} else {
+			this.stories.clear();
+			this.stories.addAll(this.storiesClone);
+			this.notifyDataSetChanged();
 		}
 	}
 
@@ -147,9 +151,14 @@ public class StoryGridAdapter extends BaseAdapter implements DataReturn<Story> {
 	
 	@Override
 	public void dataReturn(ArrayList<Story> result, String method) {
+		if(!this.query.isEmpty()) {
+		this.stories.clear();
+		System.out.println("Count: " + result.size() + " Search:" + result);
+		
 		for (Story s : result) {
 			this.stories.add(s);
 		}
 		this.notifyDataSetChanged();
+	}
 	}
 }
