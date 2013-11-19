@@ -18,14 +18,10 @@
  */
 package com.uofa.adventure_app.interfaces;
 
-import java.util.ArrayList;
-import java.util.Timer;
-
 import android.app.Activity;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.AsyncTask;
 
 import com.uofa.adventure_app.application.AdventureApplication;
 import com.uofa.adventure_app.controller.ActivityController;
@@ -35,7 +31,7 @@ import com.uofa.adventure_app.controller.http.HttpObject;
 import com.uofa.adventure_app.model.Story;
 
 
-public abstract class AdventureActivity extends Activity {
+public abstract class AdventureActivity extends Activity implements DataReturn<Story> {
 	
 	WebServiceController  webServiceController = AdventureApplication.getWebServiceController();
 	
@@ -74,47 +70,6 @@ public abstract class AdventureActivity extends Activity {
 	 */
 	public abstract void updateView();
 	
-
-/**
- * Used for Threading of Web Service Controller
- * @author chris
- *
- */
-	public class PerformHttp extends AsyncTask<HttpObject, Void, ArrayList<Story>> {
-
-
-		AdventureActivity activity = null;
-		String method = null;
-		public PerformHttp(AdventureActivity activity, String method) {
-			this.activity = activity;
-			this.method = method;
-		}
-		
-		protected ArrayList<Story> doInBackground(HttpObject... httpObj) {
-			StoryParser parser = new StoryParser();
-			ArrayList<Story> stories = new ArrayList<Story>();
-			stories.clear();
-			if(httpObj[0] != null)
-				return parser.parseStory(webServiceController.httpWithType(httpObj[0]));
-			else
-				return stories;
-			
-		}
-
-		protected void onPostExecute(ArrayList<Story> result) {
-			
-			activity.dataReturn(result,method); 
-		}
-
-	}
-
-	/**
-	 * When using threading data will be returned here, data will 
-	 * need to be checked for the right type.
-	 * @param results
-	 */
-	
-	public abstract void dataReturn(ArrayList<Story> result, String method);
 	
 	protected boolean isNetworkAvailable() {
 	    ConnectivityManager connectivityManager 
@@ -125,10 +80,12 @@ public abstract class AdventureActivity extends Activity {
 	
 	protected void httpRequest(HttpObject httpObject, String method) {
 		if(this.isNetworkAvailable()) {
-		new PerformHttp(this, method).execute(httpObject);
+			WebServiceController wsc = AdventureApplication.getWebServiceController();
+		new PerformHttp<Story>(this, method,wsc, new StoryParser()).execute(httpObject);
 		} else {
 			// do nothing...
 		}
 	}
+
 
 }
