@@ -20,6 +20,7 @@ package com.uofa.adventure_app.activity;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.UUID;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -42,7 +43,9 @@ import android.widget.AdapterView.AdapterContextMenuInfo;
 import com.uofa.adventure_app.R;
 import com.uofa.adventure_app.controller.LocalStorageController;
 import com.uofa.adventure_app.interfaces.AdventureActivity;
+import com.uofa.adventure_app.model.Fragement;
 import com.uofa.adventure_app.model.Story;
+import com.uofa.adventure_app.model.User;
 
 public class EditFragementActivity extends AdventureActivity {
 	View currentView;
@@ -51,9 +54,9 @@ public class EditFragementActivity extends AdventureActivity {
 	String title;
 	String user;
 	String body;
-	int frag_id;
+	Story s;
 	String s_id;
-	int old_frag;
+	String old_frag;
 	private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
 	boolean choice = false;
 
@@ -65,8 +68,9 @@ public class EditFragementActivity extends AdventureActivity {
 		extras = getIntent().getExtras();
 		EditText newauthor = (EditText) findViewById(R.id.newauthor);
 		newauthor.setText(getSharedPreferences("PREFERENCE", MODE_PRIVATE).getString("username", null));
+		old_frag = null;
 		if (extras != null)
-			old_frag = extras.getInt("frag_id");
+			old_frag = extras.getString("frag_id");
 		
 	}
 
@@ -202,16 +206,36 @@ public class EditFragementActivity extends AdventureActivity {
 				body = newbody.getText().toString();
 				LocalStorageController localStorageController = new LocalStorageController(this);
 				if (extras != null){
-					if (old_frag == 0){
-						Story s = new Story();
+					if (old_frag == null){
+						s = new Story();
 						s_id = s.id().toString();
-						System.out.println(s_id);
-						localStorageController.setStory(s_id, title, user);
-						old_frag = localStorageController.setFragment(s_id, title, user, body, old_frag);
+						User curUser = new User(user);
+						Integer flag = 1;
+						ArrayList<User> users = new ArrayList<User>();
+						users.add(curUser);
+						UUID userId = curUser.uid();
+						s.setUsers(users);
+						Fragement frag = new Fragement(body, flag);
+						s.addFragement(frag);
+						frag.setTitle(title);
+						UUID fragId = frag.uid();
+						localStorageController.setStory(s_id, title, userId.toString(), user);
+						localStorageController.setFragment(s_id, fragId.toString(), title, body, old_frag, flag);
 						newtitle.setText("");
 						newbody.setText("");
 					}else{
-						frag_id = localStorageController.setFragment(s_id, title, user, body, old_frag);
+						s_id = s.id().toString();
+						User curUser = new User(user);
+						ArrayList<User> users = new ArrayList<User>();
+						users.add(curUser);
+						UUID userId = curUser.uid();
+						Integer flag = 0;
+						s.setUsers(users);
+						Fragement frag = new Fragement(body, flag);
+						frag.setTitle(title);
+						s.addFragement(frag);
+						UUID fragId = frag.uid();
+						localStorageController.setFragment(s_id, fragId.toString(), title, body, old_frag, flag);
 						newtitle.setText("");
 						newbody.setText("");
 					}

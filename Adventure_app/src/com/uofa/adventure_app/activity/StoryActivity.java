@@ -51,6 +51,7 @@ import android.widget.TextView;
 import com.uofa.adventure_app.R;
 import com.uofa.adventure_app.application.AdventureApplication;
 import com.uofa.adventure_app.controller.LocalStorageController;
+import com.uofa.adventure_app.controller.StoryController;
 import com.uofa.adventure_app.interfaces.AdventureActivity;
 import com.uofa.adventure_app.model.Fragement;
 import com.uofa.adventure_app.model.Story;
@@ -62,6 +63,7 @@ public class StoryActivity extends AdventureActivity {
 	boolean choice;
 	View currentView;
 	Uri imageFileUri;
+	Story currentStory;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -72,13 +74,22 @@ public class StoryActivity extends AdventureActivity {
 		testBody = (TextView) findViewById(R.id.storyview);
 		LocalStorageController localStorageController = new LocalStorageController(this);
 		Bundle extras = getIntent().getExtras();
+		List<List<String>> storyInfo =new ArrayList<List<String>>();
 		if (extras != null){
 			storyID = UUID.fromString(extras.getString("StoryID"));
-			System.out.println(extras.getString("StoryID"));
-			Story currentStory = new Story(UUID.fromString(extras.getString("StoryID")));
+			String s_id = storyID.toString();
+			currentStory = new Story(UUID.fromString(extras.getString("StoryID")));
 			ArrayList<Story> stories = AdventureApplication.getStoryController().getStories();
 			currentStory = stories.get(stories.indexOf(currentStory));
-			testBody.setText(currentStory.getFragements().toString());
+			if (currentStory.isLocal()) 
+				testBody.setText(localStorageController.getStory(s_id).get(3).toString());
+				
+			else{
+				testBody.setText(currentStory.getFragements().get(0).body());
+				currentStory.setIsLocal(true);
+				AdventureApplication.getStoryController().replaceStory(currentStory);
+				AdventureApplication.getActivityController().update();
+			}
 			testAuthor.setText(currentStory.users().toString());
 			testtitle.setText(currentStory.title());
 			
@@ -163,6 +174,22 @@ public class StoryActivity extends AdventureActivity {
 				break;
 			case R.id.editfragment:
 				editFragment();
+				break;
+			case R.id.copy:
+				Story newStory = new Story(UUID.randomUUID());
+				newStory.setIsLocal(true);
+				LocalStorageController localStoryController = new LocalStorageController(this);
+				newStory.setTitle(currentStory.title());
+				localStoryController.setStory(newStory.id().toString(), newStory.title(), currentStory.users().get(0).uid().toString(), currentStory.users().get(0).toString());
+				for(int i = 0; i < currentStory.users().size(); i++)
+					newStory.addUser(currentStory.users().get(i));
+				for(int j = 0; j < currentStory.getFragements().size(); j++){
+					newStory.addFragement(currentStory.getFragements().get(j));
+					for(int w = 0; w<currentStory.getFragements().get(j).choices().size(); w++)
+						newStory.getFragements().get(j).addChoice(currentStory.getFragements().get(j).choices().get(w));
+				}
+				AdventureApplication.getStoryController().addStory(newStory);
+				AdventureApplication.getActivityController().update();
 				break;
 			case R.id.quit:
 				browseView();

@@ -22,10 +22,6 @@ import org.json.JSONObject;
 
 import android.app.Fragment;
 
-
-// is fragement a consisten typo in our project?
-// shouldn't it be fragment or does that conflict with built-in Android?!
-
 public class Choice {
 	
 	private Fragement fragment;
@@ -34,25 +30,26 @@ public class Choice {
 	 * 
 	 * @param frag the frag you want to create
 	 */
-	public Choice(Fragement frag) {
+	public Choice(Fragement frag)
+	{
 		this.fragment = frag;
 	}
 	
-	// setter
 	/**
-	 * 
+	 * setter
 	 * @param frag the frag you want to set
 	 */
-	public void setChoice(Fragement frag) {
+	public void setChoice(Fragement frag)
+	{
 		this.fragment = frag;
 	}
 
-	// getter
 	/**
-	 * 
+	 * getter
 	 * @return the choice for this fragment
 	 */
-	public Fragement getChoice() {
+	public Fragement getChoice()
+	{
 		 return this.fragment;
 	}
 	
