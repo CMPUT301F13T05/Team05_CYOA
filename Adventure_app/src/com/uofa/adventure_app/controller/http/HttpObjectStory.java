@@ -28,14 +28,14 @@ import com.uofa.adventure_app.model.Story;
 
  public class HttpObjectStory {
 	
-	private static final String commonUrlString = "http://cmput301.softwareprocess.es:8080/cmput301f13t05/";
+	private static final String commonUrlString = "http://cmput301.softwareprocess.es:8080/cmput301f13t05/story/";
 
 
 	public HttpObject fetchAll() {
 		HttpObject obj = null;
 		String searchQuery = "{  \"fields\" : [\"id\", \"title\", \"users\"],\"query\": { \"match_all\": {}}}";
 		try {
-			obj = new HttpObject(HttpRequestType.POST,searchQuery , new URL(commonUrlString + "_search?pretty=1&size=1000000"));
+			obj = new HttpObject(HttpRequestType.POST,searchQuery , new URL(commonUrlString + "_search?&size=1000000"));
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -54,10 +54,11 @@ import com.uofa.adventure_app.model.Story;
 	public HttpObject fetch(UUID id) {
 		// This should search all Fields
 		HttpObject obj = null;
-		String searchQuery = "{\"query\" : {\"term\" : {\"_type\" : \"" + id.toString() + "\"}}}";
+		String searchQuery = "{\"query\" : {\"term\" : {\"_id\" : \"" + id.toString() + "\"}}}";
+		//searchQuery = "";
 		//String searchQuery = "{ \"query\": { \"match_all\": {}}}";
 		try {
-			obj = new HttpObject(HttpRequestType.POST,searchQuery , new URL(commonUrlString + "_search"));
+			obj = new HttpObject(HttpRequestType.GET, searchQuery , new URL(commonUrlString +"_search"));
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -98,7 +99,7 @@ import com.uofa.adventure_app.model.Story;
 		HttpObject obj = null;
 		//String searchQuery = "{ \"query\": { \"match_all\": {}}}";
 		try {
-			obj = new HttpObject(HttpRequestType.POST,searchQuery , new URL(commonUrlString + "_search?pretty=1&size=1000000"));
+			obj = new HttpObject(HttpRequestType.POST,searchQuery , new URL(commonUrlString + "_search?&size=1000000"));
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -106,17 +107,17 @@ import com.uofa.adventure_app.model.Story;
 		return obj;
 	}
 
-	/*public HttpObject deleteObject(String id) {
+	public HttpObject deleteObject(String id) {
 		
 		String searchQuery = "";
 		HttpObject obj = null;
 		try {
-			obj = new HttpObject(HttpRequestType.DELETE,searchQuery , new URL(commonUrlString + "_query?q=_id:" + id));
+			obj = new HttpObject(HttpRequestType.DELETE, searchQuery , new URL(commonUrlString + id));
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return obj;
-	}*/
+	}
 	
 }

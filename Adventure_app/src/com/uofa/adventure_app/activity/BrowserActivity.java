@@ -74,6 +74,10 @@ public class BrowserActivity extends AdventureActivity {
 			getSharedPreferences("PREFERENCE", MODE_PRIVATE).edit().putBoolean("firstrun", false).commit();
 		}
 		HttpObjectStory httpStory = new HttpObjectStory();
+	
+		
+		
+
 		this.httpRequest(httpStory.fetchAll(), GET_ALL_METHOD);
 
 	}
@@ -190,12 +194,18 @@ public class BrowserActivity extends AdventureActivity {
 	 */
 	public void dataReturn(ArrayList<Story> result, String method) {
 		
-		for(int i = 0; i<result.size(); i++ ) {
-			if(result.get(i).isLocal() == false) 
-				AdventureApplication.getStoryController().addStory(result.get(i));
-		}
+
 		
 		if(method.equals(GET_ALL_METHOD)) {
+			for(int i = 0; i<result.size(); i++ ) {
+				if(result.get(i).isLocal() == false)  {
+					//HttpObjectStory httpStory = new HttpObjectStory();
+					//this.httpRequest(httpStory.deleteObject(result.get(i).id().toString()), "NONE");
+					
+					AdventureApplication.getStoryController().addStory(result.get(i));
+				}
+			}
+			
 			HashMap<String, List<String>> map = new HashMap<String, List<String>>();
 			LocalStorageController localStorageController = new LocalStorageController(this);
 			map = localStorageController.getBrowserViewInfo();
@@ -229,6 +239,7 @@ public class BrowserActivity extends AdventureActivity {
               });
 		}
 		if(method.equals(GET_METHOD)) {
+			System.out.println(result);
 			Story currentStory = result.get(0);
 			if(currentStory != null) {
 				//currentStory.setIsLocal(true);
