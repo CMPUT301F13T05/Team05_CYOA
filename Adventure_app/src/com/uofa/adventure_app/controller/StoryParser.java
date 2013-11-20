@@ -30,15 +30,21 @@ import com.uofa.adventure_app.model.Story;
 public class StoryParser implements Parser<Story> {
 
 	public ArrayList<Story> parseStory(String parseString) {
-		System.out.println(parseString);
+		System.out.println("This one: " +parseString);
 		ArrayList<Story> stories = new ArrayList<Story>();
 		stories.clear();
 		if (parseString != null) {
 			Gson gson = new Gson();
 			Type elasticSearchResponseType = new TypeToken<ElasticSearchResponse<Story>>() {
 			}.getType();
-			ElasticSearchResponse<Story> esResponse = gson.fromJson(
+			ElasticSearchResponse<Story> esResponse = null;
+			try {
+				esResponse = gson.fromJson(
 					parseString, elasticSearchResponseType);
+			
+				
+			
+			
 			if (esResponse.getHits() != null) {
 				for (ElasticSearchResponse<Story> s : esResponse.getHits()) {
 					if(s != null) {
@@ -47,7 +53,10 @@ public class StoryParser implements Parser<Story> {
 					}
 				}
 			}
-		}
+			} catch (Exception E) {
+			}
+			}
+		
 		return stories;
 
 	}

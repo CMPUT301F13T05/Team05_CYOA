@@ -74,8 +74,9 @@ public class WebServiceController {
 
 			// Gets a Response Code.
 			int status = conn.getResponseCode();
-
+			System.out.println("Response COde "+status);
 			if (status / 100 != 2 && requestType.equals(HttpRequestType.POST)) {
+				System.out.println("Response COde "+status);
 				responseMessage = conn.getResponseMessage();
 			}
 			}

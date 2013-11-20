@@ -39,6 +39,7 @@ import com.uofa.adventure_app.application.AdventureApplication;
 import com.uofa.adventure_app.controller.LocalStorageController;
 import com.uofa.adventure_app.controller.http.HttpObjectStory;
 import com.uofa.adventure_app.interfaces.AdventureActivity;
+import com.uofa.adventure_app.model.Fragement;
 import com.uofa.adventure_app.model.Story;
 import com.uofa.adventure_app.model.User;
 
@@ -73,6 +74,12 @@ public class BrowserActivity extends AdventureActivity {
 			getSharedPreferences("PREFERENCE", MODE_PRIVATE).edit().putBoolean("firstrun", false).commit();
 		}
 		HttpObjectStory httpStory = new HttpObjectStory();
+		Story s = new Story();
+		s.setTitle("christmas 23489y25");
+		s.addUser(new User("Kevin")); 
+		s.addFragement(new Fragement("first frag", "JOel just sucks at life a lot.", 1));
+		this.httpRequest(httpStory.publishObject(s), "");
+		
 		this.httpRequest(httpStory.fetchAll(), GET_ALL_METHOD);
 
 	}
@@ -231,6 +238,7 @@ public class BrowserActivity extends AdventureActivity {
 			Story currentStory = result.get(0);
 			if(currentStory != null) {
 				//currentStory.setIsLocal(true);
+				//System.out.println(currentStory.getFragements().get(0).getTitle());
 				AdventureApplication.getStoryController().replaceStory(currentStory);
 				AdventureApplication.getActivityController().update();
 				LocalStorageController localStorageController = new LocalStorageController(this);

@@ -50,4 +50,11 @@
         <requestFocus />
     </EditText>
 
+    <ImageView
+        android:id="@+id/annotation"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true" />
+
 </RelativeLayout>

@@ -10,20 +10,21 @@
 
     <TextView
         android:id="@+id/titleview"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:layout_marginLeft="87dp"
+        android:gravity="center"
         android:text="Title"
         android:textSize="35dp" />
 
     <TextView
         android:id="@+id/authorview"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/titleview"
         android:layout_below="@+id/titleview"
+        android:gravity="center"
         android:text="Author"
         android:textSize="25dp" />
 
@@ -49,11 +50,9 @@
 
     <ImageView
         android:id="@+id/annotation"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/storyview"
-        android:layout_alignTop="@+id/choicesbutton"
-        android:layout_marginRight="57dp"
-        android:layout_marginTop="22dp" />
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/choicesbutton" />
 
 </RelativeLayout>

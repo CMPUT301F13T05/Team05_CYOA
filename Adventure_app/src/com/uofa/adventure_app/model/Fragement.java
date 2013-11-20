@@ -40,7 +40,7 @@ public class Fragement extends UniqueId  {
             this.media = null;
             this.flag = 0;
             this.title = null;
-            this.body = null;
+            this.body = "";
         }      
 
         public Fragement(Integer flag)
@@ -57,7 +57,15 @@ public class Fragement extends UniqueId  {
                 this();
                 this.setBody(body);
                 this.flag = flag;
-        }        
+        }       
+        
+        public Fragement(String title, String body, Integer flag)
+        {
+                this();
+                this.title = title;
+                this.setBody(body);
+                this.flag = flag;
+        }   
         
         /**
          * adds a choice to the fragment
