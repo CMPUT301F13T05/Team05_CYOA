@@ -45,7 +45,6 @@ public class Story {
 	}
 	
 	
-	
 	/**
 	 * @param title the title to set
 	 */

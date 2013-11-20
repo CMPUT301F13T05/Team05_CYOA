@@ -74,12 +74,6 @@ public class BrowserActivity extends AdventureActivity {
 			getSharedPreferences("PREFERENCE", MODE_PRIVATE).edit().putBoolean("firstrun", false).commit();
 		}
 		HttpObjectStory httpStory = new HttpObjectStory();
-		Story s = new Story();
-		s.setTitle("christmas 23489y25");
-		s.addUser(new User("Kevin")); 
-		s.addFragement(new Fragement("first frag", "JOel just sucks at life a lot.", 1));
-		this.httpRequest(httpStory.publishObject(s), "");
-		
 		this.httpRequest(httpStory.fetchAll(), GET_ALL_METHOD);
 
 	}
