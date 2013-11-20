@@ -41,10 +41,6 @@ public class StoryParser implements Parser<Story> {
 			try {
 				esResponse = gson.fromJson(
 					parseString, elasticSearchResponseType);
-			
-				
-			
-			
 			if (esResponse.getHits() != null) {
 				for (ElasticSearchResponse<Story> s : esResponse.getHits()) {
 					if(s != null) {
