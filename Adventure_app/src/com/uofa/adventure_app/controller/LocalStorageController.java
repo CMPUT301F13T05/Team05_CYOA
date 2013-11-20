@@ -121,6 +121,7 @@ public class LocalStorageController {
 	 * @param story_id
 	 * @param title
 	 */
+
 	public void insertIntoFragmentsTable(String fragmentId, String text, String story_id, String title, Integer flag){
 		ContentValues values = new ContentValues();	
 		values.put("fragment_id", fragmentId);
@@ -475,7 +476,7 @@ public class LocalStorageController {
 		db.close();
 		return lastId;
 	}
-	
+
 	/**
 	* 
 	* @param s a story to take in
@@ -522,6 +523,7 @@ public class LocalStorageController {
 			
 		}
 		this.close();
+
 	} // close of cacheStory
 	
 }// class close

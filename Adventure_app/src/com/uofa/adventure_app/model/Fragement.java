@@ -31,7 +31,7 @@ public class Fragement extends UniqueId  {
         private String body;
         private Integer flag;
         private String title;
-        
+
         public Fragement()
         {
             super();
@@ -107,6 +107,6 @@ public class Fragement extends UniqueId  {
         public String getTitle()
         {
         	return this.title;
-        }
+        }   
 
 }

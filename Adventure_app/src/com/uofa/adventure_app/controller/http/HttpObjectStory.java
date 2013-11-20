@@ -93,11 +93,12 @@ import com.uofa.adventure_app.model.Story;
 	public HttpObject searchObject(String searchKey) {
 		
 		// This should search all Fields
-		String searchQuery = "{\"query\" : { \"query_string\" : { \"query\" : \"" + searchKey + "\" }}}";
+		String searchQuery = "{  \"fields\" : [\"id\", \"title\", \"users\"],\"query\": { \"query_string\" : { \"query\" : \"" + searchKey + "\" }}}";
+		//String searchQuery = "{\"query\" : { \"query_string\" : { \"query\" : \"" + searchKey + "\" }}}";
 		HttpObject obj = null;
 		//String searchQuery = "{ \"query\": { \"match_all\": {}}}";
 		try {
-			obj = new HttpObject(HttpRequestType.POST,searchQuery , new URL(commonUrlString + "_search?pretty=1"));
+			obj = new HttpObject(HttpRequestType.POST,searchQuery , new URL(commonUrlString + "_search?pretty=1&size=1000000"));
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
