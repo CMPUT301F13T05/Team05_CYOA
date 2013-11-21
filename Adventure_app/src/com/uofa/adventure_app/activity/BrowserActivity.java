@@ -75,21 +75,26 @@ public class BrowserActivity extends AdventureActivity {
 			getSharedPreferences("PREFERENCE", MODE_PRIVATE).edit().putBoolean("firstrun", false).commit();
 		}
 		HttpObjectStory httpStory = new HttpObjectStory();
-		
-		/*for(int i = 0; i < 10; i ++) {
+		/*
+		for(int i = 0; i < 10; i ++) {
 		Story s = new Story();
 		s.setTitle("This is a Random Title" + i);
 		s.addUser(new User("User" + i));
-		s.addFragement(new Fragement("Title","Body",1));
-		s.addFragement(new Fragement("Title","Body",1));
-		s.addFragement(new Fragement("Title","Body",1));
-		s.addFragement(new Fragement("Title","Body",1));
+		s.addFragement(new Fragement("Title1","Body1",1));
+		s.addFragement(new Fragement("Title2","Body2",1));
+		s.addFragement(new Fragement("Title3","Body3",1));
+		s.addFragement(new Fragement("Title4","Body4",1));
 		Fragement f = new Fragement("Has Choices", "COOL", 2);
-		f.addChoice(new Choice(new Fragement("TileC1", "Bodyc2", 3)));
-		f.addChoice(new Choice(new Fragement("TileC2", "Bodyc3", 4)));
+		Fragement f2 = new Fragement("TileC1", "Bodyc1", 3);
+		Fragement f3 = new Fragement("TileC2", "Bodyc2", 3);
+		s.addFragement(f2);
+		s.addFragement(f3);
+		f.addChoice(new Choice(f2));
+		f.addChoice(new Choice(f3));
+		s.addFragement(f);
+		s.setStartFragement(f);
 		this.httpRequest(httpStory.publishObject(s), "PUBLISH");
 		}*/
-		
 		this.httpRequest(httpStory.fetchAll(), GET_ALL_METHOD);
 
 	}
@@ -186,6 +191,7 @@ public class BrowserActivity extends AdventureActivity {
 		String id = s.id().toString();
 		Intent myIntent = new Intent(this, StoryActivity.class);
 		myIntent.putExtra("StoryID", id);
+		myIntent.putExtra("FragementID",s.startFragement().uid().toString());
 		this.startActivity(myIntent);
 	}
 	
@@ -207,7 +213,7 @@ public class BrowserActivity extends AdventureActivity {
 	public void dataReturn(ArrayList<Story> result, String method) {
 		if(method.equals(GET_ALL_METHOD)) {
 			for(int i = 0; i < result.size(); i++ ) {
-				System.out.println(result);
+				//System.out.println(result);
 					AdventureApplication.getStoryController().addStory(result.get(i));
 			}
 			
@@ -244,7 +250,7 @@ public class BrowserActivity extends AdventureActivity {
               });
 		}
 		if(method.equals(GET_METHOD)) {
-			System.out.println("RESULT " + result);
+			//System.out.println("RESULT " + result);
 			Story currentStory = result.get(0);
 			if(currentStory != null) {
 				//currentStory.setIsLocal(true);

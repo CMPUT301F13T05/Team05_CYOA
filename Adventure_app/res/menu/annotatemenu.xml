@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
     
-<item android:id="@+id/takepic" android:title="Take Picture"></item>
+
+<group android:id="@+id/annotategroup"><item android:id="@+id/takepic" android:title="Take Picture"></item>
 <item android:id="@+id/choosemedia" android:title="Choose Media"></item>
-<item android:id="@+id/cancel" android:title="Cancel"></item>
+<item android:id="@+id/cancelAnnotate" android:title="Cancel"></item></group>
 </menu>
