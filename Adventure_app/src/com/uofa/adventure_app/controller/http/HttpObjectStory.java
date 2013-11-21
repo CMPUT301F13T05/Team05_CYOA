@@ -33,9 +33,9 @@ import com.uofa.adventure_app.model.Story;
 
 	public HttpObject fetchAll() {
 		HttpObject obj = null;
-		String searchQuery = "{  \"fields\" : [\"id\", \"title\", \"users\"],\"query\": { \"match_all\": {}}}";
+		String searchQuery = "{  \"fields\" : [\"id\", \"title\", \"users\"]}";
 		try {
-			obj = new HttpObject(HttpRequestType.POST,searchQuery , new URL(commonUrlString + "_search?&size=1000000"));
+			obj = new HttpObject(HttpRequestType.POST,searchQuery , new URL(commonUrlString + "_search?pretty=1&size=1000000"));
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -54,11 +54,11 @@ import com.uofa.adventure_app.model.Story;
 	public HttpObject fetch(UUID id) {
 		// This should search all Fields
 		HttpObject obj = null;
-		String searchQuery = "{\"query\" : {\"term\" : {\"_id\" : \"" + id.toString() + "\"}}}";
+		//String searchQuery = "{\"query\" : {\"term\" : {\"_id\" : \"" + id.toString() + "\"}}}";
 		//searchQuery = "";
 		//String searchQuery = "{ \"query\": { \"match_all\": {}}}";
 		try {
-			obj = new HttpObject(HttpRequestType.GET, searchQuery , new URL(commonUrlString +"_search"));
+			obj = new HttpObject(HttpRequestType.POST, "" , new URL(commonUrlString+ "_search?q=_id:" + id.toString()));
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

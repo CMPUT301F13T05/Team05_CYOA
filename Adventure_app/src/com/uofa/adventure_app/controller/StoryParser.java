@@ -32,19 +32,19 @@ public class StoryParser implements Parser<Story> {
 	public ArrayList<Story> parseStory(String parseString) {
 		System.out.println("This one: " +parseString);
 		ArrayList<Story> stories = new ArrayList<Story>();
-		stories.clear();
 		if (parseString != null) {
 			Gson gson = new Gson();
 			Type elasticSearchResponseType = new TypeToken<ElasticSearchResponse<Story>>() {
 			}.getType();
 			ElasticSearchResponse<Story> esResponse = null;
 			try {
+				
 				esResponse = gson.fromJson(
 					parseString, elasticSearchResponseType);
 			if (esResponse.getHits() != null) {
 				for (ElasticSearchResponse<Story> s : esResponse.getHits()) {
 					if(s != null) {
-						//s.getObject().setIsLocal(false);
+						s.getObject().setIsLocal(false);
 						stories.add(s.getObject());
 					}
 				}

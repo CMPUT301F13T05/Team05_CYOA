@@ -38,7 +38,7 @@ import com.uofa.adventure_app.interfaces.PerformHttp;
 import com.uofa.adventure_app.model.Story;
 import com.uofa.adventure_app.model.User;
 
-public class StoryGridAdapter extends BaseAdapter implements DataReturn<Story> {
+public class StoryGridAdapter extends BaseAdapter {
 
 	private ArrayList<Story> stories;
 	private ArrayList<Story> storiesClone;
@@ -66,6 +66,9 @@ public class StoryGridAdapter extends BaseAdapter implements DataReturn<Story> {
 				}
 			}
 			this.notifyDataSetChanged();
+		} else {
+			this.stories.clear();
+			this.stories.addAll(this.storiesClone);
 		}
 	}
 
@@ -136,29 +139,6 @@ public class StoryGridAdapter extends BaseAdapter implements DataReturn<Story> {
 		return convertView;
 	}
 
-	protected void httpRequest(HttpObject httpObject, String method) {
-		WebServiceController wsc = AdventureApplication
-				.getWebServiceController();
-		new PerformHttp<Story>(this, method, wsc, new StoryParser())
-				.execute(httpObject);
-	}
 
-	/*
-	 * String searchString = s.title().concat(s.users().toString());
-	 * if(searchString.matches("(?i)(.*)"+query+"(.*)")) { this.stories.add(s);
-	 * }
-	 */
-
-	@Override
-	public void dataReturn(ArrayList<Story> result, String method) {
-		if (!this.query.isEmpty()) {
-			this.stories.clear();
-			System.out.println("Count: " + result.size() + " Search:" + result);
-
-			for (Story s : result) {
-				this.stories.add(s);
-			}
-			this.notifyDataSetChanged();
-		}
-	}
+	
 }
