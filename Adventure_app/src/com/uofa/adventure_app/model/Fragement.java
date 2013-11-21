@@ -20,6 +20,7 @@ package com.uofa.adventure_app.model;
 
 import java.util.ArrayList;
 import java.util.SortedMap;
+import java.util.UUID;
 
 import com.uofa.adventure_app.interfaces.UniqueId;
 
@@ -50,7 +51,12 @@ public class Fragement extends UniqueId  {
                 this.choices = new ArrayList<Choice>(); 
                 this.media = null;
                 this.flag = flag;
-        }        
+        }    
+        public Fragement(UUID id)
+        {
+        	this();
+        	this.uid = id;
+        } 
         
         public Fragement(String body, Integer flag)
         {
@@ -115,6 +121,17 @@ public class Fragement extends UniqueId  {
         public String getTitle()
         {
         	return this.title;
-        }   
+        }
+
+		/* (non-Javadoc)
+		 * @see java.lang.Object#toString()
+		 */
+		@Override
+		public String toString() {
+			// TODO Auto-generated method stub
+			return super.toString() + this.uid.toString();
+		}   
+        
+        
 
 }

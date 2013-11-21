@@ -29,6 +29,7 @@ public class Story {
 	private ArrayList<Fragement> fragements;
 	private UUID id;
 	private boolean isLocal;
+	private Fragement startFragement;
 	
 	public Story() {
 		this.users = new ArrayList<User>();
@@ -151,6 +152,20 @@ public class Story {
 			return true;
 		else
 			return false;
+	}
+
+	/**
+	 * @return the startFragement
+	 */
+	public Fragement startFragement() {
+		return startFragement;
+	}
+
+	/**
+	 * @param startFragement the startFragement to set
+	 */
+	public void setStartFragement(Fragement startFragement) {
+		this.startFragement = startFragement;
 	} 
 
 }

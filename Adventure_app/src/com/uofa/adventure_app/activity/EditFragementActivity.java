@@ -128,7 +128,7 @@ public class EditFragementActivity extends AdventureActivity {
 	 * @param View v
 	 */
 	public void openMediaContext(View v) {
-
+		choice = false;
 		registerForContextMenu(v);
 		openContextMenu(v);
 	}
@@ -139,7 +139,8 @@ public class EditFragementActivity extends AdventureActivity {
 			ContextMenuInfo menuInfo) {
 		super.onCreateContextMenu(menu, v, menuInfo);
 		AdapterContextMenuInfo aInfo = (AdapterContextMenuInfo) menuInfo;
-
+		menu.clearHeader();
+		menu.clear();
 		// Style our context menu
 		menu.setHeaderIcon(android.R.drawable.ic_input_get);
 		menu.setHeaderTitle("Options");
@@ -149,7 +150,7 @@ public class EditFragementActivity extends AdventureActivity {
 			inflater.inflate(R.menu.annotatemenu, menu);
 		} else {
 			inflater.inflate(R.menu.createchoice, menu);
-			choice = false;
+			//choice = false;
 		}
 	}
 	/**

@@ -18,13 +18,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 package com.uofa.adventure_app.activity;
 import java.io.File;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -38,21 +35,15 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-
-import android.view.Window;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-
 import android.widget.AdapterView.AdapterContextMenuInfo;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.uofa.adventure_app.R;
 import com.uofa.adventure_app.application.AdventureApplication;
 import com.uofa.adventure_app.controller.LocalStorageController;
-import com.uofa.adventure_app.controller.StoryController;
 import com.uofa.adventure_app.interfaces.AdventureActivity;
+import com.uofa.adventure_app.model.Choice;
 import com.uofa.adventure_app.model.Fragement;
 import com.uofa.adventure_app.model.Story;
 
@@ -60,10 +51,11 @@ public class StoryActivity extends AdventureActivity {
 	TextView testtitle;
 	TextView testAuthor;
 	TextView testBody;
-	boolean choice;
+	String choice;
 	View currentView;
 	Uri imageFileUri;
 	Story currentStory;
+	Fragement currentFragement = null;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -81,17 +73,30 @@ public class StoryActivity extends AdventureActivity {
 			currentStory = new Story(UUID.fromString(extras.getString("StoryID")));
 			ArrayList<Story> stories = AdventureApplication.getStoryController().getStories();
 			currentStory = stories.get(stories.indexOf(currentStory));
-			if (currentStory.isLocal()) 
-				testBody.setText(localStorageController.getStory(s_id).get(3).toString());
+			if(extras.getString("FragementID") != null) {
 				
-			else{
-				testBody.setText(currentStory.getFragements().get(0).body());
+				Fragement frag = new Fragement(UUID.fromString(extras.getString("FragementID")));
+				System.out.println(currentStory.id().toString());
+				System.out.println("START:" + frag.uid().toString());
+				System.out.println("START:" + currentStory.getFragements());
+				int index = currentStory.getFragements().indexOf(frag);
+				currentFragement = currentStory.getFragements().get(index);
+			}
+
+				if(currentFragement == null) {
+					testBody.setText(currentStory.getFragements().get(0).body());
+					testAuthor.setText(currentStory.users().toString());
+					testtitle.setText(currentStory.title());
+				} else {
+					testBody.setText(currentFragement.body());
+					testAuthor.setText("");
+					testtitle.setText(currentFragement.getTitle());
+				}
 				currentStory.setIsLocal(true);
 				AdventureApplication.getStoryController().replaceStory(currentStory);
 				AdventureApplication.getActivityController().update();
-			}
-			testAuthor.setText(currentStory.users().toString());
-			testtitle.setText(currentStory.title());
+			
+
 			
 		}else{
 			testBody.setText("This story isn't very good.");
@@ -99,6 +104,7 @@ public class StoryActivity extends AdventureActivity {
 			testtitle.setText("Sorry the story Could not be loaded");
 		}
 		currentView = this.findViewById(android.R.id.content);
+		
 	}
 
 	@Override
@@ -112,11 +118,10 @@ public class StoryActivity extends AdventureActivity {
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v,
 			ContextMenuInfo menuInfo) {
-		super.onCreateContextMenu(menu, v, menuInfo);
-		if (choice == false){
-			AdapterContextMenuInfo aInfo = (AdapterContextMenuInfo) menuInfo;
+		//
+		if (!choice.equals("CHOICE")){
+			AdapterContextMenuInfo aInfo = (AdapterContextMenuInfo) menuInfo;	
 
-		
 			// Style our context menu
 			menu.setHeaderIcon(android.R.drawable.ic_input_get);
 			menu.setHeaderTitle("Annotate");
@@ -125,16 +130,27 @@ public class StoryActivity extends AdventureActivity {
 			// Open Menu
 			inflater1.inflate(R.menu.annotatemenu, menu);
 		}else{
-			choice = false;
-			AdapterContextMenuInfo aInfo = (AdapterContextMenuInfo) menuInfo;
-
 			
+			AdapterContextMenuInfo aInfo = (AdapterContextMenuInfo) menuInfo;
+			//menu.clearHeader();
+			menu.clearHeader();
+			menu.clear();
+			//menu.removeGroup(R.id.annotategroup);
 			// Style our context menu
 			menu.setHeaderIcon(android.R.drawable.ic_input_get);
 			menu.setHeaderTitle("Choices");
+			for(Choice f : currentFragement.choices()) {
+				MenuItem mItem = menu.add(f.getChoice().getTitle());
+				//TODO ADD INTENT
+				Intent myIntent = new Intent(this, StoryActivity.class);
+				myIntent.putExtra("StoryID", currentStory.id().toString());
+				myIntent.putExtra("FragementID", f.getChoice().uid().toString());
+				mItem.setIntent(myIntent);
+			}
+			
 			MenuInflater inflater2 = getMenuInflater();
 			inflater2.inflate(R.menu.choices, menu);
-
+			
 		}
 		
 	}
@@ -145,7 +161,7 @@ public class StoryActivity extends AdventureActivity {
 	 * @param View v
 	 */
 	public void openAnnotateContext(View v) {
-		
+		choice = "Annotate";
 		registerForContextMenu( v );
         openContextMenu( v );  
 	}
@@ -156,10 +172,11 @@ public class StoryActivity extends AdventureActivity {
 	 */
 	public void openChoices(View v) {
 		currentView.getRootView().dispatchKeyEvent(new KeyEvent (KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_BACK));
-		choice = true;
+		choice = "CHOICE";
 		registerForContextMenu( v );
         openContextMenu( v );  
 	}
+	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// Handle presses on the action bar items

@@ -47,7 +47,7 @@ public class WebServiceController {
 		String postString = obj.postString();
 		// We should probably only have a post string, if type 
 		// = "POST"
-		System.out.println(obj.url().toString());
+		//System.out.println(obj.url().toString());
 		try {
 			// Open a Connection for The URL in the obj
 			conn = (HttpURLConnection) url.openConnection();
@@ -66,7 +66,7 @@ public class WebServiceController {
 				if(postString != null) {
 					conn.setFixedLengthStreamingMode(postString.length());
 					// Out put the post string in UTF-8
-					System.err.println(postString);
+					//System.err.println(postString);
 					conn.getOutputStream().write(postString.getBytes(Charset.forName("UTF-8")));
 				} else {
 					throw new IOException("Invalid Post String");
