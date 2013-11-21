@@ -35,6 +35,7 @@ public class Story {
 		this.fragements = new ArrayList<Fragement>();
 		this.id = UUID.randomUUID();
 		this.title = "";
+		this.isLocal = false;
 	}
 	
 	public Story(UUID uniqueId) {
