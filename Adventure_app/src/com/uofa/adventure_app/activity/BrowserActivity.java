@@ -39,6 +39,8 @@ import com.uofa.adventure_app.application.AdventureApplication;
 import com.uofa.adventure_app.controller.LocalStorageController;
 import com.uofa.adventure_app.controller.http.HttpObjectStory;
 import com.uofa.adventure_app.interfaces.AdventureActivity;
+import com.uofa.adventure_app.model.Choice;
+import com.uofa.adventure_app.model.Fragement;
 import com.uofa.adventure_app.model.Story;
 import com.uofa.adventure_app.model.User;
 
@@ -73,6 +75,26 @@ public class BrowserActivity extends AdventureActivity {
 			getSharedPreferences("PREFERENCE", MODE_PRIVATE).edit().putBoolean("firstrun", false).commit();
 		}
 		HttpObjectStory httpStory = new HttpObjectStory();
+		/*
+		for(int i = 0; i < 10; i ++) {
+		Story s = new Story();
+		s.setTitle("This is a Random Title" + i);
+		s.addUser(new User("User" + i));
+		s.addFragement(new Fragement("Title1","Body1",1));
+		s.addFragement(new Fragement("Title2","Body2",1));
+		s.addFragement(new Fragement("Title3","Body3",1));
+		s.addFragement(new Fragement("Title4","Body4",1));
+		Fragement f = new Fragement("Has Choices", "COOL", 2);
+		Fragement f2 = new Fragement("TileC1", "Bodyc1", 3);
+		Fragement f3 = new Fragement("TileC2", "Bodyc2", 3);
+		s.addFragement(f2);
+		s.addFragement(f3);
+		f.addChoice(new Choice(f2));
+		f.addChoice(new Choice(f3));
+		s.addFragement(f);
+		s.setStartFragement(f);
+		this.httpRequest(httpStory.publishObject(s), "PUBLISH");
+		}*/
 		this.httpRequest(httpStory.fetchAll(), GET_ALL_METHOD);
 
 	}
@@ -169,6 +191,7 @@ public class BrowserActivity extends AdventureActivity {
 		String id = s.id().toString();
 		Intent myIntent = new Intent(this, StoryActivity.class);
 		myIntent.putExtra("StoryID", id);
+		myIntent.putExtra("FragementID",s.startFragement().uid().toString());
 		this.startActivity(myIntent);
 	}
 	
@@ -188,13 +211,12 @@ public class BrowserActivity extends AdventureActivity {
 	 * @param ArrayList<Story> result
 	 */
 	public void dataReturn(ArrayList<Story> result, String method) {
-		
-		for(int i = 0; i<result.size(); i++ ) {
-			if(result.get(i).isLocal() == false) 
-				AdventureApplication.getStoryController().addStory(result.get(i));
-		}
-		
 		if(method.equals(GET_ALL_METHOD)) {
+			for(int i = 0; i < result.size(); i++ ) {
+				//System.out.println(result);
+					AdventureApplication.getStoryController().addStory(result.get(i));
+			}
+			
 			HashMap<String, List<String>> map = new HashMap<String, List<String>>();
 			LocalStorageController localStorageController = new LocalStorageController(this);
 			map = localStorageController.getBrowserViewInfo();
@@ -228,9 +250,11 @@ public class BrowserActivity extends AdventureActivity {
               });
 		}
 		if(method.equals(GET_METHOD)) {
+			//System.out.println("RESULT " + result);
 			Story currentStory = result.get(0);
 			if(currentStory != null) {
 				//currentStory.setIsLocal(true);
+				//System.out.println(currentStory.getFragements().get(0).getTitle());
 				AdventureApplication.getStoryController().replaceStory(currentStory);
 				AdventureApplication.getActivityController().update();
 				LocalStorageController localStorageController = new LocalStorageController(this);

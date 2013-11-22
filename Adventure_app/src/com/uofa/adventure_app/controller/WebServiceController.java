@@ -47,7 +47,7 @@ public class WebServiceController {
 		String postString = obj.postString();
 		// We should probably only have a post string, if type 
 		// = "POST"
-		
+		//System.out.println(obj.url().toString());
 		try {
 			// Open a Connection for The URL in the obj
 			conn = (HttpURLConnection) url.openConnection();
@@ -66,22 +66,22 @@ public class WebServiceController {
 				if(postString != null) {
 					conn.setFixedLengthStreamingMode(postString.length());
 					// Out put the post string in UTF-8
-					System.err.println(postString);
+					//System.err.println(postString);
 					conn.getOutputStream().write(postString.getBytes(Charset.forName("UTF-8")));
 				} else {
 					throw new IOException("Invalid Post String");
 				}
-
+			}
 			// Gets a Response Code.
 			int status = conn.getResponseCode();
-
-			if (status / 100 != 2 && requestType.equals(HttpRequestType.POST)) {
+			
+			if (status / 100 != 2) {
 				responseMessage = conn.getResponseMessage();
 			}
-			}
+			
 			// response = new Response(status, new Hashtable<String,
 			// List<String>>(), conn.getResponseMessage().getBytes());
-			if (responseMessage == null && requestType.equals(HttpRequestType.POST)) {
+			if (responseMessage == null && requestType.equals(HttpRequestType.POST) || requestType.equals(HttpRequestType.GET)) {
 				InputStream in = new BufferedInputStream(conn.getInputStream());
 				responseMessage = readStream(in);
 				}

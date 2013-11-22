@@ -38,7 +38,7 @@ import com.uofa.adventure_app.interfaces.PerformHttp;
 import com.uofa.adventure_app.model.Story;
 import com.uofa.adventure_app.model.User;
 
-public class StoryGridAdapter extends BaseAdapter implements DataReturn<Story> {
+public class StoryGridAdapter extends BaseAdapter {
 
 	private ArrayList<Story> stories;
 	private ArrayList<Story> storiesClone;
@@ -56,18 +56,19 @@ public class StoryGridAdapter extends BaseAdapter implements DataReturn<Story> {
 	}
 
 	public void filter(String query) {
-		System.err.println("Query:" + query + "END OF QUERY");
-		this.query = query;
-		if (query != null && !query.equalsIgnoreCase("")) {
+		if (query != null) {
+			this.query = query;
 			this.stories.clear();
+			for (Story s : storiesClone) {
+				String searchString = s.title().concat(s.users().toString());
+				if (searchString.matches("(?i)(.*)" + query + "(.*)")) {
+					this.stories.add(s);
+				}
+			}
 			this.notifyDataSetChanged();
-			
-			HttpObjectStory httpObject = new HttpObjectStory();
-			this.httpRequest(httpObject.searchObject(query), "");
 		} else {
 			this.stories.clear();
 			this.stories.addAll(this.storiesClone);
-			this.notifyDataSetChanged();
 		}
 	}
 
@@ -89,14 +90,15 @@ public class StoryGridAdapter extends BaseAdapter implements DataReturn<Story> {
 		return position;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see android.widget.BaseAdapter#notifyDataSetChanged()
 	 */
 	@Override
 	public void notifyDataSetChanged() {
 		// TODO Auto-generated method stub
 		super.notifyDataSetChanged();
-	
 
 	}
 
@@ -105,60 +107,38 @@ public class StoryGridAdapter extends BaseAdapter implements DataReturn<Story> {
 
 		// Setup the multi line items in a listview
 		if (convertView == null) {
-			
-			convertView = mInflater.inflate(R.layout.browser_item, parent, false);
+
+			convertView = mInflater.inflate(R.layout.browser_item, parent,
+					false);
 		}
 		// Get the views
 		TextView title = (TextView) convertView.findViewById(R.id.line_a);
 		TextView sub = (TextView) convertView.findViewById(R.id.line_b);
-		
+
 		Story story = (Story) this.getItem(position);
-		if(story != null) {
-				
-				if(!story.isLocal()) {
-					convertView.setBackgroundResource(R.drawable.gridbgdown);
-					convertView.setPadding(25, 20, 20, 25);
-				} else {
-					convertView.setBackgroundResource(R.drawable.gridbg);
-					convertView.setPadding(25, 20, 20, 25);
-				}
-				
-				title.setText(story.title());
-				
-				String authors = new String();
-				// TODO: Format this better!
-				for (User u : story.users()) {
-					authors += "By: " + u.getName();
-				}
-				sub.setText(authors);
+		if (story != null) {
+
+			if (!story.isLocal()) {
+				convertView.setBackgroundResource(R.drawable.gridbgdown);
+				convertView.setPadding(25, 20, 20, 25);
+			} else {
+				convertView.setBackgroundResource(R.drawable.gridbg);
+				convertView.setPadding(25, 20, 20, 25);
 			}
-	
+
+			title.setText(story.title());
+
+			String authors = new String();
+			// TODO: Format this better!
+			for (User u : story.users()) {
+				authors += "By: " + u.getName();
+			}
+			sub.setText(authors);
+		}
+
 		return convertView;
 	}
 
-	
-	
-	protected void httpRequest(HttpObject httpObject, String method) {
-		WebServiceController wsc = AdventureApplication.getWebServiceController();
-		new PerformHttp<Story>(this, method, wsc ,new StoryParser()).execute(httpObject);
-	}
 
-	/*
-	 * 		String searchString = s.title().concat(s.users().toString());
-		if(searchString.matches("(?i)(.*)"+query+"(.*)")) {
-			this.stories.add(s);
-		}*/
 	
-	@Override
-	public void dataReturn(ArrayList<Story> result, String method) {
-		if(!this.query.isEmpty()) {
-		this.stories.clear();
-		System.out.println("Count: " + result.size() + " Search:" + result);
-		
-		for (Story s : result) {
-			this.stories.add(s);
-		}
-		this.notifyDataSetChanged();
-	}
-	}
 }
