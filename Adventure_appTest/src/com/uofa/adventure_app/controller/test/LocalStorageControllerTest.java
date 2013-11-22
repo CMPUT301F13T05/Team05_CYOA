@@ -18,6 +18,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 package com.uofa.adventure_app.controller.test;
 
+import java.util.UUID;
+
 import android.test.ActivityInstrumentationTestCase2;
 import com.uofa.adventure_app.activity.BrowserActivity;
 import com.uofa.adventure_app.controller.LocalStorageController;
@@ -31,6 +33,12 @@ public class LocalStorageControllerTest extends
 					ActivityInstrumentationTestCase2<BrowserActivity>
 {
 	private LocalStorageController testLocalStorageController;
+	//Story testStory = new Story();
+	//String testy = testStory.id().toString();
+	private String storyId;
+	private String storyId2;
+	private String fragmentId;
+	private String testUserId;
 	
 	public LocalStorageControllerTest()
 	{
@@ -40,10 +48,13 @@ public class LocalStorageControllerTest extends
 	protected void setUp() throws Exception
 	{
 		super.setUp();
-		// get a DbHelper
-		//testLocalStorageController.DBHelper = new DbHelper(this.getActivity());
 		// get a LocalStorageController within browserActivity
 		testLocalStorageController = new LocalStorageController(this.getActivity());
+		
+		storyId = UUID.randomUUID().toString();
+		storyId2 = UUID.randomUUID().toString();
+		fragmentId = UUID.randomUUID().toString();
+		testUserId = UUID.randomUUID().toString();
 	}
 	
 	// set a new story
@@ -51,38 +62,42 @@ public class LocalStorageControllerTest extends
 	public void testSetStory()
 	{
 		// get a writeable database?
-		testLocalStorageController = testLocalStorageController.openForWrite();
+		//testLocalStorageController = testLocalStorageController.openForWrite();
 		
 		// write to the database?
-		testLocalStorageController.setStory("1","Man in the middle", "4","Joel");
-		
+		//String bus = Random.UUID().toString();
+		// setStory(String storyId, String title,String userId, String user)
+		testLocalStorageController.setStory("1", "Man in the middle", testUserId, "Joel");
+		//System.out.println("++++++++++++++++++++++++++++++++++++" + storyId2);
 		// close the connection to the database
-		testLocalStorageController.close();
+		//testLocalStorageController.close();
 	}
 	
 	public void testGetStory() 
 	{
 		String storyTitle;
-		testLocalStorageController = testLocalStorageController.openForRead();
+		//testLocalStorageController = testLocalStorageController.openForRead();
 		
-		storyTitle = testLocalStorageController.getStory("1").get(0).get(0);
-		assertNotNull(storyTitle);
+		//storyTitle = testLocalStorageController.getStory("1").get(0).get(0);
+		System.out.println("``````````````````````````````````````````" + testLocalStorageController.getStory("1"));
+		//assertNotNull(storyTitle);
 		
 		// assert that this is the same as what was put there!
-		assertEquals("Man in the middle", storyTitle);
+		// testLocalStorageController.getStory(storyId2).get(0).get(0)
+		assertEquals("Man in the middle", testLocalStorageController.getStory("1"));
 		
-		testLocalStorageController.close();
+		//testLocalStorageController.close();
 	}
 	
 	// also tests getTitle
 	public void testInsertIntoStoriesTable()
 	{
 		testLocalStorageController = testLocalStorageController.openForWrite();
-		testLocalStorageController.insertIntoStoriesTable("7", "John Handcock");
+		testLocalStorageController.insertIntoStoriesTable(storyId, "John Handcock");
 		testLocalStorageController.close();
 		
 		testLocalStorageController = testLocalStorageController.openForRead();
-		assertEquals("John Handcock", testLocalStorageController.getTitle("7"));
+		assertEquals("John Handcock", testLocalStorageController.getTitle(storyId));
 		testLocalStorageController.close();
 	}
 
@@ -90,13 +105,13 @@ public class LocalStorageControllerTest extends
 	public void testInsertIntoUsersTable()
 	{
 		testLocalStorageController = testLocalStorageController.openForWrite();
-		testLocalStorageController.insertIntoUsersTable("4", "Joel", "7");
+		testLocalStorageController.insertIntoUsersTable(testUserId, "Joel", storyId);
 		testLocalStorageController.close();
 		
 		testLocalStorageController = testLocalStorageController.openForRead();
 		//getUsers(story_id,"s");
 		//String userName = testLocalStorageController.getUsers("7", "s").get(1);
-		assertEquals("Joel", testLocalStorageController.getUsers("7", "s").get(0)); // 0 or 1 for get?
+		assertEquals("Joel", testLocalStorageController.getUsers(storyId, "s").get(0)); // 0 or 1 for get?
 		testLocalStorageController.close();
 	}
 	
@@ -105,14 +120,14 @@ public class LocalStorageControllerTest extends
 	{
 		testLocalStorageController = testLocalStorageController.openForWrite();
 		// insertIntoFragmentsTable(String fragmentId, String text, String story_id, String title, Integer flag)
-		testLocalStorageController.insertIntoFragmentsTable("1", "Melons are yummy fruits","7", "Melons", 1);
-		testLocalStorageController.close();
+		testLocalStorageController.insertIntoFragmentsTable(fragmentId, "Melons are yummy fruits", storyId, "Melons", 1);
+		//testLocalStorageController.close();
 		
-		testLocalStorageController = testLocalStorageController.openForRead();
+		//testLocalStorageController = testLocalStorageController.openForRead();
 		//String userName = testLocalStorageController.getUsers("7", "s").get(1); // 0 or 1 for get?
 		// I'm not sure if these methods are working, it's all rather confusing.
 		// assertEquals("Melons are a yummy fruits",testLocalStorageController.getStory("7").get(3).get(0));
-		assertEquals("Melons are yummy fruits", testLocalStorageController.getFragment("1").get(2).get(0));
+		assertEquals("Melons are yummy fruits", testLocalStorageController.getFragment(fragmentId).get(2).get(0));
 		testLocalStorageController.close();
 	}
 	
@@ -137,13 +152,16 @@ public class LocalStorageControllerTest extends
 		testLocalStorageController = testLocalStorageController.openForWrite();
 		// there is no way to set fragment id's manually?!
 		// insertIntoChoicesTable(String fragment_id,String choice_id)
-		testLocalStorageController.insertIntoChoicesTable("1", "1"); // setting recursive fragment choice!
+		testLocalStorageController.insertIntoChoicesTable(fragmentId, fragmentId); // setting recursive fragment choice!
 		testLocalStorageController.close();
 		
 		testLocalStorageController = testLocalStorageController.openForRead();
-		//String userName = testLocalStorageController.getUsers("16", "s").get(1);
 									// gets an array of choice id's, get gets the first one, getFragment gets the fragment arraylist, get gets the firs
-		assertEquals("Melons", testLocalStorageController.getFragment(testLocalStorageController.getChoices("1").get(0)).get(0).get(0));
+		//assertEquals("Melons", testLocalStorageController.getFragment(testLocalStorageController.getChoices(fragmentId).get(0)).get(0).get(0));
+		String choiceid = testLocalStorageController.getChoices(fragmentId).get(0);
+		assertNotNull(choiceid);
+		assertEquals("Melons", testLocalStorageController.getFragment(choiceid).get(1).get(0) );
+		
 		testLocalStorageController.close();
 	}
 	

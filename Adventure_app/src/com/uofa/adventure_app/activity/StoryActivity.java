@@ -81,10 +81,11 @@ public class StoryActivity extends AdventureActivity {
 			currentStory = new Story(UUID.fromString(extras.getString("StoryID")));
 			ArrayList<Story> stories = AdventureApplication.getStoryController().getStories();
 			currentStory = stories.get(stories.indexOf(currentStory));
-			if (currentStory.isLocal()) 
-				testBody.setText(localStorageController.getStory(s_id).get(3).toString());
+			if (currentStory.isLocal()){ 
+				//System.out.print(localStorageController.getStory(s_id).get(0).get(0) + "--------------------------------------------------------");
+				testBody.setText(localStorageController.getStory(s_id).get(3).get(0));
 				
-			else{
+			}else{
 				testBody.setText(currentStory.getFragements().get(0).body());
 				currentStory.setIsLocal(true);
 				AdventureApplication.getStoryController().replaceStory(currentStory);

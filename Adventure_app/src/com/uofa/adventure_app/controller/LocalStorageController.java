@@ -180,7 +180,7 @@ public class LocalStorageController {
 				}while (c.moveToNext());
 			}
 		}  
-		c.close();
+		//c.close();
 		db.close();
 		return ids;
 	}
@@ -252,7 +252,7 @@ public class LocalStorageController {
 			}
 		}  
 		titlec.close();
-		//System.out.println("title: " + title);
+		System.out.println("title is: _>_>_>_>_>_>_>_>_>_>_>_>_>_>_>_>_>_>_>_>_>>_>_>_>_>_>_>_>_>_>>_>_>_" + title);
 		return title;
 	}
 	
@@ -325,7 +325,7 @@ public class LocalStorageController {
 		List<List<String>> storyInfo =new ArrayList<List<String>>();
 		List<String> storyTitle = new ArrayList<String>();
 		storyTitle.add(this.getTitle(story_id));
-		//System.out.println(storyTitle);
+		System.out.println("+!+!+!+!+!+!++!+!+!+!+!+!+!+!+!+!+!+!+!+!+!+!+!++!+!+!" + storyTitle);
 		List<String> users = new ArrayList<String>();
 		users=this.getUsers(story_id,"s");
 		
@@ -371,8 +371,8 @@ public class LocalStorageController {
 	 * @param userStory
 	 * @return story_id
 	 */
-	public void setStory(String storyId, String title,String userId, String user){
-		//System.out.println("in setstory story id: "+storyId);
+	public void setStory(String storyId, String title, String userId, String user){
+		System.out.println(" ============================================= " + storyId + " " + title);
 		this.openForWrite();
 		this.insertIntoStoriesTable(storyId,title);
 		this.close();
@@ -392,7 +392,7 @@ public class LocalStorageController {
 	 * @param prevFragmentId
 	 * @return current Fragment id
 	 */
-	public void setFragment(String story_id,String currentFragmentId,String fragmentTitle,String fragmentBody,String prevFragmentId, Integer first){
+	public void setFragment(String story_id, String currentFragmentId, String fragmentTitle, String fragmentBody, String prevFragmentId, Integer first){
 			this.openForWrite();
 			this.insertIntoFragmentsTable(currentFragmentId,fragmentBody, story_id, fragmentTitle, first);
 			this.close();
