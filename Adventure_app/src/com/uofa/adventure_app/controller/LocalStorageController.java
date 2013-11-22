@@ -38,7 +38,7 @@ import com.uofa.adventure_app.model.Story;
 import com.uofa.adventure_app.model.User;
 
 /**
- * @author ulvi
+ * @author ulvi, Joel Malina
  *
  */
 public class LocalStorageController {
@@ -65,6 +65,7 @@ public class LocalStorageController {
     	db=DBHelper.getWritableDatabase();
     	return this;
     }
+	
 	/**
 
 	 * open database for read
@@ -75,8 +76,8 @@ public class LocalStorageController {
     	db=DBHelper.getReadableDatabase();
     	return this;
     }
+	
 	/**
-
 	 * close database
 	 */
 	public void close(){
@@ -141,14 +142,44 @@ public class LocalStorageController {
 	 * @param isAnnotation
 	 * @param fragment_id
 	 */
-	public void insertIntoMediaTable(String mediaId,String pointer, boolean isAnnotation, int fragment_id){
+	public void insertIntoMediaTable(String mediaId,String pointer, boolean isAnnotation, String fragment_id){
 		ContentValues values = new ContentValues();	
 		values.put("media_id", mediaId);
 		values.put("pointer", pointer);
 	    values.put("is_annotation", isAnnotation);
 	    values.put("fragment_id", fragment_id);
-	    db.insert("images", null, values);
+	    this.openForWrite();
+	    db.insert("media", null, values);
+	    this.close();
 	}
+	
+	// Joel's Method
+	public int insertImage(String imageId, String path, boolean isAnnotation, String fragment_id){
+		ContentValues values = new ContentValues();	
+		values.put("image_id", imageId);
+		values.put("path", path);
+	    values.put("is_annotation", isAnnotation);
+	    values.put("fragment_id", fragment_id);
+	    
+//	    System.out.println("The imageId is: " + imageId + "<<<<<<<imageId<<<<<<<");
+//	    System.out.println("The path is: " + path + "<<<<<<path<<<<<<<");
+//	    System.out.println("The isAnnotation is: " + isAnnotation + "<<<<<<isAnnotation<<<<<<<");
+//	    System.out.println("The fragment_id is: " + fragment_id + "<<<<<<fragment_id<<<<<<<");
+	   try
+	   { 
+	    this.openForWrite();
+	    db.insert("images", null, values);
+	    this.close();
+	   }
+	   catch (SQLException ex)
+	   {
+		   System.out.println("My-my old chap, seems we have an error about! Here she blows: " + ex);
+		// fail
+		   return -1;
+	   }
+	    // success
+	    return 1;
+	}// end insertImage
 	
 	/**
 	 * Inserts values into choices table
@@ -436,6 +467,37 @@ public class LocalStorageController {
 		
 		return fragment;
 	}
+	
+	// Joel's image return
+	public String getImage(String fragmentId)
+	{
+		String filePath;
+		this.openForRead();
+		String imageQuery = "select path from images where fragment_id = '"+fragmentId+"'";
+		Cursor imagePointer = db.rawQuery(imageQuery, null);
+		
+		// required to not crash
+		imagePointer.moveToFirst();	
+
+		// get the index of the path (it's column) and pass it to getString to put it into filePath
+		try
+		{
+			filePath = imagePointer.getString(imagePointer.getColumnIndex("path"));
+		}//  IllegalArgumentException
+		catch( Exception ie)
+		{
+			System.err.println("ARRRRR CAPN'N WE GOTS NOT LOOT (image)!!!!!!");
+			System.err.println(ie);
+			this.close();
+			return "0";
+		}
+		// test junk
+		// System.out.println("OUTPUT OF YOUR RAW IMAGE QUERY IS AS FOLLOWS LISTEN CAREFULLY!");
+		// System.out.println(filePath);
+		this.close();
+		return filePath;
+	}
+	
 	
 	/**
 	 * This method will return the fragment is of the first fragment of a story

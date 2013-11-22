@@ -25,7 +25,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.widget.Toast;
 /**
  * 
- * @author ulvi
+ * @author ulvi, Joel Malina
  *
  */
 public class DbHelper extends SQLiteOpenHelper {
@@ -42,12 +42,15 @@ public class DbHelper extends SQLiteOpenHelper {
 										  "(fragment_id VARCHAR primary key,text VARCHAR,story_id VARCHAR,title VARCHAR,firstflag integer,"+
 										  "FOREIGN KEY(story_id) REFERENCES stories(story_id));";
 	static final String CreateMediaTable = "create table if not exists media "+
-										  "(media_id VARCHAR primary key,pointer VARCHAR,is_annotation boolean,fragment_id integer,"+
+										  "(media_id VARCHAR primary key,pointer VARCHAR,is_annotation boolean,fragment_id VARCHAR,"+
 										  "FOREIGN KEY(fragment_id) REFERENCES fragments(fragment_id));";
 	static final String CreateChoicesTable= "create table if not exists choices "+
 										  "(fragment_id VARCHAR,choice_id VARCHAR,"+
 										  "FOREIGN KEY(choice_id) REFERENCES fragments(fragments_id));";
 	
+	static final String CreateImagesTable = "create table if not exists images " + 
+										  "(image_id VARCHAR primary key not null, path VARCHAR not null, is_annotation boolean not null, fragment_id VARCHAR not null,"
+										  + "FOREIGN KEY(fragment_id) REFERENCES fragments(fragment_id));";
 	
     // If you change the database schema, you must increment the database version.
     public static final int DATABASE_VERSION = 1;
@@ -68,6 +71,7 @@ public class DbHelper extends SQLiteOpenHelper {
         db.execSQL(CreateFragmentsTable);
         db.execSQL(CreateMediaTable);
         db.execSQL(CreateChoicesTable);
+        db.execSQL(CreateImagesTable);
     }
 
     public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {

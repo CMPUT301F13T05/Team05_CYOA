@@ -51,11 +51,14 @@ public class StoryActivity extends AdventureActivity {
 	TextView testtitle;
 	TextView testAuthor;
 	TextView testBody;
+	ImageView testImage; // for displaying an image, duh!
 	String choice;
 	View currentView;
 	Uri imageFileUri;
 	Story currentStory;
 	Fragement currentFragement = null;
+	LocalStorageController localStorageController = null;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -64,7 +67,9 @@ public class StoryActivity extends AdventureActivity {
 		testtitle = (TextView) findViewById(R.id.titleview);
 		testAuthor = (TextView) findViewById(R.id.authorview);
 		testBody = (TextView) findViewById(R.id.storyview);
-		LocalStorageController localStorageController = new LocalStorageController(this);
+		testImage = (ImageView) findViewById(R.id.annotation); // YOU ARE HERE -- JOEL
+		
+		localStorageController = new LocalStorageController(this);
 		Bundle extras = getIntent().getExtras();
 		List<List<String>> storyInfo =new ArrayList<List<String>>();
 		if (extras != null){
@@ -77,7 +82,6 @@ public class StoryActivity extends AdventureActivity {
 			if (currentStory.isLocal()){ 
 				//System.out.print(localStorageController.getStory(s_id).get(0).get(0) + "--------------------------------------------------------");
 				testBody.setText(localStorageController.getStory(s_id).get(3).get(0));
-				
 			}else{
 				testBody.setText(currentStory.getFragements().get(0).body());
 			}
@@ -90,6 +94,9 @@ public class StoryActivity extends AdventureActivity {
 				System.out.println("START:" + currentStory.getFragements());
 				int index = currentStory.getFragements().indexOf(frag);
 				currentFragement = currentStory.getFragements().get(index);
+				//if (localStorageController.getImage(currentFragement.uid().toString()) != "0") {
+					testImage.setImageDrawable(Drawable.createFromPath(localStorageController.getImage(currentFragement.uid().toString())));
+				//}
 			}
 
 				if(currentFragement == null) {
@@ -203,15 +210,16 @@ public class StoryActivity extends AdventureActivity {
 			case R.id.copy:
 				Story newStory = new Story(UUID.randomUUID());
 				newStory.setIsLocal(true);
-				LocalStorageController localStoryController = new LocalStorageController(this);
+				//LocalStorageController localStoryController = new LocalStorageController(this);
 				newStory.setTitle(currentStory.title());
-				localStoryController.setStory(newStory.id().toString(), newStory.title(), currentStory.users().get(0).uid().toString(), currentStory.users().get(0).toString());
+				localStorageController.setStory(newStory.id().toString(), newStory.title(), currentStory.users().get(0).uid().toString(), currentStory.users().get(0).toString());
 				for(int i = 0; i < currentStory.users().size(); i++)
 					newStory.addUser(currentStory.users().get(i));
 				for(int j = 0; j < currentStory.getFragements().size(); j++){
 					newStory.addFragement(currentStory.getFragements().get(j));
 					for(int w = 0; w<currentStory.getFragements().get(j).choices().size(); w++)
 						newStory.getFragements().get(j).addChoice(currentStory.getFragements().get(j).choices().get(w));
+					// TODO: get annotations for fragments & add them to newStory
 				}
 				AdventureApplication.getStoryController().addStory(newStory);
 				AdventureApplication.getActivityController().update();
@@ -269,30 +277,49 @@ public class StoryActivity extends AdventureActivity {
 	    /**
 	     * Opens the camera and allows the user to take a picture if they so choose
 	     */
-	    public void takeAPhoto() {
-	        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+	 public void takeAPhoto() {
+		 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 	        
-	        String folder = Environment.getExternalStorageDirectory().getAbsolutePath() + "/tmp";
-	        File folderF = new File(folder);
-	        if (!folderF.exists()) {
+	     String folder = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Adventure_App/Images";
+	     File folderF = new File(folder);
+	     
+	     if (!folderF.exists()) {
 	            folderF.mkdir();
-	        }
+	     }
 	        
-	        String imageFilePath = folder + "/" + String.valueOf(System.currentTimeMillis()) + "jpg";
-	        File imageFile = new File(imageFilePath);
-	        imageFileUri = Uri.fromFile(imageFile);
+	     String imageFilePath = folder + "/" + "Adventure_App" + String.valueOf(System.currentTimeMillis()) + "jpg";
+	     File imageFile = new File(imageFilePath);
+	     imageFileUri = Uri.fromFile(imageFile);
 	        
-	        intent.putExtra(MediaStore.EXTRA_OUTPUT, imageFileUri);
-	        startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
-	    }
+	     intent.putExtra(MediaStore.EXTRA_OUTPUT, imageFileUri);
+	     startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
+	 }
 	    
 	    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 	        if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
 	           //TextView tv = (TextView) findViewById(R.id.status);
 	            if (resultCode == RESULT_OK) {
-	                System.out.println("Photo OK!");
+	            	
+	                // System.out.println("Photo OK!");
+	            	// putting photo into imageview
 	                ImageView annotation = (ImageView) findViewById(R.id.annotation);
 	                annotation.setImageDrawable(Drawable.createFromPath(imageFileUri.getPath()));
+	                
+	                // adding path & fragment the image belongs to into local Database
+	                //LocalStorageController lts = new LocalStorageController(this);
+	                String imageId = UUID.randomUUID().toString();
+	                
+	                // make sure things are safe incrementally (can take out later)
+	                assert(currentStory != null);
+	                assert(currentStory.startFragement() != null);
+	                assert(currentStory.startFragement().uid() != null);
+	                assert(currentFragement.uid().toString() != null);
+	                
+	                // currentStory.startFragement().uid().toString() // another option that should technically get the same thing in this one case
+	                localStorageController.insertImage( imageId, imageFileUri.getPath().toString(), false, currentFragement.uid().toString());
+	                
+	               // localStorageController.getImage(currentFragement.uid().toString());
+	                
 	            } else if (resultCode == RESULT_CANCELED) {
 	                System.out.println("Photo canceled");
 	            } else {

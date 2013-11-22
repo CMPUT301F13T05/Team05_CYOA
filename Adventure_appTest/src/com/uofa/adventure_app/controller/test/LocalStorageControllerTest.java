@@ -136,7 +136,7 @@ public class LocalStorageControllerTest extends
 	{
 		testLocalStorageController = testLocalStorageController.openForWrite();
 		// (String mediaId, String pointer, boolean isAnnotation, int fragment_id)
-		testLocalStorageController.insertIntoMediaTable("1", "pointer1", false, 1);
+		testLocalStorageController.insertIntoMediaTable("1", "pointer1", false, "1");
 		testLocalStorageController.close();
 		
 		testLocalStorageController = testLocalStorageController.openForRead();
