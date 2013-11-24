@@ -142,7 +142,7 @@ public class LocalStorageController {
 	 * @param isAnnotation
 	 * @param fragment_id
 	 */
-	public void insertIntoMediaTable(String mediaId,String pointer, boolean isAnnotation, String fragment_id){
+	public void insertIntoMediaTable(String mediaId,String pointer, int isAnnotation, String fragment_id){
 		ContentValues values = new ContentValues();	
 		values.put("media_id", mediaId);
 		values.put("pointer", pointer);
@@ -154,7 +154,7 @@ public class LocalStorageController {
 	}
 	
 	// Joel's Method
-	public int insertImage(String imageId, String path, boolean isAnnotation, String fragment_id){
+	public int insertImage(String imageId, String path, int isAnnotation, String fragment_id){
 		ContentValues values = new ContentValues();	
 		values.put("image_id", imageId);
 		values.put("path", path);
@@ -355,8 +355,10 @@ public class LocalStorageController {
 	public List<List<String>> getStory(String story_id){
 		List<List<String>> storyInfo =new ArrayList<List<String>>();
 		List<String> storyTitle = new ArrayList<String>();
+		List<String> images = new ArrayList<String>();
+		List<String> annotations = new ArrayList<String>();
 		storyTitle.add(this.getTitle(story_id));
-		System.out.println("+!+!+!+!+!+!++!+!+!+!+!+!+!+!+!+!+!+!+!+!+!+!+!++!+!+!" + storyTitle);
+		//System.out.println("+!+!+!+!+!+!++!+!+!+!+!+!+!+!+!+!+!+!+!+!+!+!+!++!+!+!" + storyTitle);
 		List<String> users = new ArrayList<String>();
 		users=this.getUsers(story_id,"s");
 		
@@ -374,6 +376,8 @@ public class LocalStorageController {
 		}  
 		fragc.close();
 		System.out.println("fragmentid: "+firstFragmentID+"");
+		images=(List<String>) this.getAllImages(firstFragmentID).values();
+		annotations=(List<String>) this.getAllAnnotations(firstFragmentID).values();
 		List<String> choices = new ArrayList<String>();
 		choices=getChoices(firstFragmentID);
 		List<String> fragmentBody = new ArrayList<String>();
@@ -392,6 +396,8 @@ public class LocalStorageController {
 		storyInfo.add(users);
 		storyInfo.add(choices);
 		storyInfo.add(fragmentBody);
+		storyInfo.add(images);
+		storyInfo.add(annotations);
 		return storyInfo;
 	}
 	
@@ -434,6 +440,8 @@ public class LocalStorageController {
 			}
 
 	}
+	
+	
 
 	/**
 	 * 1st element is Fragment title, has type of List<String>, use getFragment(fragmentId).get(0).get(0) to get title as String
@@ -447,6 +455,8 @@ public class LocalStorageController {
 		List<String> fragmentTitle = new ArrayList<String>();
 		List<String> fragmentBody = new ArrayList<String>();
 		List<String> fragmentChoices = new ArrayList<String>();
+		List<String> images = new ArrayList<String>();
+		List<String> annotations = new ArrayList<String>();
 		String getFragmentSql="select * from fragments where fragment_id='"+fragmentId+"'";
 		this.openForRead();
 		Cursor fc = db.rawQuery(getFragmentSql, null);
@@ -460,9 +470,13 @@ public class LocalStorageController {
 			}
 		}  
 		fragmentChoices=this.getChoices(fragmentId);
+		images=(List<String>) this.getAllImages(fragmentId).values();
+		annotations=(List<String>) this.getAllAnnotations(fragmentId).values();
 		fragment.add(fragmentTitle);
 		fragment.add(fragmentChoices);
 		fragment.add(fragmentBody);
+		fragment.add(images);
+		fragment.add(annotations);
 		fc.close();
 		
 		return fragment;
@@ -498,9 +512,44 @@ public class LocalStorageController {
 		return filePath;
 	}
 	
+	public HashMap<String, String> getAllImages(String fragmentId){
+		HashMap<String, String> imap = new HashMap<String, String>();
+		this.openForRead();
+		String imagesQuery = "select image_id, path from images where fragment_id = '"+fragmentId+"' and is_annotation=0";
+		Cursor ic = db.rawQuery(imagesQuery, null);
+		ic.moveToFirst();
+		if (ic != null ) {
+			if  (ic.moveToFirst()) {
+				do {
+					imap.put(ic.getString(0), ic.getString(1));
+				}while (ic.moveToNext());
+			}
+		}  
+		db.close();
+		return imap;
+	}
 	
+	public HashMap<String, String> getAllAnnotations(String fragmentId){
+		HashMap<String, String> amap = new HashMap<String, String>();
+		this.openForRead();
+		String annotaionsQuery = "select image_id, path from images where fragment_id = '"+fragmentId+"' and is_annotation=0";
+		Cursor ic = db.rawQuery(annotaionsQuery, null);
+		ic.moveToFirst();
+		if (ic != null ) {
+			if  (ic.moveToFirst()) {
+				do {
+					amap.put(ic.getString(0), ic.getString(1));
+				}while (ic.moveToNext());
+			}
+		}  
+		db.close();
+		return amap;
+	}
+	
+	
+
 	/**
-	 * This method will return the fragment is of the first fragment of a story
+	 * This method will return the fragment is of the first fragment of a story  DONT USE
 	 * @param String s_id
 	 * @return Integer
 	 */

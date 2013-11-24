@@ -316,7 +316,7 @@ public class StoryActivity extends AdventureActivity {
 	                assert(currentFragement.uid().toString() != null);
 	                
 	                // currentStory.startFragement().uid().toString() // another option that should technically get the same thing in this one case
-	                localStorageController.insertImage( imageId, imageFileUri.getPath().toString(), false, currentFragement.uid().toString());
+	                localStorageController.insertImage( imageId, imageFileUri.getPath().toString(), 0, currentFragement.uid().toString());
 	                
 	               // localStorageController.getImage(currentFragement.uid().toString());
 	                

@@ -42,14 +42,14 @@ public class DbHelper extends SQLiteOpenHelper {
 										  "(fragment_id VARCHAR primary key,text VARCHAR,story_id VARCHAR,title VARCHAR,firstflag integer,"+
 										  "FOREIGN KEY(story_id) REFERENCES stories(story_id));";
 	static final String CreateMediaTable = "create table if not exists media "+
-										  "(media_id VARCHAR primary key,pointer VARCHAR,is_annotation boolean,fragment_id VARCHAR,"+
+										  "(media_id VARCHAR primary key,pointer VARCHAR,is_annotation integer,fragment_id VARCHAR,"+
 										  "FOREIGN KEY(fragment_id) REFERENCES fragments(fragment_id));";
 	static final String CreateChoicesTable= "create table if not exists choices "+
 										  "(fragment_id VARCHAR,choice_id VARCHAR,"+
 										  "FOREIGN KEY(choice_id) REFERENCES fragments(fragments_id));";
 	
 	static final String CreateImagesTable = "create table if not exists images " + 
-										  "(image_id VARCHAR primary key not null, path VARCHAR not null, is_annotation boolean not null, fragment_id VARCHAR not null,"
+										  "(image_id VARCHAR primary key not null, path VARCHAR not null, is_annotation integer not null, fragment_id VARCHAR not null,"
 										  + "FOREIGN KEY(fragment_id) REFERENCES fragments(fragment_id));";
 	
     // If you change the database schema, you must increment the database version.
