@@ -51,6 +51,7 @@ import android.widget.Toast;
 import com.uofa.adventure_app.R;
 import com.uofa.adventure_app.application.AdventureApplication;
 import com.uofa.adventure_app.controller.LocalStorageController;
+import com.uofa.adventure_app.controller.http.HttpObjectStory;
 import com.uofa.adventure_app.interfaces.AdventureActivity;
 import com.uofa.adventure_app.model.Choice;
 import com.uofa.adventure_app.model.Fragement;
@@ -111,7 +112,7 @@ public class StoryActivity extends AdventureActivity {
 			}
 
 				if(currentFragement == null) {
-					testBody.setText(currentStory.getFragements().get(0).body());
+					testBody.setText(currentStory.getFragements().toString());
 					testAuthor.setText(currentStory.users().toString());
 					testtitle.setText(currentStory.title());
 				} else {
@@ -219,24 +220,13 @@ public class StoryActivity extends AdventureActivity {
 				editFragment();
 				break;
 			case R.id.copy:
-				Story newStory = new Story(UUID.randomUUID());
-				newStory.setIsLocal(true);
-				//LocalStorageController localStoryController = new LocalStorageController(this);
-				newStory.setTitle(currentStory.title());
-				localStorageController.setStory(newStory.id().toString(), newStory.title(), currentStory.users().get(0).uid().toString(), currentStory.users().get(0).toString());
-				for(int i = 0; i < currentStory.users().size(); i++)
-					newStory.addUser(currentStory.users().get(i));
-				for(int j = 0; j < currentStory.getFragements().size(); j++){
-					newStory.addFragement(currentStory.getFragements().get(j));
-					for(int w = 0; w<currentStory.getFragements().get(j).choices().size(); w++)
-						newStory.getFragements().get(j).addChoice(currentStory.getFragements().get(j).choices().get(w));
-					// TODO: get annotations for fragments & add them to newStory
-				}
-				AdventureApplication.getStoryController().addStory(newStory);
-				AdventureApplication.getActivityController().update();
+					copy();
 				break;
 			case R.id.quit:
 				browseView();
+				break;
+			case R.id.publish:
+				publish();
 				break;
 			default:
 				return super.onOptionsItemSelected(item);
@@ -446,7 +436,34 @@ public class StoryActivity extends AdventureActivity {
     		}
     	}
     }
+    
+    public void publish(){
+    	if (currentStory.isLocal()){
+    		currentStory.setIsLocal(false);
+    		HttpObjectStory httpStory = new HttpObjectStory();
+    		this.httpRequest(httpStory.publishObject(currentStory), "PUBLISH");
+    		currentStory.setIsLocal(true);
+    	}
+    }
 
+    
+    public void copy(){
+		Story newStory = new Story(UUID.randomUUID());
+		newStory.setIsLocal(true);
+		//LocalStorageController localStoryController = new LocalStorageController(this);
+		newStory.setTitle(currentStory.title());
+		localStorageController.setStory(newStory.id().toString(), newStory.title(), currentStory.users().get(0).uid().toString(), currentStory.users().get(0).toString());
+		for(int i = 0; i < currentStory.users().size(); i++)
+			newStory.addUser(currentStory.users().get(i));
+		for(int j = 0; j < currentStory.getFragements().size(); j++){
+			newStory.addFragement(currentStory.getFragements().get(j));
+			for(int w = 0; w<currentStory.getFragements().get(j).choices().size(); w++)
+				newStory.getFragements().get(j).addChoice(currentStory.getFragements().get(j).choices().get(w));
+			// TODO: get annotations for fragments & add them to newStory
+		}
+		AdventureApplication.getStoryController().addStory(newStory);
+		AdventureApplication.getActivityController().update();
+    }
 
     
     

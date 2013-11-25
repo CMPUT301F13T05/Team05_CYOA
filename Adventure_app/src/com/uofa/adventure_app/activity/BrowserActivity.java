@@ -191,7 +191,7 @@ public class BrowserActivity extends AdventureActivity {
 		String id = s.id().toString();
 		Intent myIntent = new Intent(this, StoryActivity.class);
 		myIntent.putExtra("StoryID", id);
-		myIntent.putExtra("FragementID",s.startFragement().uid().toString());
+		//myIntent.putExtra("FragementID",s.startFragement().uid().toString());
 		this.startActivity(myIntent);
 	}
 	
@@ -212,10 +212,6 @@ public class BrowserActivity extends AdventureActivity {
 	 */
 	public void dataReturn(ArrayList<Story> result, String method) {
 		if(method.equals(GET_ALL_METHOD)) {
-			for(int i = 0; i < result.size(); i++ ) {
-				//System.out.println(result);
-					AdventureApplication.getStoryController().addStory(result.get(i));
-			}
 			
 			HashMap<String, List<String>> map = new HashMap<String, List<String>>();
 			LocalStorageController localStorageController = new LocalStorageController(this);
@@ -238,6 +234,10 @@ public class BrowserActivity extends AdventureActivity {
 				s.setIsLocal(true);
 				AdventureApplication.getStoryController().addStory(s);
 			}
+			for(int i = 0; i < result.size(); i++ ) {
+				//System.out.println(result);
+					AdventureApplication.getStoryController().addStory(result.get(i));
+			}
 		      GridView grid = (GridView) findViewById(R.id.gridView1);
               storyGridAdapter = new StoryGridAdapter(this, AdventureApplication.getStoryController().getStories());
               grid.setAdapter(storyGridAdapter);
@@ -253,7 +253,7 @@ public class BrowserActivity extends AdventureActivity {
 			//System.out.println("RESULT " + result);
 			Story currentStory = result.get(0);
 			if(currentStory != null) {
-				//currentStory.setIsLocal(true);
+				currentStory.setIsLocal(true);
 				//System.out.println(currentStory.getFragements().get(0).getTitle());
 				AdventureApplication.getStoryController().replaceStory(currentStory);
 				AdventureApplication.getActivityController().update();
