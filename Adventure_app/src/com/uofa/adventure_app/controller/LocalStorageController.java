@@ -152,8 +152,15 @@ public class LocalStorageController {
 	    db.insert("media", null, values);
 	    this.close();
 	}
-	
-	// Joel's Method
+
+	/**
+	 * @author Joel Malina
+	 * @param imageId - a Unique Id for the image being stored
+	 * @param path	  - a string that is the path of where the image is stored on the device
+	 * @param isAnnotation - 1 if an annotation, 0 otherwise
+	 * @param fragment_id  - the unique id of the fragment which the image belongs to
+	 * @return 
+	 */
 	public int insertImage(String imageId, String path, int isAnnotation, String fragment_id){
 		ContentValues values = new ContentValues();	
 		values.put("image_id", imageId);
@@ -376,8 +383,8 @@ public class LocalStorageController {
 		}  
 		fragc.close();
 		System.out.println("fragmentid: "+firstFragmentID+"");
-		images=(List<String>) this.getAllImages(firstFragmentID).values();
-		annotations=(List<String>) this.getAllAnnotations(firstFragmentID).values();
+		//images=(List<String>) this.getAllImages(firstFragmentID).values();
+		//annotations=(List<String>) this.getAllAnnotations(firstFragmentID).values();
 		List<String> choices = new ArrayList<String>();
 		choices=getChoices(firstFragmentID);
 		List<String> fragmentBody = new ArrayList<String>();
@@ -485,7 +492,7 @@ public class LocalStorageController {
 	// Joel's image return
 	public String getImage(String fragmentId)
 	{
-		String filePath;
+		String filePath = null;
 		this.openForRead();
 		String imageQuery = "select path from images where fragment_id = '"+fragmentId+"'";
 		Cursor imagePointer = db.rawQuery(imageQuery, null);
@@ -496,11 +503,23 @@ public class LocalStorageController {
 		// get the index of the path (it's column) and pass it to getString to put it into filePath
 		try
 		{
-			filePath = imagePointer.getString(imagePointer.getColumnIndex("path"));
+			if( imagePointer.getCount() == 0){ this.close(); return "0";}
+			
+			if( imagePointer.getCount() == 1 ){
+				filePath = imagePointer.getString(imagePointer.getColumnIndexOrThrow("path"));
+			}
+			if (imagePointer.getCount() > 1 ){
+				// check for most recent OR get all?
+				System.out.println("SO I GOT ALOT OF ROWS, LIKE LOTS, LOOK AT THIS!! TIS MY ROW COUNT >>>>>>" + imagePointer.getCount() + "<<<<<<<<");
+				// is the most recent one the last one -- YES!
+				// Over-write functionallity (do we want this?!?)
+				imagePointer.moveToLast();
+				filePath = imagePointer.getString(imagePointer.getColumnIndexOrThrow("path"));
+			}
 		}//  IllegalArgumentException
 		catch( Exception ie)
 		{
-			System.err.println("ARRRRR CAPN'N WE GOTS NOT LOOT (image)!!!!!!");
+			System.err.println("ARRRRR CAPN'N WE GOTS NO LOOT (image)!!!!!!");
 			System.err.println(ie);
 			this.close();
 			return "0";
@@ -521,10 +540,23 @@ public class LocalStorageController {
 		if (ic != null ) {
 			if  (ic.moveToFirst()) {
 				do {
-					imap.put(ic.getString(0), ic.getString(1));
+					// how do I know which one is which?!
+					//imap.put(ic.getString(0), ic.getString(1));
+					// what about something like this instead
+					// in this you can probably tell we're getting image_id as the hash key, and path as the value
+					try{
+					imap.put(ic.getString(ic.getColumnIndex("image_id")), ic.getString(ic.getColumnIndex("path")));
+					// this could be more descriptive and catch a more "exact" error to be handled, but this at least doesn't crash the app anymore
+					}catch( Exception ie ){
+						//System.err.println("ARRRRR CAPN'N WE GOTS NO LOOT (image)!!!!!!");
+						System.err.println(ie);
+						this.close();
+						return imap;
+					}
 				}while (ic.moveToNext());
 			}
 		}  
+		// isn't db suppose to be this.close()   ??
 		db.close();
 		return imap;
 	}

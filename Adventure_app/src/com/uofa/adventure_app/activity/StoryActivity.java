@@ -18,11 +18,18 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 package com.uofa.adventure_app.activity;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -30,6 +37,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -38,6 +46,7 @@ import android.view.View;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.uofa.adventure_app.R;
 import com.uofa.adventure_app.application.AdventureApplication;
@@ -55,9 +64,11 @@ public class StoryActivity extends AdventureActivity {
 	String choice;
 	View currentView;
 	Uri imageFileUri;
+	Uri chosenImageUri;
 	Story currentStory;
 	Fragement currentFragement = null;
 	LocalStorageController localStorageController = null;
+	private static final int PICK_IMAGE = 1111; 
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -242,6 +253,7 @@ public class StoryActivity extends AdventureActivity {
 			currentView.getRootView().dispatchKeyEvent(new KeyEvent (KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_BACK));
 			break;
 		case R.id.choosemedia:
+			chooseImage();
 			currentView.getRootView().dispatchKeyEvent(new KeyEvent (KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_BACK));
 			break;
 		default:
@@ -294,12 +306,23 @@ public class StoryActivity extends AdventureActivity {
 	     intent.putExtra(MediaStore.EXTRA_OUTPUT, imageFileUri);
 	     startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
 	 }
-	    
+	 
+	    /**
+	     * Method for choosing media, invoked via context menu Annotate. 
+	     * Author - Joel Malina
+	     */
+	    public void chooseImage()
+	    {
+	    	Intent pickImage = new Intent();
+	    	pickImage.setType("image/*");
+	    	pickImage.setAction(Intent.ACTION_GET_CONTENT);
+	    	startActivityForResult(Intent.createChooser(pickImage, "Select Picture"), PICK_IMAGE);
+	    }
+	    // handles takeAPhoto return
 	    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 	        if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
 	           //TextView tv = (TextView) findViewById(R.id.status);
 	            if (resultCode == RESULT_OK) {
-	            	
 	                // System.out.println("Photo OK!");
 	            	// putting photo into imageview
 	                ImageView annotation = (ImageView) findViewById(R.id.annotation);
@@ -326,21 +349,105 @@ public class StoryActivity extends AdventureActivity {
 	                System.out.println("Not sure what happened!" + resultCode);
 	            }
 	        }
+	        
+	        // handles selecting an image from app of users choice (usually gallery).
+	        if ((requestCode == PICK_IMAGE) && (resultCode == RESULT_OK) && (data != null))
+	        {
+	            chosenImageUri = data.getData();
+	           // chosenImageUri
+	            ImageView annotation = (ImageView) findViewById(R.id.annotation);
+                annotation.setImageURI(chosenImageUri);
+	          
+	            String path = chosenImageUri.getPath();
+	            System.out.println("SO I THINK I MADE CHOOSING MEDIA WORK BUT TO MAKE SURE I NEED TO SEE WHERE IT'S AT PATH: " + path + "/</,?<?,?,?<?,/,/,/,/,?<?<");
+	          //  Toast.MakeText(this, path, ToastLength.Long);
+	            
+	            String folder = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Adventure_App/Images";
+	            File folderF = new File(folder);
+	   	     
+	            if (!folderF.exists()) {
+	   	            folderF.mkdir();
+	            }
+	   	        
+	   	     	String imageFilePath = folder + "/" + "Adventure_App" + String.valueOf(System.currentTimeMillis()) + "jpg";
+	   	        // File imageFile = new File(imageFilePath);
+	   	        // imageFileUri = Uri.fromFile(imageFile);
+	   	        // imageFileUri = chosenImageUri;
+	   	     	//File testImage = new File(imageFilePath);
+	   	     	//chosenImageUri = Uri.fromFile(testImage);
+	   	     	
+	   	     
+	            try {
+	            // copyfile from gallery location to our app!
+					copyFile( getRealPathFromURI(this, chosenImageUri), imageFilePath);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+	            
+	            String imageId = UUID.randomUUID().toString();
+	            localStorageController.insertImage( imageId, imageFilePath, 0, currentFragement.uid().toString());
+                
+	        }
 	    }
+	    
 
+	    
 	    /**
 	     * updates the view
 	     */
-		public void updateView(){
+	public void updateView(){
 		//AdventureApplication.getStoryController();
 	}
 
-		@Override
-		public void dataReturn(ArrayList<Story> result, String method) {
+	@Override
+	public void dataReturn(ArrayList<Story> result, String method) {
 			// TODO Auto-generated method stub
-			
-		}
+	}
+
+	/**
+	 * 
+	 * @param selectedImagePath - Path of image to be copied
+	 * @param string - Path of where the image is to be coppied to
+	 * @throws IOException
+	 */
+    public void copyFile(String selectedImagePath, String string) throws IOException {
+        InputStream in = new FileInputStream(selectedImagePath);
+        OutputStream out = new FileOutputStream(string);
+        
+        System.out.println("I'VE GOT WHAT YOU NEED, WELL AT LEAST I HOPE I DO HERE IS THE IMAGE FILE PATHS I GOT: FROM:" + selectedImagePath + " and here is where it's going to: " + string + " yup that's it");
+        
+        // Transfer bytes from in to out
+        byte[] buf = new byte[1024];
+        int len;
+        while ((len = in.read(buf)) > 0) {
+            out.write(buf, 0, len);
+        }
+        in.close();
+        out.close();
+      }
+    
+/**
+ * from http://stackoverflow.com/questions/3401579/get-filename-and-path-from-uri-from-mediastore
+ * @param context
+ * @param contentUri
+ * @return
+ */
+    public String getRealPathFromURI(Context context, Uri contentUri) {
+    	Cursor cursor = null;
+    	try { 
+    		String[] proj = { MediaStore.Images.Media.DATA };
+    		cursor = context.getContentResolver().query(contentUri,  proj, null, null, null);
+    		int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+    		cursor.moveToFirst();
+    		return cursor.getString(column_index);
+    	} finally {
+    		if (cursor != null) {
+    			cursor.close();
+    		}
+    	}
+    }
 
 
-
-}
+    
+    
+}// end class

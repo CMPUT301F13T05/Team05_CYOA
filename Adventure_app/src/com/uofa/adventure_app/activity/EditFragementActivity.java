@@ -158,15 +158,13 @@ public class EditFragementActivity extends AdventureActivity {
 	 */
 	public void takeAPhoto() {
 		Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-		String folder = Environment.getExternalStorageDirectory()
-				.getAbsolutePath() + "/tmp";
+		String folder = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Adventure_App/Images";
 		File folderF = new File(folder);
 		if (!folderF.exists()) {
 			folderF.mkdir();
 		}
 
-		String imageFilePath = folder + "/"
-				+ String.valueOf(System.currentTimeMillis()) + "jpg";
+		String imageFilePath = folder + "/" + "Adventure_App" + String.valueOf(System.currentTimeMillis()) + "jpg";
 		File imageFile = new File(imageFilePath);
 		imageFileUri = Uri.fromFile(imageFile);
 
@@ -178,10 +176,10 @@ public class EditFragementActivity extends AdventureActivity {
 		if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
 			// TextView tv = (TextView) findViewById(R.id.status);
 			if (resultCode == RESULT_OK) {
-				System.out.println("Photo OK!");
+				//System.out.println("Photo OK!");
 				ImageView annotation = (ImageView) findViewById(R.id.annotation);
-				annotation.setImageDrawable(Drawable
-						.createFromPath(imageFileUri.getPath()));
+				annotation.setImageDrawable(Drawable.createFromPath(imageFileUri.getPath()));
+
 			} else if (resultCode == RESULT_CANCELED) {
 				System.out.println("Photo canceled");
 			} else {
@@ -240,6 +238,10 @@ public class EditFragementActivity extends AdventureActivity {
 				localStorageController.setFragment(s_id, fragId.toString(), title, body, old_frag, flag);
 				newtitle.setText("");
 				newbody.setText("");
+				//saving image
+				String imageId = UUID.randomUUID().toString();
+                localStorageController.insertImage( imageId, imageFileUri.getPath().toString(), 0, frag.uid().toString());
+				
 			}else{
 				s_id = s.id().toString();
 				User curUser = new User(user);
@@ -255,6 +257,10 @@ public class EditFragementActivity extends AdventureActivity {
 				localStorageController.setFragment(s_id, fragId.toString(), title, body, old_frag, flag);
 				newtitle.setText("");
 				newbody.setText("");
+				// saving image
+				String imageId = UUID.randomUUID().toString();
+                localStorageController.insertImage( imageId, imageFileUri.getPath().toString(), 0, frag.uid().toString());
+				
 			}
 		}
 	}
