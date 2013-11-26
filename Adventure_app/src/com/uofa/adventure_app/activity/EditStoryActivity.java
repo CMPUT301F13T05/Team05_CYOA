@@ -156,5 +156,9 @@ public class EditStoryActivity extends AdventureActivity {
 	 protected void openLastFragement() {
 		 // TODO: Implement
 	    }
+	 
+		protected void saveTextForView(View v, String text) {
+			
+		}
 
 }

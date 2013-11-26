@@ -270,6 +270,10 @@ public class BrowserActivity extends AdventureActivity {
 	 protected void openLastFragement() {
 		 // Nothing Happens here.
 	 }
+	 
+		protected void saveTextForView(View v, String text) {
+			
+		}
 
 }
 

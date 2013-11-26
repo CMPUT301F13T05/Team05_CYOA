@@ -70,6 +70,11 @@ public class EditFragementActivity extends AdventureActivity {
 		newTitle.setText(currentFragement.getTitle());
 		EditText newBody = (EditText) findViewById(R.id.newbody);
 		newBody.setText(currentFragement.body());
+		
+		// Generic Watcher Title
+		newTitle.addTextChangedListener(new GenericTextWatcher(newTitle));
+		newBody.addTextChangedListener(new GenericTextWatcher(newBody));
+		
 	}
 
 	@Override
@@ -250,4 +255,19 @@ public class EditFragementActivity extends AdventureActivity {
 		   newTitle.setText(currentFragement.getTitle());
 		   newBody.setText(currentFragement.body());
 	    }
+	   
+		protected void saveTextForView(View v, String text) {
+			
+			switch(v.getId()) {
+				case R.id.newtitle: 
+					AdventureApplication.getStoryController().currentFragement().setTitle(text);
+					break;
+				case R.id.newbody:
+					AdventureApplication.getStoryController().currentFragement().setBody(text);
+					break;
+				default:
+					break;
+			}
+			
+		}
 }

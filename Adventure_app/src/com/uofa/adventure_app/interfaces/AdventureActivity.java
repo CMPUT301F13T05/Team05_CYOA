@@ -23,11 +23,12 @@ import android.app.Activity;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.Bundle;
-import android.support.v4.widget.DrawerLayout;
+import android.provider.ContactsContract.CommonDataKinds.Note;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.KeyEvent;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
+import android.view.View;
+import android.widget.EditText;
 
 import com.uofa.adventure_app.application.AdventureApplication;
 import com.uofa.adventure_app.controller.ActivityController;
@@ -53,9 +54,7 @@ public abstract class AdventureActivity extends Activity implements DataReturn<S
 		ActivityController activityController = AdventureApplication.getActivityController();
 		activityController.addActivity(this);
 	}
-	
-	 
-	
+
 	/* (non-Javadoc)
 	 * @see android.app.Activity#onDestroy()
 	 */
@@ -95,6 +94,38 @@ public abstract class AdventureActivity extends Activity implements DataReturn<S
 	}
 
 	protected abstract void openLastFragement();
+	
+	protected abstract void saveTextForView(View v, String text);
+	
+	// Inline Class to Watch our text editing
+		// Code Taken From:
+		// http://stackoverflow.com/questions/5702771/how-to-use-single-textwatcher-for-multiple-edittexts
+		// On Monday Septemeber 23, 2013
+		// Modified for my Use
+		protected class GenericTextWatcher implements TextWatcher {
+			// View that is Being Edited
+			private EditText view;
+
+			public GenericTextWatcher(EditText view) {
+				this.view = view;
+			}
+
+			public void beforeTextChanged(CharSequence charSequence, int i, int i1,
+					int i2) {
+			}
+
+			public void onTextChanged(CharSequence charSequence, int i, int i1,
+					int i2) {
+			}
+
+			// When Text is changed this is called.
+			public void afterTextChanged(Editable editable) {
+				// get string
+				String text = editable.toString();
+				saveTextForView(this.view,text);
+			}
+		}
+
 	
 	@Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {

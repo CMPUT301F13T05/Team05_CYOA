@@ -458,7 +458,10 @@ public class StoryActivity extends AdventureActivity {
 	   tileTextView.setText(currentFragement.getTitle());
 	   bodyTextView.setText(currentFragement.body());
     }
-    
+   
+	protected void saveTextForView(View v, String text) {
+		
+	}
     
     
 }// end class

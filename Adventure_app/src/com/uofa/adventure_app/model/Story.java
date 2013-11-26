@@ -191,7 +191,6 @@ public class Story implements Serializable {
 			throws ClassNotFoundException, IOException {
 		// always perform the default de-serialization first
 		aInputStream.defaultReadObject();
-
 	}
 
 	/**
