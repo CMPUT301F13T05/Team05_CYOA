@@ -451,7 +451,7 @@ public class StoryActivity extends AdventureActivity {
 		AdventureApplication.getActivityController().update();
     }
     
-   private void openLastFragement() {
+   protected void openLastFragement() {
 	   currentFragement = AdventureApplication.getStoryController().lastFragement();
 	   AdventureApplication.getStoryController().setCurrentFragement(currentFragement);
 	   AdventureApplication.getStoryController().popPreviousFragement();
@@ -459,22 +459,6 @@ public class StoryActivity extends AdventureActivity {
 	   bodyTextView.setText(currentFragement.body());
     }
     
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-        	
-        	Fragement prevFrag = AdventureApplication.getStoryController().lastFragement();
-             if(prevFrag != null) {
-            	 //ystem.out.println("Button Clicked");
-            	 openLastFragement();
-            	 
-            	 return true;
-        	} else {
-        		return super.onKeyDown(keyCode, event);
-        	}
-        } else {
-        	return super.onKeyDown(keyCode, event);
-        }
-    }
+    
     
 }// end class

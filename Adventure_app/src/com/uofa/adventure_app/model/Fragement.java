@@ -117,7 +117,7 @@ public class Fragement extends UniqueId implements Serializable  {
         	return this.flag;
         }
         
-        public void setTitle(String Title)
+        public void setTitle(String title)
         {
         	this.title = title;
         }
@@ -129,6 +129,20 @@ public class Fragement extends UniqueId implements Serializable  {
 
     	public SortedMap<Integer,Media> media() {
     		return this.media;
+    	}
+    	
+    	/**
+    	 * add media to the sorted set. Right now media will be added to the Start
+    	 * Feature to add to any line later on.
+    	 * @param media
+    	 */
+    	public void addMedia(Media media) {
+    		if(this.media.lastKey() != -1) {
+    			int index = this.media.lastKey();
+    			this.media.put(index, media);
+    		} else {
+    			this.media.put(0,media);
+    		}
     	}
         
 		/* (non-Javadoc)

@@ -2,8 +2,6 @@ package com.uofa.adventure_app.interfaces;
 
 import java.util.UUID;
 
-import com.uofa.adventure_app.model.Story;
-
 public abstract class UniqueId {
 	protected UUID uid;
 	public UniqueId() {
@@ -25,9 +23,7 @@ public abstract class UniqueId {
 	@Override
 	public boolean equals(Object o) {
 		// TODO Auto-generated method stub
-		UniqueId ui = (UniqueId) o;
-		System.err.println("THIS:"+this.uid().toString());
-		System.err.println(ui.uid().toString());
+		//UniqueId ui = (UniqueId) o;
 		if(o.getClass().equals(this.getClass())) {
 			UniqueId currentObject = (UniqueId) o;
 			if (this.uid().equals(currentObject.uid()))

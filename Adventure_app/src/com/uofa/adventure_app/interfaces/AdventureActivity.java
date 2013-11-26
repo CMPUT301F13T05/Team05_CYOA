@@ -22,12 +22,14 @@ import android.app.Activity;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.view.KeyEvent;
 
 import com.uofa.adventure_app.application.AdventureApplication;
 import com.uofa.adventure_app.controller.ActivityController;
 import com.uofa.adventure_app.controller.StoryParser;
 import com.uofa.adventure_app.controller.WebServiceController;
 import com.uofa.adventure_app.controller.http.HttpObject;
+import com.uofa.adventure_app.model.Fragement;
 import com.uofa.adventure_app.model.Story;
 
 
@@ -87,5 +89,24 @@ public abstract class AdventureActivity extends Activity implements DataReturn<S
 		}
 	}
 
+	protected abstract void openLastFragement();
+	
+	@Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+        	
+        	Fragement prevFrag = AdventureApplication.getStoryController().lastFragement();
+             if(prevFrag != null) {
+            	 //ystem.out.println("Button Clicked");
+            	 openLastFragement();
+            	 
+            	 return true;
+        	} else {
+        		return super.onKeyDown(keyCode, event);
+        	}
+        } else {
+        	return super.onKeyDown(keyCode, event);
+        }
+    }
 
 }

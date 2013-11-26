@@ -32,11 +32,14 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ListView;
 
 import com.uofa.adventure_app.R;
+import com.uofa.adventure_app.application.AdventureApplication;
 import com.uofa.adventure_app.interfaces.AdventureActivity;
+import com.uofa.adventure_app.model.Fragement;
 import com.uofa.adventure_app.model.Story;
 
 public class EditStoryActivity extends AdventureActivity {
@@ -139,5 +142,9 @@ public class EditStoryActivity extends AdventureActivity {
 		// TODO Auto-generated method stub
 		
 	}
+	
+	 protected void openLastFragement() {
+		 // TODO: Implement
+	    }
 
 }

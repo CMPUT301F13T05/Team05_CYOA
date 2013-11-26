@@ -162,7 +162,12 @@ public class BrowserActivity extends AdventureActivity {
 	public void newStory() {
 		// Create a Story, add a blank fragement, and set it as the first
 		Story newStory = new Story();
+		newStory.setIsLocal(true);
+		newStory.setTitle("Default Title");
+		newStory.addUser(new User("Default"));
 		Fragement newFragement = new Fragement();
+		newFragement.setTitle("Input Title");
+		newFragement.setBody("Input Body Text");
 		newStory.addFragement(newFragement);
 		newStory.setStartFragement(newFragement);
 		
@@ -263,7 +268,9 @@ public class BrowserActivity extends AdventureActivity {
 			}
 		}
 	}
-
+	 protected void openLastFragement() {
+		 // Nothing Happens here.
+	 }
 
 }
 
