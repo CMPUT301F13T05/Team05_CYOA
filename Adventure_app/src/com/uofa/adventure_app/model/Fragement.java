@@ -151,7 +151,7 @@ public class Fragement extends UniqueId implements Serializable  {
 		@Override
 		public String toString() {
 			// TODO Auto-generated method stub
-			return super.toString() + "UID: " + this.uid.toString() + "BODY: " + this.body();
+			return this.getTitle();
 		}   
         
 		/**

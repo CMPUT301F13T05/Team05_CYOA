@@ -138,6 +138,7 @@ public class StoryController {
 	public void addStory(Story story) {
 		if(!stories.contains(story)) {
 			this.stories.add(story);
+			AdventureApplication.getActivityController().update();
 		}
 	}
 	

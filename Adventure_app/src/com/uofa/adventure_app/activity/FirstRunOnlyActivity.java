@@ -18,9 +18,12 @@
  */
 package com.uofa.adventure_app.activity;
 
+import java.util.UUID;
+
 import com.uofa.adventure_app.R;
 import com.uofa.adventure_app.R.layout;
 import com.uofa.adventure_app.R.menu;
+import com.uofa.adventure_app.application.AdventureApplication;
 import com.uofa.adventure_app.model.User;
 
 import android.os.Bundle;
@@ -35,11 +38,6 @@ public class FirstRunOnlyActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_first_run_only);
-		
-		
-		
-		
-		
 	}
 
 	@Override
@@ -68,9 +66,12 @@ public class FirstRunOnlyActivity extends Activity {
 			getSharedPreferences("PREFERENCE", MODE_PRIVATE)
 			.edit()
 			.putString("username", username)
+			.putString("uid", new User(username).uid().toString())
 			.commit();
-			User user = new User();
-			user.setName(getSharedPreferences("PREFERENCE", MODE_PRIVATE).getString("username", null));
+			
+			String usernameString = getSharedPreferences("PREFERENCE", MODE_PRIVATE).getString("username", null);
+			UUID uid = UUID.fromString(getSharedPreferences("PREFERENCE", MODE_PRIVATE).getString("uid", null));
+			AdventureApplication.setUser(new User(usernameString,uid));
 			onBackPressed();
 		}
 			

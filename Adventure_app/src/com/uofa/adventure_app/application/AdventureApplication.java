@@ -26,6 +26,7 @@ import com.uofa.adventure_app.controller.ActivityController;
 import com.uofa.adventure_app.controller.LocalStorageController;
 import com.uofa.adventure_app.controller.StoryController;
 import com.uofa.adventure_app.controller.WebServiceController;
+import com.uofa.adventure_app.model.User;
 
 public class AdventureApplication extends Application {
 	
@@ -37,6 +38,7 @@ public class AdventureApplication extends Application {
 	transient private static ActivityController activityController;
 	
 	private static Context context;
+	private static User currentUser;
 
     public void onCreate(){
         super.onCreate();
@@ -47,6 +49,13 @@ public class AdventureApplication extends Application {
         return context;
     }
 	
+    public static void setUser(User user) {
+        currentUser = user;
+    }
+    
+    public static User user() {
+       return currentUser;
+    }
 
 	// Usable controller - singelton for all classes
 	public static StoryController getStoryController() {

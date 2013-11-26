@@ -20,7 +20,6 @@ package com.uofa.adventure_app.activity;
 
 import java.util.ArrayList;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.ContextMenu;
@@ -31,10 +30,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.GridView;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.uofa.adventure_app.R;
 import com.uofa.adventure_app.application.AdventureApplication;
@@ -43,25 +44,31 @@ import com.uofa.adventure_app.model.Fragement;
 import com.uofa.adventure_app.model.Story;
 
 public class EditStoryActivity extends AdventureActivity {
-	private ArrayAdapter<String> adapter;
-	ArrayList<String> List;
+	private ArrayAdapter<Fragement> adapter;
 	ListView list;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_edit_story);
 		list = (ListView) findViewById(R.id.fragments);
-		List = new ArrayList<String>();
-		for (int i = 1; i < 50; i++){
-			List.add("Fragment " + i);
-		}
-		adapter = new ArrayAdapter<String>(this,
-				R.layout.list_item, List);
+		
+		EditText titleEditText = (EditText) findViewById(R.id.titletext);
+		titleEditText.setText(AdventureApplication.getStoryController().currentStory().title());
+		
+		TextView authorView = (TextView) findViewById(R.id.authortext);
+		authorView.setText(AdventureApplication.getStoryController().currentStory().users().toString());
+		
+		adapter = new ArrayAdapter<Fragement>(this,
+				R.layout.list_item, AdventureApplication.getStoryController().currentStory().getFragements());
 		list.setAdapter(adapter);
-		 list.setOnItemClickListener(new GridView.OnItemClickListener() {
+		this.registerForContextMenu(list);
+		list.setOnItemClickListener( new OnItemClickListener() {
+			 
 		       // @Override
 		        public void onItemClick(AdapterView<?> a, View v, int i, long l) {
-		    		openContext(v);
+		        	Fragement currFrag = adapter.getItem(i);
+		        	AdventureApplication.getStoryController().setCurrentFragement(currFrag);
+		    		v.showContextMenu();
 		        }
 		 });
 	}
@@ -75,6 +82,7 @@ public class EditStoryActivity extends AdventureActivity {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
+
 		// Handle presses on the action bar items
 		switch (item.getItemId()) {
 			case R.id.newfragment:
@@ -90,6 +98,7 @@ public class EditStoryActivity extends AdventureActivity {
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v,
 			ContextMenuInfo menuInfo) {
+
 		super.onCreateContextMenu(menu, v, menuInfo);
 		AdapterContextMenuInfo aInfo = (AdapterContextMenuInfo) menuInfo;
 
@@ -120,7 +129,6 @@ public class EditStoryActivity extends AdventureActivity {
 	
 	public void openContext(View v) {
 		registerForContextMenu( v );
-        openContextMenu( v );  
 	}
 	
 	public void editFragment(){
@@ -129,8 +137,10 @@ public class EditStoryActivity extends AdventureActivity {
 	}
 	
 	public void newFragment(){
-		Intent myIntent = new Intent(this, EditFragementActivity.class);
-		this.startActivity(myIntent);
+		Fragement frag = new Fragement();
+		frag.setTitle("New Fragment");
+		AdventureApplication.getStoryController().currentStory().addFragement(frag);
+		adapter.notifyDataSetChanged();
 	}	
 	
 	public void updateView(){

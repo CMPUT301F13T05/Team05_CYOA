@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.util.UUID;
 
 import com.uofa.adventure_app.interfaces.UniqueId;
 
@@ -38,6 +39,12 @@ public class User extends UniqueId implements Serializable{
 	 */
 	public User() {
 		super();
+	}
+	
+	public User(String name, UUID uid) {
+		super();
+		this.name = name;
+		this.uid = uid;
 	}
 	
 	/**

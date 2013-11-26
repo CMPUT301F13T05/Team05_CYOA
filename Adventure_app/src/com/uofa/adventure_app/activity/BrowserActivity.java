@@ -50,7 +50,6 @@ public class BrowserActivity extends AdventureActivity {
 	private StoryGridAdapter storyGridAdapter;
 	ArrayList<String> List;
 	LocalStorageController localStorageController;
-	User username;
 	View v;
 	TextView search;
 	String searchQuery = "";
@@ -62,8 +61,6 @@ public class BrowserActivity extends AdventureActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_browser);
 		v = this.findViewById(android.R.id.content);
-		localStorageController = new LocalStorageController(this);
-		username = new User();
 
 		boolean firstrun = getSharedPreferences("PREFERENCE", MODE_PRIVATE).getBoolean("firstrun", true);
 
@@ -73,7 +70,12 @@ public class BrowserActivity extends AdventureActivity {
 			this.startActivity(myIntent);
 			// Save the state
 			getSharedPreferences("PREFERENCE", MODE_PRIVATE).edit().putBoolean("firstrun", false).commit();
+		} else {
+			String username = getSharedPreferences("PREFERENCE", MODE_PRIVATE).getString("username", null);
+			String uid = getSharedPreferences("PREFERENCE", MODE_PRIVATE).getString("uid", null);
+			AdventureApplication.setUser(new User(username, UUID.fromString(uid)));
 		}
+		
 		HttpObjectStory httpStory = new HttpObjectStory();
 		/*
 		for(int i = 0; i < 10; i ++) {
@@ -163,11 +165,11 @@ public class BrowserActivity extends AdventureActivity {
 		// Create a Story, add a blank fragement, and set it as the first
 		Story newStory = new Story();
 		newStory.setIsLocal(true);
-		newStory.setTitle("Default Title");
-		newStory.addUser(new User("Default"));
+		newStory.setTitle("Your Story Title");
+		newStory.addUser(AdventureApplication.user());
 		Fragement newFragement = new Fragement();
-		newFragement.setTitle("Input Title");
-		newFragement.setBody("Input Body Text");
+		newFragement.setTitle("Your First Fragement");
+		newFragement.setBody("Enter Body Text for Your First Fragement Here.");
 		newStory.addFragement(newFragement);
 		newStory.setStartFragement(newFragement);
 		
@@ -178,7 +180,7 @@ public class BrowserActivity extends AdventureActivity {
 		AdventureApplication.getStoryController().setCurrentStory(newStory);
 		
 		// Open editor
-		Intent myIntent = new Intent(this, EditFragementActivity.class);
+		Intent myIntent = new Intent(this, EditStoryActivity.class);
 		this.startActivity(myIntent);
 		
 
