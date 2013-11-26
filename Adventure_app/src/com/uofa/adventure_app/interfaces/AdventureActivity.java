@@ -18,11 +18,16 @@
  */
 package com.uofa.adventure_app.interfaces;
 
+import android.R;
 import android.app.Activity;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Bundle;
+import android.support.v4.widget.DrawerLayout;
 import android.view.KeyEvent;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 import com.uofa.adventure_app.application.AdventureApplication;
 import com.uofa.adventure_app.controller.ActivityController;
@@ -49,7 +54,7 @@ public abstract class AdventureActivity extends Activity implements DataReturn<S
 		activityController.addActivity(this);
 	}
 	
-	
+	 
 	
 	/* (non-Javadoc)
 	 * @see android.app.Activity#onDestroy()

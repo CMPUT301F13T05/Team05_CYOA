@@ -18,19 +18,20 @@
  */
 package com.uofa.adventure_app.activity;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.widget.DrawerLayout;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.TextView;
 
@@ -39,13 +40,11 @@ import com.uofa.adventure_app.application.AdventureApplication;
 import com.uofa.adventure_app.controller.LocalStorageController;
 import com.uofa.adventure_app.controller.http.HttpObjectStory;
 import com.uofa.adventure_app.interfaces.AdventureActivity;
-import com.uofa.adventure_app.model.Choice;
 import com.uofa.adventure_app.model.Fragement;
 import com.uofa.adventure_app.model.Story;
 import com.uofa.adventure_app.model.User;
 
 public class BrowserActivity extends AdventureActivity {
-
 
 	private StoryGridAdapter storyGridAdapter;
 	ArrayList<String> List;
@@ -55,15 +54,15 @@ public class BrowserActivity extends AdventureActivity {
 	String searchQuery = "";
 	private ArrayList<Story> stories = AdventureApplication.getStoryController().stories();
 	SearchView searchView;
-
+	 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_browser);
 		v = this.findViewById(android.R.id.content);
-
+		View menuView = (View)this.findViewById(R.menu.main);
+		
 		boolean firstrun = getSharedPreferences("PREFERENCE", MODE_PRIVATE).getBoolean("firstrun", true);
-
 		
 		if (firstrun){
 			Intent myIntent = new Intent(this, FirstRunOnlyActivity.class);
@@ -101,13 +100,12 @@ public class BrowserActivity extends AdventureActivity {
 
 	}
 
-
-
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.main, menu);
+		
 		searchView = (SearchView) menu.findItem(R.id.search).getActionView();
 		final SearchView.OnQueryTextListener queryTextListener = new SearchView.OnQueryTextListener() {
 		    @Override
@@ -130,7 +128,6 @@ public class BrowserActivity extends AdventureActivity {
 	}
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-
 		// Handle presses on the action bar items
 		switch (item.getItemId()) {
 		case R.id.new_story:

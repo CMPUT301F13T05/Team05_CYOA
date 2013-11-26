@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
+       <item android:id="@+id/drawer" android:icon="@drawable/ic_drawer" android:showAsAction="always"></item>
     
 <item android:id="@+id/editfrag" android:title="Edit Fragement"></item>
 <!--  <item android:id="@+id/deletefrag" android:title="Delete"></item>-->

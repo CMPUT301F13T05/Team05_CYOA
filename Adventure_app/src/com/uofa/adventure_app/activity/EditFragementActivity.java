@@ -229,11 +229,13 @@ public class EditFragementActivity extends AdventureActivity {
 		//EditText newAuthor = (EditText) findViewById(R.id.newauthor);
 		EditText newBody = (EditText) findViewById(R.id.newbody);
 		
+		// Update the current window fragement
+		// We should setup a text listner, and do this automatically, this is clunky.
 		Fragement currentFragement = AdventureApplication.getStoryController().currentFragement();
 		currentFragement.setBody(newBody.getText().toString());
-		System.out.println("TITLE: " + newTitle.getText().toString());
 		currentFragement.setTitle(newTitle.getText().toString());
-		System.out.println(AdventureApplication.getStoryController().currentStory());
+		
+		
 		AdventureApplication.getStoryController().saveStories();
 		
 	}
