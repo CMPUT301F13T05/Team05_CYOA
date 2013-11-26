@@ -18,11 +18,15 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 package com.uofa.adventure_app.model;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.UUID;
 
-public class Story {
+public class Story implements Serializable {
 
 	private String title;
 	private ArrayList<User> users; 
@@ -167,5 +171,38 @@ public class Story {
 	public void setStartFragement(Fragement startFragement) {
 		this.startFragement = startFragement;
 	} 
+	
 
+	
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return super.toString() + this.title() + this.getFragements() + "\n";
+	}   
+
+	/**
+	 * Always treat de-serialization as a full-blown constructor, by validating
+	 * the final state of the de-serialized object.
+	 */
+	private void readObject(ObjectInputStream aInputStream)
+			throws ClassNotFoundException, IOException {
+		// always perform the default de-serialization first
+		aInputStream.defaultReadObject();
+
+	}
+
+	/**
+	 * This is the default implementation of writeObject. Customise if
+	 * necessary.
+	 */
+	private void writeObject(ObjectOutputStream aOutputStream)
+			throws IOException {
+		// perform the default serialization for all non-transient, non-static
+		// fields
+		aOutputStream.defaultWriteObject();
+	}
+	
 }

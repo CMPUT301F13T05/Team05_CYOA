@@ -290,7 +290,6 @@ public class LocalStorageController {
 			}
 		}  
 		titlec.close();
-		System.out.println("title is: _>_>_>_>_>_>_>_>_>_>_>_>_>_>_>_>_>_>_>_>_>>_>_>_>_>_>_>_>_>_>>_>_>_" + title);
 		return title;
 	}
 	
@@ -619,7 +618,7 @@ public class LocalStorageController {
 		db.close();
 		return lastId;
 	}
-
+	
 	/**
 	* 
 	* @param s a story to take in

@@ -54,7 +54,7 @@ public class BrowserActivity extends AdventureActivity {
 	View v;
 	TextView search;
 	String searchQuery = "";
-	private ArrayList<Story> stories = AdventureApplication.getStoryController().getStories();
+	private ArrayList<Story> stories = AdventureApplication.getStoryController().stories();
 	SearchView searchView;
 
 	@Override
@@ -160,9 +160,20 @@ public class BrowserActivity extends AdventureActivity {
 	 * Creates and calls the intent that calls the Edit Fragment screen.
 	 */
 	public void newStory() {
+		// Create a Story, add a blank fragement, and set it as the first
+		Story newStory = new Story();
+		Fragement newFragement = new Fragement();
+		newStory.addFragement(newFragement);
+		newStory.setStartFragement(newFragement);
+		
+		// Add it to our list
+		AdventureApplication.getStoryController().addStory(newStory);
+		
+		// Set as current Story
+		AdventureApplication.getStoryController().setCurrentStory(newStory);
+		
+		// Open editor
 		Intent myIntent = new Intent(this, EditFragementActivity.class);
-		String i = null;
-		myIntent.putExtra("frag_id", i);
 		this.startActivity(myIntent);
 		
 
@@ -188,10 +199,11 @@ public class BrowserActivity extends AdventureActivity {
 	}
 	
 	public void openStory (Story s) {
-		String id = s.id().toString();
+		// Set the Story as our current Story, Auto sets the current one we are on.
+		AdventureApplication.getStoryController().setCurrentStory(s);
+		
+		// Open the Story!
 		Intent myIntent = new Intent(this, StoryActivity.class);
-		myIntent.putExtra("StoryID", id);
-		//myIntent.putExtra("FragementID",s.startFragement().uid().toString());
 		this.startActivity(myIntent);
 	}
 	
@@ -199,7 +211,9 @@ public class BrowserActivity extends AdventureActivity {
 	 * Updates the view
 	 */
 	public void updateView(){
-		storyGridAdapter.notifyDataSetChanged();
+		if(storyGridAdapter != null) {
+			storyGridAdapter.notifyDataSetChanged();
+		}
 	}
 
 	@Override
@@ -212,40 +226,20 @@ public class BrowserActivity extends AdventureActivity {
 	 */
 	public void dataReturn(ArrayList<Story> result, String method) {
 		if(method.equals(GET_ALL_METHOD)) {
-			
-			HashMap<String, List<String>> map = new HashMap<String, List<String>>();
-			LocalStorageController localStorageController = new LocalStorageController(this);
-			map = localStorageController.getBrowserViewInfo();
-			ArrayList<String> keys = new ArrayList<String>();
-			keys.addAll(map.keySet());
-			for(int i = 0; i<keys.size(); i++){
-				Story s = new Story(UUID.fromString(keys.get(i)));
-				ArrayList<String> list = new ArrayList<String>(); 
-				
-				list.addAll(map.get(keys.get(i)));
-				s.setTitle(list.get(0));
-				ArrayList<User> users = new ArrayList<User>();
-				for(int j = 1; j<map.get(keys.get(i)).size(); j++){
-					User user = new User(map.get(keys.get(i)).get(j));
-					users.add(user);
-				}
-				
-				s.setUsers(users);
-				s.setIsLocal(true);
-				AdventureApplication.getStoryController().addStory(s);
-			}
+			AdventureApplication.getStoryController().loadStories();
 			for(int i = 0; i < result.size(); i++ ) {
 				//System.out.println(result);
 					AdventureApplication.getStoryController().addStory(result.get(i));
 			}
 		      GridView grid = (GridView) findViewById(R.id.gridView1);
-              storyGridAdapter = new StoryGridAdapter(this, AdventureApplication.getStoryController().getStories());
+              storyGridAdapter = new StoryGridAdapter(this, AdventureApplication.getStoryController().stories());
               grid.setAdapter(storyGridAdapter);
               grid.setOnItemClickListener(new 
                               GridView.OnItemClickListener() {
                       // @Override
+            	  //
                       public void onItemClick(AdapterView<?> a, View v, int i, long l) {                                        
-                              viewStory(v, AdventureApplication.getStoryController().getStories().get(i));
+                              viewStory(v, AdventureApplication.getStoryController().stories().get(i));
                       }
               });
 		}
@@ -256,9 +250,14 @@ public class BrowserActivity extends AdventureActivity {
 				currentStory.setIsLocal(true);
 				//System.out.println(currentStory.getFragements().get(0).getTitle());
 				AdventureApplication.getStoryController().replaceStory(currentStory);
+				
+				// Updates all views to proper content
 				AdventureApplication.getActivityController().update();
-				LocalStorageController localStorageController = new LocalStorageController(this);
-				localStorageController.cacheStory(currentStory);
+				
+				// Save the Stories Just in Case!
+				AdventureApplication.getStoryController().saveStories();
+				
+				// Open it!
 				openStory(currentStory);
 
 			}
