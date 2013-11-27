@@ -45,6 +45,7 @@ public class Annotation extends UniqueId implements Serializable {
 	public void setAnnotationPic(String annotation){
 		
 	}
+
 	/**
 	 * Always treat de-serialization as a full-blown constructor, by validating
 	 * the final state of the de-serialized object.

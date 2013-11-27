@@ -140,11 +140,14 @@ public class EditStoryActivity extends AdventureActivity {
 		Fragement frag = new Fragement();
 		frag.setTitle("New Fragment");
 		AdventureApplication.getStoryController().currentStory().addFragement(frag);
+
 		adapter.notifyDataSetChanged();
+		updateView();
+
 	}	
 	
 	public void updateView(){
-		
+		adapter.notifyDataSetChanged();
 	}
 
 	@Override

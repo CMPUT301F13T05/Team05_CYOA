@@ -99,7 +99,7 @@ public class EditFragementActivity extends AdventureActivity {
 	 * Updates the view.
 	 */
 	public void updateView() {
-
+		
 	}
 
 	@Override
@@ -225,6 +225,7 @@ public class EditFragementActivity extends AdventureActivity {
 				break;
 			case R.id.randomchoice:
 				AdventureApplication.getStoryController().currentFragement().setRandomFlag(true);
+
 				break;
 			default:
 				currentView.getRootView().dispatchKeyEvent(new KeyEvent (KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_BACK));
@@ -290,5 +291,9 @@ public class EditFragementActivity extends AdventureActivity {
 					break;
 			}
 			
+
+			AdventureApplication.getActivityController().update();
+			
+
 		}
 }

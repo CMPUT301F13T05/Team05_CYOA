@@ -24,7 +24,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+
 import java.util.Random;
+
 import java.util.SortedMap;
 import java.util.UUID;
 
@@ -133,9 +135,12 @@ public class StoryActivity extends AdventureActivity {
 			menu.setHeaderIcon(android.R.drawable.ic_input_get);
 			menu.setHeaderTitle("Choices");
 			int counter = 0;
+
 			if (currentFragement.getRandomflag()){
 				menu.add(0, counter, 0, "Random Choice");
 			}
+
+
 
 			for(Choice f : currentFragement.choices()) {
 				menu.add(0, counter, 0, f.getChoice().getTitle());
