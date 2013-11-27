@@ -18,23 +18,129 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 package com.uofa.adventure_app.controller;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.ArrayList;
+
+
+import com.uofa.adventure_app.application.AdventureApplication;
+import com.uofa.adventure_app.model.Fragement;
 import com.uofa.adventure_app.model.Story;
 
 public class StoryController {
 	
 	ArrayList<Story> stories;
+	Story currentStory;
+	Fragement currentFragement;
+	ArrayList<Fragement> previousFragementList;
+	
+	private static String FILENAME = "savedStories.sav";
 	
 	public StoryController () {
 		this.stories = new ArrayList<Story>();
+		this.previousFragementList = new ArrayList<Fragement>();
 	}
 	
-	public void addStory(Story story) {
-		if(!stories.contains(story))
-			this.stories.add(story);
+	/**
+	 * @return the currentStory
+	 */
+	public Story currentStory() {
+		return currentStory;
 	}
 
+	/**
+	 * Sets the Current Story we are interested in and sets
+	 * the first fragement as the current fragement. 
+	 * @param currentStory the currentStory to set
+	 */
+	public void setCurrentStory(Story currentStory) {
+		clearPreviousFragementList();
+		this.currentStory = currentStory;
+		setCurrentFragement(currentStory.startFragement());
+	}
+
+	/**
+	 * @return the currentFragement
+	 */
+	public Fragement currentFragement() {
+		return currentFragement;
+	}
+
+	/**
+	 * @param currentFragement the currentFragement to set
+	 */
+	public void setCurrentFragement(Fragement currentFragement) {
+		this.currentFragement = currentFragement;
+	}
+	
+	/**
+	 * @return the previousFragementList
+	 */
+	public ArrayList<Fragement> previousFragementList() {
+		return previousFragementList;
+	}
+
+	/**
+	 * Removes the last index in the list, If empty
+	 * nothing happens.
+	 */
+	public void popPreviousFragement() {
+		
+		if(!previousFragementList.isEmpty()) {
+			int lastIndex = previousFragementList.size()-1;
+			previousFragementList.remove(lastIndex);
+		}
+	}
+	
+	/**
+	 * returns the Last Fragement we visited, if none, null is returned
+	 * @return
+	 */
+	public Fragement lastFragement() {
+		if(!previousFragementList.isEmpty()) {
+			int lastIndex = previousFragementList.size()-1;
+			return previousFragementList.get(lastIndex);
+		} else {
+			return null;
+		}
+	}
+	
+	/**
+	 * Adds A Fragement to our list. This is used for backtracking
+	 * and for editing.
+	 * @param f
+	 */
+	public void addPreviousFragement(Fragement f) {
+		previousFragementList.add(f);
+	}
+	
+	/**
+	 * Clears the Previous Fragement List.
+	 */
+	private void clearPreviousFragementList() {
+		this.previousFragementList.clear();
+	}
+	
+
+	
+	public void addStory(Story story) {
+		if(!stories.contains(story)) {
+			this.stories.add(story);
+			AdventureApplication.getActivityController().update();
+		}
+	}
 	
 	public void replaceStory(Story story) {
 		if(stories.contains(story)) {
@@ -43,9 +149,63 @@ public class StoryController {
 		}
 	}
 	
-	public ArrayList<Story> getStories() {
+	public ArrayList<Story> stories() {
 		return this.stories;
 	}
 
+/**
+ * Allows you to set the current array of stories.
+ * You should probably not call this unless you
+ * know what your doing!
+ * @param stories
+ */
+	public void setStories(ArrayList<Story> stories) {
+		this.stories = stories;
+	}
+	
+	/** 
+	 * Saves the current state of the story controller.
+	 */
+	public void saveStories() {
+		// Use file stream to save our array object.
+				try {
+					FileOutputStream fos =  AdventureApplication.context().openFileOutput(FILENAME, 0);
+					ObjectOutputStream oos = new ObjectOutputStream(fos);
+					oos.writeObject(AdventureApplication.getStoryController().stories());
+					fos.close();
+				} catch (FileNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+	}
+	
+	/**
+	 * Loads stories from the local storage file.
+	 */
+	public void loadStories() {
+		ArrayList<Story> result = new ArrayList<Story>();
+		try {
+			FileInputStream fis = AdventureApplication.context().openFileInput(FILENAME);
+
+			ObjectInputStream ois = new ObjectInputStream(fis);
+			while (true) {
+				result = (ArrayList) ois.readObject();
+			}
+
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		this.setStories(result);
+	}
 	
 }

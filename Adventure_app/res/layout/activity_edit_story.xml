@@ -22,14 +22,13 @@
         <requestFocus />
     </EditText>
 
-    <EditText
+    <TextView
         android:id="@+id/authortext"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/titletext"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/titletext"
-        android:ems="10"
         android:text="Author" />
 
     <ListView
@@ -41,5 +40,7 @@
         android:scrollbars="horizontal" >
 
     </ListView>
+
+
 
 </RelativeLayout>

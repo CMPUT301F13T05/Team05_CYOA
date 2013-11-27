@@ -290,7 +290,6 @@ public class LocalStorageController {
 			}
 		}  
 		titlec.close();
-		System.out.println("title is: _>_>_>_>_>_>_>_>_>_>_>_>_>_>_>_>_>_>_>_>_>>_>_>_>_>_>_>_>_>_>>_>_>_" + title);
 		return title;
 	}
 	
@@ -619,7 +618,7 @@ public class LocalStorageController {
 		db.close();
 		return lastId;
 	}
-
+	
 	/**
 	* 
 	* @param s a story to take in
@@ -649,7 +648,7 @@ public class LocalStorageController {
 			userId=storyUsers.get(i).uid().toString();
 			//adding users into users table
 			this.insertIntoUsersTable(userId, userName, storyId);
-		}
+		}/*
 		//int fragLastId=this.getLastId("fragments", "fragment_id");
 		for (int i=0;i<storyFragments.size();i++){
 			fragmentBody=storyFragments.get(i).body();
@@ -664,7 +663,7 @@ public class LocalStorageController {
 				//choices added for each fragment
 			}
 			
-		}
+		}*/
 		this.close();
 
 	} // close of cacheStory

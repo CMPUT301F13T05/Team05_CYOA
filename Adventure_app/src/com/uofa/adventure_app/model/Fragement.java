@@ -18,19 +18,23 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 package com.uofa.adventure_app.model;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.SortedMap;
 import java.util.UUID;
 
 import com.uofa.adventure_app.interfaces.UniqueId;
 
-public class Fragement extends UniqueId  {
+public class Fragement extends UniqueId implements Serializable  {
         
         private SortedMap<Integer, Media> media; // Key will be a line number
         private ArrayList<Annotation> annotations;
         private ArrayList<Choice> choices;
         private String body;
-        private Integer flag;
+        private boolean randomFlag;
         private String title;
 
         public Fragement()
@@ -39,18 +43,18 @@ public class Fragement extends UniqueId  {
             this.annotations = new ArrayList<Annotation>();
             this.choices = new ArrayList<Choice>(); 
             this.media = null;
-            this.flag = 0;
+            this.randomFlag = false;
             this.title = null;
             this.body = "";
         }      
 
-        public Fragement(Integer flag)
+        public Fragement(boolean flag)
         {
                 super();
                 this.annotations = new ArrayList<Annotation>();
                 this.choices = new ArrayList<Choice>(); 
                 this.media = null;
-                this.flag = flag;
+                this.randomFlag = flag;
         }    
         public Fragement(UUID id)
         {
@@ -58,19 +62,19 @@ public class Fragement extends UniqueId  {
         	this.uid = id;
         } 
         
-        public Fragement(String body, Integer flag)
+        public Fragement(String body, boolean flag)
         {
                 this();
                 this.setBody(body);
-                this.flag = flag;
+                this.randomFlag = flag;
         }       
         
-        public Fragement(String title, String body, Integer flag)
+        public Fragement(String title, String body, boolean flag)
         {
                 this();
                 this.title = title;
                 this.setBody(body);
-                this.flag = flag;
+                this.randomFlag = flag;
         }   
         
         /**
@@ -103,17 +107,17 @@ public class Fragement extends UniqueId  {
         	return this.choices;
         }
         
-        public void setFlag(Integer flag)
+        public void setRandomFlag(boolean flag)
         {
-        	this.flag = flag;
+        	this.randomFlag = flag;
         }
         
-        public Integer getflag()
+        public boolean getRandomflag()
         {
-        	return this.flag;
+        	return this.randomFlag;
         }
         
-        public void setTitle(String Title)
+        public void setTitle(String title)
         {
         	this.title = title;
         }
@@ -123,15 +127,55 @@ public class Fragement extends UniqueId  {
         	return this.title;
         }
 
+    	public SortedMap<Integer,Media> media() {
+    		return this.media;
+    	}
+    	
+    	/**
+    	 * add media to the sorted set. Right now media will be added to the Start
+    	 * Feature to add to any line later on.
+    	 * @param media
+    	 */
+    	public void addMedia(Media media) {
+    		if(this.media.lastKey() != -1) {
+    			int index = this.media.lastKey();
+    			this.media.put(index, media);
+    		} else {
+    			this.media.put(0,media);
+    		}
+    	}
+    	
+        
 		/* (non-Javadoc)
 		 * @see java.lang.Object#toString()
 		 */
 		@Override
 		public String toString() {
 			// TODO Auto-generated method stub
-			return super.toString() + this.uid.toString();
+			return this.getTitle();
 		}   
         
+		/**
+		 * Always treat de-serialization as a full-blown constructor, by validating
+		 * the final state of the de-serialized object.
+		 */
+		private void readObject(ObjectInputStream aInputStream)
+				throws ClassNotFoundException, IOException {
+			// always perform the default de-serialization first
+			aInputStream.defaultReadObject();
+
+		}
+
+		/**
+		 * This is the default implementation of writeObject. Customise if
+		 * necessary.
+		 */
+		private void writeObject(ObjectOutputStream aOutputStream)
+				throws IOException {
+			// perform the default serialization for all non-transient, non-static
+			// fields
+			aOutputStream.defaultWriteObject();
+		}
         
 
 }

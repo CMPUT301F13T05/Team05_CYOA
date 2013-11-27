@@ -16,7 +16,5 @@
         android:layout_below="@id/line_a"
                      android:textColor="#BFFF00"
         android:textSize="12sp" />
-
-    
-
+   
 </RelativeLayout>

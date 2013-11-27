@@ -26,7 +26,7 @@
         android:layout_alignParentTop="true"
         android:layout_marginLeft="51dp"
         android:ems="10"
-        android:text="Title" />
+        android:text="" />
 
     <EditText
         android:id="@+id/newauthor"
@@ -45,7 +45,7 @@
         android:layout_below="@+id/newauthor"
         android:layout_marginTop="27dp"
         android:ems="10"
-        android:text="New fragment" >
+        android:text="" >
 
         <requestFocus />
     </EditText>
