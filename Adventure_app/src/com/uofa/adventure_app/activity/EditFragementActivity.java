@@ -99,7 +99,7 @@ public class EditFragementActivity extends AdventureActivity {
 	 * Updates the view.
 	 */
 	public void updateView() {
-
+		
 	}
 
 	@Override
@@ -268,6 +268,8 @@ public class EditFragementActivity extends AdventureActivity {
 				default:
 					break;
 			}
+			
+			AdventureApplication.getActivityController().update();
 			
 		}
 }
