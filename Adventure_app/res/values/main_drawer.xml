@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="items">
+	<item type="string" name="New Story"/>
+    <item name="Refresh"/>
+    <item name="I'm Feeling Lucky"/>
+    <item name="Logout"/>
+    </string-array>
+</resources>

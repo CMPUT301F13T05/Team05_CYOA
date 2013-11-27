@@ -90,17 +90,6 @@ public class StoryGridAdapter extends BaseAdapter {
 		return position;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see android.widget.BaseAdapter#notifyDataSetChanged()
-	 */
-	@Override
-	public void notifyDataSetChanged() {
-		// TODO Auto-generated method stub
-		super.notifyDataSetChanged();
-
-	}
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
@@ -126,7 +115,7 @@ public class StoryGridAdapter extends BaseAdapter {
 				convertView.setPadding(25, 20, 20, 25);
 			}
 
-			title.setText(story.title());
+				title.setText(story.title());
 
 			String authors = new String();
 			// TODO: Format this better!

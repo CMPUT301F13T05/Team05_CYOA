@@ -18,15 +18,15 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 package com.uofa.adventure_app.application;
 
+
 import android.app.Application;
-import android.widget.Toast;
+import android.content.Context;
 
-
-import com.uofa.adventure_app.controller.LocalStorageController;
 import com.uofa.adventure_app.controller.ActivityController;
-
+import com.uofa.adventure_app.controller.LocalStorageController;
 import com.uofa.adventure_app.controller.StoryController;
 import com.uofa.adventure_app.controller.WebServiceController;
+import com.uofa.adventure_app.model.User;
 
 public class AdventureApplication extends Application {
 	
@@ -37,6 +37,25 @@ public class AdventureApplication extends Application {
 
 	transient private static ActivityController activityController;
 	
+	private static Context context;
+	private static User currentUser;
+
+    public void onCreate(){
+        super.onCreate();
+        context = getApplicationContext();
+    }
+
+    public static Context context() {
+        return context;
+    }
+	
+    public static void setUser(User user) {
+        currentUser = user;
+    }
+    
+    public static User user() {
+       return currentUser;
+    }
 
 	// Usable controller - singelton for all classes
 	public static StoryController getStoryController() {
@@ -68,7 +87,8 @@ public class AdventureApplication extends Application {
 		}
 		return activityController;	
 	}
-	
+		
+	}
 
 
-}
+

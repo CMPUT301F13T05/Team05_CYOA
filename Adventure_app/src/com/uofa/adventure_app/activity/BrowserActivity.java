@@ -18,19 +18,20 @@
  */
 package com.uofa.adventure_app.activity;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.widget.DrawerLayout;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.TextView;
 
@@ -39,41 +40,41 @@ import com.uofa.adventure_app.application.AdventureApplication;
 import com.uofa.adventure_app.controller.LocalStorageController;
 import com.uofa.adventure_app.controller.http.HttpObjectStory;
 import com.uofa.adventure_app.interfaces.AdventureActivity;
-import com.uofa.adventure_app.model.Choice;
 import com.uofa.adventure_app.model.Fragement;
 import com.uofa.adventure_app.model.Story;
 import com.uofa.adventure_app.model.User;
 
 public class BrowserActivity extends AdventureActivity {
 
-
 	private StoryGridAdapter storyGridAdapter;
 	ArrayList<String> List;
 	LocalStorageController localStorageController;
-	User username;
 	View v;
 	TextView search;
 	String searchQuery = "";
-	private ArrayList<Story> stories = AdventureApplication.getStoryController().getStories();
+	private ArrayList<Story> stories = AdventureApplication.getStoryController().stories();
 	SearchView searchView;
-
+	 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_browser);
 		v = this.findViewById(android.R.id.content);
-		localStorageController = new LocalStorageController(this);
-		username = new User();
-
+		View menuView = (View)this.findViewById(R.menu.main);
+		
 		boolean firstrun = getSharedPreferences("PREFERENCE", MODE_PRIVATE).getBoolean("firstrun", true);
-
 		
 		if (firstrun){
 			Intent myIntent = new Intent(this, FirstRunOnlyActivity.class);
 			this.startActivity(myIntent);
 			// Save the state
 			getSharedPreferences("PREFERENCE", MODE_PRIVATE).edit().putBoolean("firstrun", false).commit();
+		} else {
+			String username = getSharedPreferences("PREFERENCE", MODE_PRIVATE).getString("username", null);
+			String uid = getSharedPreferences("PREFERENCE", MODE_PRIVATE).getString("uid", null);
+			AdventureApplication.setUser(new User(username, UUID.fromString(uid)));
 		}
+		
 		HttpObjectStory httpStory = new HttpObjectStory();
 		/*
 		for(int i = 0; i < 10; i ++) {
@@ -99,13 +100,12 @@ public class BrowserActivity extends AdventureActivity {
 
 	}
 
-
-
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.main, menu);
+		
 		searchView = (SearchView) menu.findItem(R.id.search).getActionView();
 		final SearchView.OnQueryTextListener queryTextListener = new SearchView.OnQueryTextListener() {
 		    @Override
@@ -128,7 +128,6 @@ public class BrowserActivity extends AdventureActivity {
 	}
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-
 		// Handle presses on the action bar items
 		switch (item.getItemId()) {
 		case R.id.new_story:
@@ -160,9 +159,25 @@ public class BrowserActivity extends AdventureActivity {
 	 * Creates and calls the intent that calls the Edit Fragment screen.
 	 */
 	public void newStory() {
-		Intent myIntent = new Intent(this, EditFragementActivity.class);
-		String i = null;
-		myIntent.putExtra("frag_id", i);
+		// Create a Story, add a blank fragement, and set it as the first
+		Story newStory = new Story();
+		newStory.setIsLocal(true);
+		newStory.setTitle("Your Story Title");
+		newStory.addUser(AdventureApplication.user());
+		Fragement newFragement = new Fragement();
+		newFragement.setTitle("Your First Fragement");
+		newFragement.setBody("Enter Body Text for Your First Fragement Here.");
+		newStory.addFragement(newFragement);
+		newStory.setStartFragement(newFragement);
+		
+		// Add it to our list
+		AdventureApplication.getStoryController().addStory(newStory);
+		
+		// Set as current Story
+		AdventureApplication.getStoryController().setCurrentStory(newStory);
+		
+		// Open editor
+		Intent myIntent = new Intent(this, EditStoryActivity.class);
 		this.startActivity(myIntent);
 		
 
@@ -188,10 +203,11 @@ public class BrowserActivity extends AdventureActivity {
 	}
 	
 	public void openStory (Story s) {
-		String id = s.id().toString();
+		// Set the Story as our current Story, Auto sets the current one we are on.
+		AdventureApplication.getStoryController().setCurrentStory(s);
+		
+		// Open the Story!
 		Intent myIntent = new Intent(this, StoryActivity.class);
-		myIntent.putExtra("StoryID", id);
-		//myIntent.putExtra("FragementID",s.startFragement().uid().toString());
 		this.startActivity(myIntent);
 	}
 	
@@ -199,7 +215,9 @@ public class BrowserActivity extends AdventureActivity {
 	 * Updates the view
 	 */
 	public void updateView(){
-		storyGridAdapter.notifyDataSetChanged();
+		if(storyGridAdapter != null) {
+			storyGridAdapter.notifyDataSetChanged();
+		}
 	}
 
 	@Override
@@ -212,40 +230,20 @@ public class BrowserActivity extends AdventureActivity {
 	 */
 	public void dataReturn(ArrayList<Story> result, String method) {
 		if(method.equals(GET_ALL_METHOD)) {
-			
-			HashMap<String, List<String>> map = new HashMap<String, List<String>>();
-			LocalStorageController localStorageController = new LocalStorageController(this);
-			map = localStorageController.getBrowserViewInfo();
-			ArrayList<String> keys = new ArrayList<String>();
-			keys.addAll(map.keySet());
-			for(int i = 0; i<keys.size(); i++){
-				Story s = new Story(UUID.fromString(keys.get(i)));
-				ArrayList<String> list = new ArrayList<String>(); 
-				
-				list.addAll(map.get(keys.get(i)));
-				s.setTitle(list.get(0));
-				ArrayList<User> users = new ArrayList<User>();
-				for(int j = 1; j<map.get(keys.get(i)).size(); j++){
-					User user = new User(map.get(keys.get(i)).get(j));
-					users.add(user);
-				}
-				
-				s.setUsers(users);
-				s.setIsLocal(true);
-				AdventureApplication.getStoryController().addStory(s);
-			}
+			AdventureApplication.getStoryController().loadStories();
 			for(int i = 0; i < result.size(); i++ ) {
 				//System.out.println(result);
 					AdventureApplication.getStoryController().addStory(result.get(i));
 			}
 		      GridView grid = (GridView) findViewById(R.id.gridView1);
-              storyGridAdapter = new StoryGridAdapter(this, AdventureApplication.getStoryController().getStories());
+              storyGridAdapter = new StoryGridAdapter(this, AdventureApplication.getStoryController().stories());
               grid.setAdapter(storyGridAdapter);
               grid.setOnItemClickListener(new 
                               GridView.OnItemClickListener() {
                       // @Override
+            	  //
                       public void onItemClick(AdapterView<?> a, View v, int i, long l) {                                        
-                              viewStory(v, AdventureApplication.getStoryController().getStories().get(i));
+                              viewStory(v, AdventureApplication.getStoryController().stories().get(i));
                       }
               });
 		}
@@ -256,15 +254,26 @@ public class BrowserActivity extends AdventureActivity {
 				currentStory.setIsLocal(true);
 				//System.out.println(currentStory.getFragements().get(0).getTitle());
 				AdventureApplication.getStoryController().replaceStory(currentStory);
+				
+				// Updates all views to proper content
 				AdventureApplication.getActivityController().update();
-				LocalStorageController localStorageController = new LocalStorageController(this);
-				localStorageController.cacheStory(currentStory);
+				
+				// Save the Stories Just in Case!
+				AdventureApplication.getStoryController().saveStories();
+				
+				// Open it!
 				openStory(currentStory);
 
 			}
 		}
 	}
-
+	 protected void openLastFragement() {
+		 // Nothing Happens here.
+	 }
+	 
+		protected void saveTextForView(View v, String text) {
+			
+		}
 
 }
 

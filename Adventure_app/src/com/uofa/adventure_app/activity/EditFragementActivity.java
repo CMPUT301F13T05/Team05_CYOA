@@ -20,9 +20,7 @@ package com.uofa.adventure_app.activity;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.UUID;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -36,16 +34,16 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.AdapterView.AdapterContextMenuInfo;
 
 import com.uofa.adventure_app.R;
-import com.uofa.adventure_app.controller.LocalStorageController;
+import com.uofa.adventure_app.application.AdventureApplication;
 import com.uofa.adventure_app.interfaces.AdventureActivity;
+import com.uofa.adventure_app.model.Choice;
 import com.uofa.adventure_app.model.Fragement;
 import com.uofa.adventure_app.model.Story;
-import com.uofa.adventure_app.model.User;
 
 public class EditFragementActivity extends AdventureActivity {
 	View currentView;
@@ -64,13 +62,18 @@ public class EditFragementActivity extends AdventureActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_edit_fragement);
+		Fragement currentFragement = AdventureApplication.getStoryController().currentFragement();
 		currentView = this.findViewById(android.R.id.content);
-		extras = getIntent().getExtras();
 		EditText newauthor = (EditText) findViewById(R.id.newauthor);
 		newauthor.setText(getSharedPreferences("PREFERENCE", MODE_PRIVATE).getString("username", null));
-		old_frag = null;
-		if (extras != null)
-			old_frag = extras.getString("frag_id");
+		EditText newTitle = (EditText) findViewById(R.id.newtitle);
+		newTitle.setText(currentFragement.getTitle());
+		EditText newBody = (EditText) findViewById(R.id.newbody);
+		newBody.setText(currentFragement.body());
+		
+		// Generic Watcher Title
+		newTitle.addTextChangedListener(new GenericTextWatcher(newTitle));
+		newBody.addTextChangedListener(new GenericTextWatcher(newBody));
 		
 	}
 
@@ -199,60 +202,8 @@ public class EditFragementActivity extends AdventureActivity {
 				currentView.getRootView().dispatchKeyEvent(new KeyEvent (KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_BACK));
 				break;
 			case R.id.newchoice:
-				System.out.println("Hereerererere");
-				EditText newtitle = (EditText) findViewById(R.id.newtitle);
-				EditText newauthor = (EditText) findViewById(R.id.newauthor);
-				EditText newbody = (EditText) findViewById(R.id.newbody);
-				title = newtitle.getText().toString();
-				user = newauthor.getText().toString();
-				body = newbody.getText().toString();
-				LocalStorageController localStorageController = new LocalStorageController(this);
-				if (extras != null){
-					if (old_frag == null){
-						s = new Story();
-						s_id = s.id().toString();
-						User curUser = new User(user);
-						Integer flag = 1;
-						ArrayList<User> users = new ArrayList<User>();
-						users.add(curUser);
-						UUID userId = curUser.uid();
-						s.setUsers(users);
-						Fragement frag = new Fragement(body, flag);
-						s.addFragement(frag);
-						frag.setTitle(title);
-						UUID fragId = frag.uid();
-						localStorageController.setStory(s_id, title, userId.toString(), user);
-						localStorageController.setFragment(s_id, fragId.toString(), title, body, old_frag, flag);
-						newtitle.setText("");
-						newbody.setText("");
-						if (imageFileUri != null){
-							//saving image
-							String imageId = UUID.randomUUID().toString();
-							localStorageController.insertImage( imageId, imageFileUri.getPath().toString(), 0, frag.uid().toString());
-						}
-					}else{
-						s_id = s.id().toString();
-						User curUser = new User(user);
-						ArrayList<User> users = new ArrayList<User>();
-						users.add(curUser);
-						UUID userId = curUser.uid();
-						Integer flag = 0;
-						s.setUsers(users);
-						Fragement frag = new Fragement(body, flag);
-						frag.setTitle(title);
-						s.addFragement(frag);
-						UUID fragId = frag.uid();
-						localStorageController.setFragment(s_id, fragId.toString(), title, body, old_frag, flag);
-						newtitle.setText("");
-						newbody.setText("");
-						// saving image
-						if (imageFileUri != null){
-							String imageId = UUID.randomUUID().toString();
-							localStorageController.insertImage( imageId, imageFileUri.getPath().toString(), 0, frag.uid().toString());
-						}
-		                break;
-					}
-				}
+				save();
+				newChoice();
 				break;
 			default:
 				currentView.getRootView().dispatchKeyEvent(new KeyEvent (KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_BACK));
@@ -264,57 +215,59 @@ public class EditFragementActivity extends AdventureActivity {
 
 	}
 
-	public void save(){
-		EditText newtitle = (EditText) findViewById(R.id.newtitle);
-		EditText newauthor = (EditText) findViewById(R.id.newauthor);
-		EditText newbody = (EditText) findViewById(R.id.newbody);
-		title = newtitle.getText().toString();
-		user = newauthor.getText().toString();
-		body = newbody.getText().toString();
-		LocalStorageController localStorageController = new LocalStorageController(this);
-		if (extras != null){
-			if (old_frag == null){
-				s = new Story();
-				s_id = s.id().toString();
-				User curUser = new User(user);
-				Integer flag = 1;
-				ArrayList<User> users = new ArrayList<User>();
-				users.add(curUser);
-				UUID userId = curUser.uid();
-				s.setUsers(users);
-				Fragement frag = new Fragement(body, flag);
-				frag.setTitle(title);
-				s.addFragement(frag);
-				
-				UUID fragId = frag.uid();
-				localStorageController.setStory(s_id, title, userId.toString(), user);
-				localStorageController.setFragment(s_id, fragId.toString(), title, body, old_frag, flag);
-				newtitle.setText("");
-				newbody.setText("");
-				//saving image
-				String imageId = UUID.randomUUID().toString();
-                localStorageController.insertImage( imageId, imageFileUri.getPath().toString(), 0, frag.uid().toString());
-				
-			}else{
-				s_id = s.id().toString();
-				User curUser = new User(user);
-				ArrayList<User> users = new ArrayList<User>();
-				users.add(curUser);
-				UUID userId = curUser.uid();
-				Integer flag = 0;
-				s.setUsers(users);
-				Fragement frag = new Fragement(body, flag);
-				frag.setTitle(title);
-				s.addFragement(frag);
-				UUID fragId = frag.uid();
-				localStorageController.setFragment(s_id, fragId.toString(), title, body, old_frag, flag);
-				newtitle.setText("");
-				newbody.setText("");
-				// saving image
-				String imageId = UUID.randomUUID().toString();
-                localStorageController.insertImage( imageId, imageFileUri.getPath().toString(), 0, frag.uid().toString());
-				
-			}
-		}
+	private void newChoice() {
+		Fragement currentFragement = AdventureApplication.getStoryController().currentFragement();
+		Fragement newFragement = new Fragement();
+		Choice newChoice = new Choice(newFragement);
+		AdventureApplication.getStoryController().currentFragement().addChoice(newChoice);
+		AdventureApplication.getStoryController().addPreviousFragement(currentFragement);
+		AdventureApplication.getStoryController().setCurrentFragement(newFragement);
+		
+		EditText newTitle = (EditText) findViewById(R.id.newtitle);
+		newTitle.setText("");
+		EditText newBody = (EditText) findViewById(R.id.newbody);
+		newBody.setText("");
 	}
+	
+	public void save(){
+		EditText newTitle = (EditText) findViewById(R.id.newtitle);
+		//EditText newAuthor = (EditText) findViewById(R.id.newauthor);
+		EditText newBody = (EditText) findViewById(R.id.newbody);
+		
+		// Update the current window fragement
+		// We should setup a text listner, and do this automatically, this is clunky.
+		Fragement currentFragement = AdventureApplication.getStoryController().currentFragement();
+		currentFragement.setBody(newBody.getText().toString());
+		currentFragement.setTitle(newTitle.getText().toString());
+		
+		
+		AdventureApplication.getStoryController().saveStories();
+		
+	}
+	
+	   protected void openLastFragement() {
+		   Fragement currentFragement = AdventureApplication.getStoryController().lastFragement();
+		   AdventureApplication.getStoryController().setCurrentFragement(currentFragement);
+		   AdventureApplication.getStoryController().popPreviousFragement();
+		   EditText newTitle = (EditText) findViewById(R.id.newtitle);
+			//EditText newAuthor = (EditText) findViewById(R.id.newauthor);
+			EditText newBody = (EditText) findViewById(R.id.newbody);
+		   newTitle.setText(currentFragement.getTitle());
+		   newBody.setText(currentFragement.body());
+	    }
+	   
+		protected void saveTextForView(View v, String text) {
+			
+			switch(v.getId()) {
+				case R.id.newtitle: 
+					AdventureApplication.getStoryController().currentFragement().setTitle(text);
+					break;
+				case R.id.newbody:
+					AdventureApplication.getStoryController().currentFragement().setBody(text);
+					break;
+				default:
+					break;
+			}
+			
+		}
 }

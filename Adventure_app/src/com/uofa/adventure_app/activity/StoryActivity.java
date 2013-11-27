@@ -24,7 +24,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.SortedMap;
 import java.util.UUID;
 
 import android.content.Context;
@@ -37,7 +37,6 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
-import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -46,7 +45,6 @@ import android.view.View;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.uofa.adventure_app.R;
 import com.uofa.adventure_app.application.AdventureApplication;
@@ -55,13 +53,14 @@ import com.uofa.adventure_app.controller.http.HttpObjectStory;
 import com.uofa.adventure_app.interfaces.AdventureActivity;
 import com.uofa.adventure_app.model.Choice;
 import com.uofa.adventure_app.model.Fragement;
+import com.uofa.adventure_app.model.Media;
 import com.uofa.adventure_app.model.Story;
 
 public class StoryActivity extends AdventureActivity {
-	TextView testtitle;
-	TextView testAuthor;
-	TextView testBody;
-	ImageView testImage; // for displaying an image, duh!
+	TextView tileTextView;
+	TextView authorTextView;
+	TextView bodyTextView;
+	ImageView imageView; // for displaying an image, duh!
 	String choice;
 	View currentView;
 	Uri imageFileUri;
@@ -76,62 +75,28 @@ public class StoryActivity extends AdventureActivity {
 		super.onCreate(savedInstanceState);
 		UUID storyID = null;
 		setContentView(R.layout.activity_story);
-		testtitle = (TextView) findViewById(R.id.titleview);
-		testAuthor = (TextView) findViewById(R.id.authorview);
-		testBody = (TextView) findViewById(R.id.storyview);
-		testImage = (ImageView) findViewById(R.id.annotation); // YOU ARE HERE -- JOEL
-		
-		localStorageController = new LocalStorageController(this);
-		Bundle extras = getIntent().getExtras();
-		List<List<String>> storyInfo =new ArrayList<List<String>>();
-		if (extras != null){
-			storyID = UUID.fromString(extras.getString("StoryID"));
-			String s_id = storyID.toString();
-			currentStory = new Story(UUID.fromString(extras.getString("StoryID")));
-			ArrayList<Story> stories = AdventureApplication.getStoryController().getStories();
-			currentStory = stories.get(stories.indexOf(currentStory));
-			
-			if (currentStory.isLocal()){ 
-				//System.out.print(localStorageController.getStory(s_id).get(0).get(0) + "--------------------------------------------------------");
-				testBody.setText(localStorageController.getStory(s_id).get(3).get(0));
-			}else{
-				testBody.setText(currentStory.getFragements().get(0).body());
-			}
-			
-			if(extras.getString("FragementID") != null) {
-				
-				Fragement frag = new Fragement(UUID.fromString(extras.getString("FragementID")));
-				System.out.println(currentStory.id().toString());
-				System.out.println("START:" + frag.uid().toString());
-				System.out.println("START:" + currentStory.getFragements());
-				int index = currentStory.getFragements().indexOf(frag);
-				currentFragement = currentStory.getFragements().get(index);
-				//if (localStorageController.getImage(currentFragement.uid().toString()) != "0") {
-					testImage.setImageDrawable(Drawable.createFromPath(localStorageController.getImage(currentFragement.uid().toString())));
-				//}
-			}
+		tileTextView = (TextView) findViewById(R.id.titleview);
+		authorTextView = (TextView) findViewById(R.id.authorview);
+		bodyTextView = (TextView) findViewById(R.id.storyview);
+		imageView = (ImageView) findViewById(R.id.annotation); // YOU ARE HERE -- JOEL
 
-				if(currentFragement == null) {
-					testBody.setText(currentStory.getFragements().toString());
-					testAuthor.setText(currentStory.users().toString());
-					testtitle.setText(currentStory.title());
-				} else {
-					testBody.setText(currentFragement.body());
-					testAuthor.setText("");
-					testtitle.setText(currentFragement.getTitle());
-				}
-
-				currentStory.setIsLocal(true);
-				AdventureApplication.getStoryController().replaceStory(currentStory);
-				AdventureApplication.getActivityController().update();
-			
-		}else{
-			testBody.setText("This story isn't very good.");
-			testAuthor.setText("");
-			testtitle.setText("Sorry the story Could not be loaded");
-		}
-		currentView = this.findViewById(android.R.id.content);
+		currentStory = AdventureApplication.getStoryController().currentStory();
 		
+		currentFragement = AdventureApplication.getStoryController().currentFragement();
+		bodyTextView.setText(currentFragement.body());
+		SortedMap<Integer,Media> media = currentFragement.media();
+		//imageView.setImageDrawable(Drawable.createFromPath(media.get(media.firstKey()).path()));
+
+		bodyTextView.setText(currentFragement.body());
+		authorTextView.setText("");
+		tileTextView.setText(currentFragement.getTitle());
+
+		currentStory.setIsLocal(true);
+		
+		AdventureApplication.getStoryController().replaceStory(currentStory);
+		AdventureApplication.getActivityController().update();
+			
+		currentView = this.findViewById(android.R.id.content);	
 	}
 
 	@Override
@@ -166,13 +131,10 @@ public class StoryActivity extends AdventureActivity {
 			// Style our context menu
 			menu.setHeaderIcon(android.R.drawable.ic_input_get);
 			menu.setHeaderTitle("Choices");
+			int counter = 0;
 			for(Choice f : currentFragement.choices()) {
-				MenuItem mItem = menu.add(f.getChoice().getTitle());
-				//TODO ADD INTENT
-				Intent myIntent = new Intent(this, StoryActivity.class);
-				myIntent.putExtra("StoryID", currentStory.id().toString());
-				myIntent.putExtra("FragementID", f.getChoice().uid().toString());
-				mItem.setIntent(myIntent);
+				menu.add(0, counter, 0, f.getChoice().getTitle());
+				counter++;
 			}
 			
 			MenuInflater inflater2 = getMenuInflater();
@@ -181,6 +143,19 @@ public class StoryActivity extends AdventureActivity {
 		}
 		
 	}
+	
+	private void adjustCurrentFragement(Fragement f) {
+		AdventureApplication.getStoryController().addPreviousFragement(currentFragement);
+		AdventureApplication.getStoryController().setCurrentFragement(f);
+		currentFragement = f;
+	}
+	
+	public void openFragement(Fragement f) {
+		adjustCurrentFragement(f);
+		tileTextView.setText(currentFragement.getTitle());
+		bodyTextView.setText(currentFragement.body());
+	}
+	
 	/**
 	 * Called to open the context view that allows the user to open
 	 * the camera or browse their own pictures.
@@ -198,7 +173,6 @@ public class StoryActivity extends AdventureActivity {
 	 * @param View v
 	 */
 	public void openChoices(View v) {
-		currentView.getRootView().dispatchKeyEvent(new KeyEvent (KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_BACK));
 		choice = "CHOICE";
 		registerForContextMenu( v );
         openContextMenu( v );  
@@ -207,12 +181,14 @@ public class StoryActivity extends AdventureActivity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// Handle presses on the action bar items
+		
+		
 		switch (item.getItemId()) {
 			case R.id.editstory:
 				editStory();
 				break;
 			case R.id.annotatem:	
-				currentView.getRootView().dispatchKeyEvent(new KeyEvent (KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_BACK));
+				//currentView.getRootView().dispatchKeyEvent(new KeyEvent (KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_BACK));
 				openAnnotateContext(currentView);
 				//takeAPhoto();
 				break;
@@ -235,21 +211,31 @@ public class StoryActivity extends AdventureActivity {
 		return super.onOptionsItemSelected(item);
 	}
 	
+	
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
+		
+		if(item.getGroupId() == 0 && item.getItemId() != R.id.cancel) {
+			// TODO: This needs to be refactored....
+			Fragement frag = AdventureApplication.getStoryController().currentFragement().choices().get(item.getItemId()).getChoice();
+			openFragement(frag);
+			
+		} else {
+		
 		switch (item.getItemId()) {
 		case R.id.takepic:
 			takeAPhoto();
-			currentView.getRootView().dispatchKeyEvent(new KeyEvent (KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_BACK));
+			//currentView.getRootView().dispatchKeyEvent(new KeyEvent (KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_BACK));
 			break;
 		case R.id.choosemedia:
 			chooseImage();
-			currentView.getRootView().dispatchKeyEvent(new KeyEvent (KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_BACK));
+			//currentView.getRootView().dispatchKeyEvent(new KeyEvent (KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_BACK));
 			break;
 		default:
-			currentView.getRootView().dispatchKeyEvent(new KeyEvent (KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_BACK));
+			//currentView.getRootView().dispatchKeyEvent(new KeyEvent (KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_BACK));
 			return super.onContextItemSelected(item);
 	}
+		}
 	return super.onContextItemSelected(item);
 		
 	}
@@ -363,8 +349,8 @@ public class StoryActivity extends AdventureActivity {
 	   	        // File imageFile = new File(imageFilePath);
 	   	        // imageFileUri = Uri.fromFile(imageFile);
 	   	        // imageFileUri = chosenImageUri;
-	   	     	//File testImage = new File(imageFilePath);
-	   	     	//chosenImageUri = Uri.fromFile(testImage);
+	   	     	//File imageView = new File(imageFilePath);
+	   	     	//chosenImageUri = Uri.fromFile(imageView);
 	   	     	
 	   	     
 	            try {
@@ -464,7 +450,18 @@ public class StoryActivity extends AdventureActivity {
 		AdventureApplication.getStoryController().addStory(newStory);
 		AdventureApplication.getActivityController().update();
     }
-
+    
+   protected void openLastFragement() {
+	   currentFragement = AdventureApplication.getStoryController().lastFragement();
+	   AdventureApplication.getStoryController().setCurrentFragement(currentFragement);
+	   AdventureApplication.getStoryController().popPreviousFragement();
+	   tileTextView.setText(currentFragement.getTitle());
+	   bodyTextView.setText(currentFragement.body());
+    }
+   
+	protected void saveTextForView(View v, String text) {
+		
+	}
     
     
 }// end class
