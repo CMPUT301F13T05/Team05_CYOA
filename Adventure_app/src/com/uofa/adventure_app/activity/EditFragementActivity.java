@@ -281,7 +281,8 @@ public class EditFragementActivity extends AdventureActivity {
 				currentFragement);
 		AdventureApplication.getStoryController().setCurrentFragement(
 				newFragement);
-
+		AdventureApplication.getStoryController().currentStory().addFragement(newFragement);
+		
 		EditText newTitle = (EditText) findViewById(R.id.newtitle);
 		newTitle.setText("");
 		EditText newBody = (EditText) findViewById(R.id.newbody);
@@ -336,4 +337,14 @@ public class EditFragementActivity extends AdventureActivity {
 		AdventureApplication.getActivityController().update();
 
 	}
+	
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+	    if (keyCode == KeyEvent.KEYCODE_BACK) {
+	        AdventureApplication.getStoryController().saveStories();
+	        return super.onKeyDown(keyCode, event);
+	    }
+	    return super.onKeyDown(keyCode, event);
+	}
+	
 }
