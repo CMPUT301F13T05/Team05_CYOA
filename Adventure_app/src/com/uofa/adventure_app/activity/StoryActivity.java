@@ -229,7 +229,6 @@ public class StoryActivity extends AdventureActivity {
 			int size = AdventureApplication.getStoryController().currentFragement().choices().size();
 			int  n = 0;
 			if (size > 1){
-				System.out.println("random: " + size);
 			    n = rand.nextInt(size);
 			}else
 				if(size == 1){
@@ -240,7 +239,6 @@ public class StoryActivity extends AdventureActivity {
 					toast.show();
 				}
 			if(size != 0){
-				System.out.println("n: " + n);
 				openFragement(AdventureApplication.getStoryController().currentFragement().choices().get(n).getChoice());
 			}
 		} else{
