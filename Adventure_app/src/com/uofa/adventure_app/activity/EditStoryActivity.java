@@ -163,5 +163,12 @@ public class EditStoryActivity extends AdventureActivity {
 		protected void saveTextForView(View v, String text) {
 			
 		}
+		@Override
+		public void onBackPressed() {
+			// TODO Auto-generated method stub
+			super.onBackPressed();
+			AdventureApplication.getStoryController().saveStories();
+			
+		}
 
 }

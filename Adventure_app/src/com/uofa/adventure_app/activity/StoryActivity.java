@@ -48,6 +48,7 @@ import android.view.View;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.uofa.adventure_app.R;
 import com.uofa.adventure_app.application.AdventureApplication;
@@ -229,8 +230,18 @@ public class StoryActivity extends AdventureActivity {
 			if (item.getGroupId() == 1){
 			Random rand = new Random();
 			int size = AdventureApplication.getStoryController().currentFragement().choices().size();
-			int  n = rand.nextInt(size - 1);
-			openFragement(AdventureApplication.getStoryController().currentFragement().choices().get(n).getChoice());
+			int  n;
+			if (size > 1)
+			   n = rand.nextInt(size - 1);
+			else
+				if(size != 0){
+					n = 0;
+					openFragement(AdventureApplication.getStoryController().currentFragement().choices().get(n).getChoice());
+				}else{
+					Toast toast = Toast.makeText(this, "This story doesn't have any fragments to choose from", Toast.LENGTH_SHORT);
+					toast.show();
+				}
+			
 			
 		} else{
 		

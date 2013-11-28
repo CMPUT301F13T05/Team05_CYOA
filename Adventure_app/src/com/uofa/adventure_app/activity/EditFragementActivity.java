@@ -235,6 +235,7 @@ public class EditFragementActivity extends AdventureActivity {
 					.get(item.getItemId()));
 			AdventureApplication.getStoryController().currentFragement()
 					.addChoice(choice);
+			AdventureApplication.getStoryController().saveStories();
 		} else {
 
 			switch (item.getItemId()) {
@@ -256,6 +257,7 @@ public class EditFragementActivity extends AdventureActivity {
 			case R.id.randomchoice:
 				AdventureApplication.getStoryController().currentFragement()
 						.setRandomFlag(true);
+				AdventureApplication.getStoryController().saveStories();
 
 				break;
 			default:
@@ -336,4 +338,14 @@ public class EditFragementActivity extends AdventureActivity {
 		AdventureApplication.getActivityController().update();
 
 	}
+
+	@Override
+	public void onBackPressed() {
+		// TODO Auto-generated method stub
+		super.onBackPressed();
+		AdventureApplication.getStoryController().saveStories();
+		
+	}
+	
+
 }
