@@ -283,6 +283,8 @@ public class EditFragementActivity extends AdventureActivity {
 				currentFragement);
 		AdventureApplication.getStoryController().setCurrentFragement(
 				newFragement);
+		if (!AdventureApplication.getStoryController().currentStory().getFragements().contains(currentFragement))
+			AdventureApplication.getStoryController().currentStory().addFragement(currentFragement);
 
 		EditText newTitle = (EditText) findViewById(R.id.newtitle);
 		newTitle.setText("");

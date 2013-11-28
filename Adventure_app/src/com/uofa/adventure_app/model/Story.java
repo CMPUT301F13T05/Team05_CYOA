@@ -23,10 +23,12 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.Map;
 import java.util.UUID;
 
-public class Story implements Serializable {
+import com.uofa.adventure_app.application.AdventureApplication;
+
+public class Story implements Serializable, Cloneable {
 
 	private String title;
 	private ArrayList<User> users; 
@@ -203,5 +205,31 @@ public class Story implements Serializable {
 		// fields
 		aOutputStream.defaultWriteObject();
 	}
+	
+	public Story localCopy() {
+		Story s = new Story();
+		s.setTitle(new String(this.title()));
+		s.setUsers(this.users());
+		s.addUser(AdventureApplication.user());
+		s.setIsLocal(true);
+		Fragement startFragement = this.startFragement().localCopy();
+		s.setStartFragement(startFragement);
+		
+		Map<String, String> uidMap;
+		
+		ArrayList<Fragement> copyFragements = new ArrayList<Fragement>();
+		for (Fragement f : this.getFragements()) 
+		{
+			if(!f.equals(startFragement)) {
+				copyFragements.add(f.localCopy());
+			}
+		}
+		
+		s.setFragements(copyFragements);
+		
+		return s;
+		
+	}
+	
 	
 }

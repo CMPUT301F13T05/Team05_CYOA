@@ -30,7 +30,7 @@ import com.uofa.adventure_app.interfaces.UniqueId;
 
 public class Fragement extends UniqueId implements Serializable  {
         
-        private SortedMap<Integer, Media> media; // Key will be a line number
+        private ArrayList<Media> media; // Key will be a line number
         private ArrayList<Annotation> annotations;
         private ArrayList<Choice> choices;
         private String body;
@@ -107,6 +107,11 @@ public class Fragement extends UniqueId implements Serializable  {
         	return this.choices;
         }
         
+        private void setChoices(ArrayList<Choice> c)
+        {	
+        	this.choices = c;
+        }
+        
         public void setRandomFlag(boolean flag)
         {
         	this.randomFlag = flag;
@@ -127,8 +132,12 @@ public class Fragement extends UniqueId implements Serializable  {
         	return this.title;
         }
 
-    	public SortedMap<Integer,Media> media() {
+    	public ArrayList<Media> media() {
     		return this.media;
+    	}
+    	
+    	public void setMedia(ArrayList<Media> media) {
+    		this.media = media;
     	}
     	
     	/**
@@ -137,12 +146,7 @@ public class Fragement extends UniqueId implements Serializable  {
     	 * @param media
     	 */
     	public void addMedia(Media media) {
-    		if(this.media.lastKey() != -1) {
-    			int index = this.media.lastKey();
-    			this.media.put(index, media);
-    		} else {
-    			this.media.put(0,media);
-    		}
+    		this.media().add(media);
     	}
     	@Override
     	public boolean equals(Object o) {
@@ -192,5 +196,21 @@ public class Fragement extends UniqueId implements Serializable  {
 			aOutputStream.defaultWriteObject();
 		}
         
+		public Fragement localCopy() {
+			Fragement f = new Fragement();
+			f.setBody(new String(this.body()));
+			f.setTitle(new String(this.getTitle()));
+			f.setRandomFlag(this.getRandomflag());
+			
+			ArrayList<Media> copyMedia = new ArrayList<Media>();
+			for (Media m : this.media()) 
+			{
+				copyMedia.add(m);
+			}
+			f.setMedia(copyMedia);
+			
+			return f;
+		}
+		
 
 }

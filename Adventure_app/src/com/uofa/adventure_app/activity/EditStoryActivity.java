@@ -35,7 +35,6 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.uofa.adventure_app.R;
 import com.uofa.adventure_app.application.AdventureApplication;
@@ -71,6 +70,8 @@ public class EditStoryActivity extends AdventureActivity {
 		    		v.showContextMenu();
 		        }
 		 });
+		titleEditText.addTextChangedListener(new GenericTextWatcher(titleEditText));
+
 	}
 
 	@Override
@@ -161,7 +162,17 @@ public class EditStoryActivity extends AdventureActivity {
 	    }
 	 
 		protected void saveTextForView(View v, String text) {
-			
+			switch (v.getId()) {
+			case R.id.titletext:
+				AdventureApplication.getStoryController().currentStory()
+						.setTitle(text);
+				break;
+			default:
+				break;
+			}
+
+			AdventureApplication.getActivityController().update();
+
 		}
 		@Override
 		public void onBackPressed() {

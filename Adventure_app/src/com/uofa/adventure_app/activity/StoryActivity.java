@@ -24,10 +24,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
-
 import java.util.Random;
-
-import java.util.SortedMap;
 import java.util.UUID;
 
 import android.content.Context;
@@ -40,7 +37,6 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -88,8 +84,9 @@ public class StoryActivity extends AdventureActivity {
 		
 		currentFragement = AdventureApplication.getStoryController().currentFragement();
 		bodyTextView.setText(currentFragement.body());
-		SortedMap<Integer,Media> media = currentFragement.media();
+		ArrayList<Media> media = currentFragement.media();
 		//imageView.setImageDrawable(Drawable.createFromPath(media.get(media.firstKey()).path()));
+
 
 		bodyTextView.setText(currentFragement.body());
 		authorTextView.setText("");
@@ -230,19 +227,22 @@ public class StoryActivity extends AdventureActivity {
 			if (item.getGroupId() == 1){
 			Random rand = new Random();
 			int size = AdventureApplication.getStoryController().currentFragement().choices().size();
-			int  n;
-			if (size > 1)
-			   n = rand.nextInt(size - 1);
-			else
-				if(size != 0){
+			int  n = 0;
+			if (size > 1){
+				System.out.println("random: " + size);
+			    n = rand.nextInt(size);
+			}else
+				if(size == 1){
 					n = 0;
 					openFragement(AdventureApplication.getStoryController().currentFragement().choices().get(n).getChoice());
 				}else{
 					Toast toast = Toast.makeText(this, "This story doesn't have any fragments to choose from", Toast.LENGTH_SHORT);
 					toast.show();
 				}
-			
-			
+			if(size != 0){
+				System.out.println("n: " + n);
+				openFragement(AdventureApplication.getStoryController().currentFragement().choices().get(n).getChoice());
+			}
 		} else{
 		
 		switch (item.getItemId()) {
