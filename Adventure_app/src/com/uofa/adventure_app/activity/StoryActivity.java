@@ -140,7 +140,7 @@ public class StoryActivity extends AdventureActivity {
 				counter++;
 			}
 			if (currentFragement.getRandomflag()){
-				menu.add(0, counter, 0, "Random Choice");
+				menu.add(1, counter, 0, "Random Choice");
 			}
 
 			MenuInflater inflater2 = getMenuInflater();
@@ -220,13 +220,13 @@ public class StoryActivity extends AdventureActivity {
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
 		
-		if(item.getGroupId() == 0 && item.getItemId() != R.id.cancel && !item.equals("Random Choice")) {
+		if(item.getGroupId() == 0 && item.getItemId() != R.id.cancel && item.getGroupId() != 1) {
 			// TODO: This needs to be refactored....
 			Fragement frag = AdventureApplication.getStoryController().currentFragement().choices().get(item.getItemId()).getChoice();
 			openFragement(frag);
 			
 		} else 
-			if (item.equals("Random Choice")){
+			if (item.getGroupId() == 1){
 			Random rand = new Random();
 			int size = AdventureApplication.getStoryController().currentFragement().choices().size();
 			int  n = rand.nextInt(size - 1);
