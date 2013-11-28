@@ -135,17 +135,14 @@ public class StoryActivity extends AdventureActivity {
 			menu.setHeaderIcon(android.R.drawable.ic_input_get);
 			menu.setHeaderTitle("Choices");
 			int counter = 0;
-
-			if (currentFragement.getRandomflag()){
-				menu.add(0, counter, 0, "Random Choice");
-			}
-
-
-
 			for(Choice f : currentFragement.choices()) {
 				menu.add(0, counter, 0, f.getChoice().getTitle());
 				counter++;
 			}
+			if (currentFragement.getRandomflag()){
+				menu.add(0, counter, 0, "Random Choice");
+			}
+
 			MenuInflater inflater2 = getMenuInflater();
 			inflater2.inflate(R.menu.choices, menu);
 			
@@ -197,7 +194,6 @@ public class StoryActivity extends AdventureActivity {
 				editStory();
 				break;
 			case R.id.annotatem:	
-				//currentView.getRootView().dispatchKeyEvent(new KeyEvent (KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_BACK));
 				openAnnotateContext(currentView);
 				//takeAPhoto();
 				break;
@@ -224,13 +220,13 @@ public class StoryActivity extends AdventureActivity {
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
 		
-		if(item.getGroupId() == 0 && item.getItemId() != R.id.cancel) {
+		if(item.getGroupId() == 0 && item.getItemId() != R.id.cancel && !item.equals("Random Choice")) {
 			// TODO: This needs to be refactored....
 			Fragement frag = AdventureApplication.getStoryController().currentFragement().choices().get(item.getItemId()).getChoice();
 			openFragement(frag);
 			
 		} else 
-		if (item.equals("Random Choice")){
+			if (item.equals("Random Choice")){
 			Random rand = new Random();
 			int size = AdventureApplication.getStoryController().currentFragement().choices().size();
 			int  n = rand.nextInt(size - 1);
@@ -241,14 +237,12 @@ public class StoryActivity extends AdventureActivity {
 		switch (item.getItemId()) {
 		case R.id.takepic:
 			takeAPhoto();
-			//currentView.getRootView().dispatchKeyEvent(new KeyEvent (KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_BACK));
 			break;
 		case R.id.choosemedia:
 			chooseImage();
-			//currentView.getRootView().dispatchKeyEvent(new KeyEvent (KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_BACK));
 			break;
 		default:
-			//currentView.getRootView().dispatchKeyEvent(new KeyEvent (KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_BACK));
+
 			return super.onContextItemSelected(item);
 	}
 		}

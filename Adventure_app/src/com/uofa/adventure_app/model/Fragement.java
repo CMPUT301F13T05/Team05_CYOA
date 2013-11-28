@@ -144,6 +144,22 @@ public class Fragement extends UniqueId implements Serializable  {
     			this.media.put(0,media);
     		}
     	}
+    	@Override
+    	public boolean equals(Object o) {
+    		// TODO Auto-generated method stub
+    		if(o.getClass().equals(this.getClass())) {
+    			Fragement frag = (Fragement) o;
+    			if (this.uid().equals(frag.uid()))
+    				return true;
+    			else
+    				return false;
+    		}
+    		
+    		if (this == o)
+    			return true;
+    		else
+    			return false;
+    	}
         
 		/* (non-Javadoc)
 		 * @see java.lang.Object#toString()

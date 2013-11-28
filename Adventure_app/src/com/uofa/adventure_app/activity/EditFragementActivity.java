@@ -53,6 +53,7 @@ public class EditFragementActivity extends AdventureActivity {
 	String user;
 	String body;
 	Story s;
+	Fragement currentFragement;
 	String s_id;
 	String old_frag;
 	private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
@@ -62,19 +63,23 @@ public class EditFragementActivity extends AdventureActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_edit_fragement);
-		Fragement currentFragement = AdventureApplication.getStoryController().currentFragement();
+		Fragement currentFragement = AdventureApplication.getStoryController()
+				.currentFragement();
 		currentView = this.findViewById(android.R.id.content);
 		EditText newauthor = (EditText) findViewById(R.id.newauthor);
-		newauthor.setText(getSharedPreferences("PREFERENCE", MODE_PRIVATE).getString("username", null));
+		// This is wrong.......
+		newauthor.setText(getSharedPreferences("PREFERENCE", MODE_PRIVATE)
+				.getString("username", null));
 		EditText newTitle = (EditText) findViewById(R.id.newtitle);
 		newTitle.setText(currentFragement.getTitle());
 		EditText newBody = (EditText) findViewById(R.id.newbody);
 		newBody.setText(currentFragement.body());
-		
+		currentFragement = AdventureApplication.getStoryController()
+				.currentFragement();
 		// Generic Watcher Title
 		newTitle.addTextChangedListener(new GenericTextWatcher(newTitle));
 		newBody.addTextChangedListener(new GenericTextWatcher(newBody));
-		
+
 	}
 
 	@Override
@@ -87,7 +92,9 @@ public class EditFragementActivity extends AdventureActivity {
 	// We want to create a context Menu when the user long click on an item
 	/**
 	 * Opens the menu of possible choices to add to the Fragment.
-	 * @param View v
+	 * 
+	 * @param View
+	 *            v
 	 */
 	public void openChoices(View v) {
 		choice = true;
@@ -95,11 +102,12 @@ public class EditFragementActivity extends AdventureActivity {
 		openContextMenu(v);
 
 	}
+
 	/**
 	 * Updates the view.
 	 */
 	public void updateView() {
-		
+
 	}
 
 	@Override
@@ -123,12 +131,13 @@ public class EditFragementActivity extends AdventureActivity {
 		}
 		return super.onOptionsItemSelected(item);
 	}
+
 	/**
-	 * Method that is called to open the context view to 
-	 * allow the user to open the camera or choose an existing
-	 * piece of media.
+	 * Method that is called to open the context view to allow the user to open
+	 * the camera or choose an existing piece of media.
 	 * 
-	 * @param View v
+	 * @param View
+	 *            v
 	 */
 	public void openMediaContext(View v) {
 		choice = false;
@@ -154,45 +163,55 @@ public class EditFragementActivity extends AdventureActivity {
 		} else {
 			menu.clearHeader();
 			menu.clear();
-			//menu.removeGroup(R.id.annotategroup);
+			// menu.removeGroup(R.id.annotategroup);
 			// Style our context menu
 			menu.setHeaderIcon(android.R.drawable.ic_input_get);
 			menu.setHeaderTitle("Add a Choice");
 			int counter = 0;
-			for(int j = 0; j<AdventureApplication.getStoryController().currentStory().getFragements().size(); j++) {
-				menu.add(0, counter, 0, "Add: " + AdventureApplication.getStoryController().currentStory().getFragements().get(j).getTitle());
+			for (int j = 0; j < AdventureApplication.getStoryController()
+					.currentStory().getFragements().size(); j++) {
+				if (!AdventureApplication.getStoryController().currentStory().getFragements().get(j).equals(AdventureApplication.getStoryController().currentFragement())) {
+					menu.add(0, counter, 0, "Add: "
+							+ AdventureApplication.getStoryController()
+									.currentStory().getFragements().get(j)
+									.getTitle());
+				}
 				counter++;
 			}
 			inflater.inflate(R.menu.createchoice, menu);
-			//choice = false;
+			// choice = false;
 		}
 	}
+
 	/**
 	 * Takes the photo with the camera
 	 */
 	public void takeAPhoto() {
 		Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-		String folder = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Adventure_App/Images";
+		String folder = Environment.getExternalStorageDirectory()
+				.getAbsolutePath() + "/Adventure_App/Images";
 		File folderF = new File(folder);
 		if (!folderF.exists()) {
 			folderF.mkdir();
 		}
 
-		String imageFilePath = folder + "/" + "Adventure_App" + String.valueOf(System.currentTimeMillis()) + "jpg";
+		String imageFilePath = folder + "/" + "Adventure_App"
+				+ String.valueOf(System.currentTimeMillis()) + "jpg";
 		File imageFile = new File(imageFilePath);
 		imageFileUri = Uri.fromFile(imageFile);
 
 		intent.putExtra(MediaStore.EXTRA_OUTPUT, imageFileUri);
 		startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
 	}
-	
+
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
 			// TextView tv = (TextView) findViewById(R.id.status);
 			if (resultCode == RESULT_OK) {
-				//System.out.println("Photo OK!");
+				// System.out.println("Photo OK!");
 				ImageView annotation = (ImageView) findViewById(R.id.annotation);
-				annotation.setImageDrawable(Drawable.createFromPath(imageFileUri.getPath()));
+				annotation.setImageDrawable(Drawable
+						.createFromPath(imageFileUri.getPath()));
 
 			} else if (resultCode == RESULT_CANCELED) {
 				System.out.println("Photo canceled");
@@ -201,99 +220,120 @@ public class EditFragementActivity extends AdventureActivity {
 			}
 		}
 	}
-	
+
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
-		if(item.getGroupId() == 0 && item.getItemId() != R.id.cancel && item.getItemId() != R.id.takepic && item.getItemId() != R.id.choosemedia && item.getItemId() != R.id.takepic && item.getItemId() != R.id.newchoice && item.getItemId() != R.id.randomchoice) {
+		if (item.getGroupId() == 0 && item.getItemId() != R.id.cancel
+				&& item.getItemId() != R.id.takepic
+				&& item.getItemId() != R.id.choosemedia
+				&& item.getItemId() != R.id.takepic
+				&& item.getItemId() != R.id.newchoice
+				&& item.getItemId() != R.id.randomchoice) {
 			// TODO: This needs to be refactored....
-			Choice choice = new Choice(AdventureApplication.getStoryController().currentStory().getFragements().get(item.getItemId()));
-			AdventureApplication.getStoryController().currentFragement().addChoice(choice);
-			
-		} else {	
-		
-		switch (item.getItemId()) {
+			Choice choice = new Choice(AdventureApplication
+					.getStoryController().currentStory().getFragements()
+					.get(item.getItemId()));
+			AdventureApplication.getStoryController().currentFragement()
+					.addChoice(choice);
+		} else {
+
+			switch (item.getItemId()) {
 			case R.id.takepic:
 				takeAPhoto();
-				currentView.getRootView().dispatchKeyEvent(new KeyEvent (KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_BACK));
+				currentView.getRootView().dispatchKeyEvent(
+						new KeyEvent(KeyEvent.ACTION_DOWN,
+								KeyEvent.KEYCODE_BACK));
 				break;
 			case R.id.choosemedia:
-				currentView.getRootView().dispatchKeyEvent(new KeyEvent (KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_BACK));
+				currentView.getRootView().dispatchKeyEvent(
+						new KeyEvent(KeyEvent.ACTION_DOWN,
+								KeyEvent.KEYCODE_BACK));
 				break;
 			case R.id.newchoice:
 				save();
 				newChoice();
 				break;
 			case R.id.randomchoice:
-				AdventureApplication.getStoryController().currentFragement().setRandomFlag(true);
+				AdventureApplication.getStoryController().currentFragement()
+						.setRandomFlag(true);
 
 				break;
 			default:
-				currentView.getRootView().dispatchKeyEvent(new KeyEvent (KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_BACK));
+				currentView.getRootView().dispatchKeyEvent(
+						new KeyEvent(KeyEvent.ACTION_DOWN,
+								KeyEvent.KEYCODE_BACK));
 				return super.onContextItemSelected(item);
-			
-		}
+
+			}
 		}
 		return super.onContextItemSelected(item);
 
 	}
 
 	private void newChoice() {
-		Fragement currentFragement = AdventureApplication.getStoryController().currentFragement();
+		Fragement currentFragement = AdventureApplication.getStoryController()
+				.currentFragement();
 		Fragement newFragement = new Fragement();
 		Choice newChoice = new Choice(newFragement);
-		AdventureApplication.getStoryController().currentFragement().addChoice(newChoice);
-		AdventureApplication.getStoryController().addPreviousFragement(currentFragement);
-		AdventureApplication.getStoryController().setCurrentFragement(newFragement);
-		
+		AdventureApplication.getStoryController().currentFragement()
+				.addChoice(newChoice);
+		AdventureApplication.getStoryController().addPreviousFragement(
+				currentFragement);
+		AdventureApplication.getStoryController().setCurrentFragement(
+				newFragement);
+
 		EditText newTitle = (EditText) findViewById(R.id.newtitle);
 		newTitle.setText("");
 		EditText newBody = (EditText) findViewById(R.id.newbody);
 		newBody.setText("");
 	}
-	
-	public void save(){
+
+	public void save() {
 		EditText newTitle = (EditText) findViewById(R.id.newtitle);
-		//EditText newAuthor = (EditText) findViewById(R.id.newauthor);
+		// EditText newAuthor = (EditText) findViewById(R.id.newauthor);
 		EditText newBody = (EditText) findViewById(R.id.newbody);
-		
+
 		// Update the current window fragement
-		// We should setup a text listner, and do this automatically, this is clunky.
-		Fragement currentFragement = AdventureApplication.getStoryController().currentFragement();
+		// We should setup a text listner, and do this automatically, this is
+		// clunky.
+		Fragement currentFragement = AdventureApplication.getStoryController()
+				.currentFragement();
 		currentFragement.setBody(newBody.getText().toString());
 		currentFragement.setTitle(newTitle.getText().toString());
-		
-		
+
 		AdventureApplication.getStoryController().saveStories();
-		
+
 	}
-	
-	   protected void openLastFragement() {
-		   Fragement currentFragement = AdventureApplication.getStoryController().lastFragement();
-		   AdventureApplication.getStoryController().setCurrentFragement(currentFragement);
-		   AdventureApplication.getStoryController().popPreviousFragement();
-		   EditText newTitle = (EditText) findViewById(R.id.newtitle);
-			//EditText newAuthor = (EditText) findViewById(R.id.newauthor);
-			EditText newBody = (EditText) findViewById(R.id.newbody);
-		   newTitle.setText(currentFragement.getTitle());
-		   newBody.setText(currentFragement.body());
-	    }
-	   
-		protected void saveTextForView(View v, String text) {
-			
-			switch(v.getId()) {
-				case R.id.newtitle: 
-					AdventureApplication.getStoryController().currentFragement().setTitle(text);
-					break;
-				case R.id.newbody:
-					AdventureApplication.getStoryController().currentFragement().setBody(text);
-					break;
-				default:
-					break;
-			}
-			
 
-			AdventureApplication.getActivityController().update();
-			
+	protected void openLastFragement() {
+		Fragement currentFragement = AdventureApplication.getStoryController()
+				.lastFragement();
+		AdventureApplication.getStoryController().setCurrentFragement(
+				currentFragement);
+		AdventureApplication.getStoryController().popPreviousFragement();
+		EditText newTitle = (EditText) findViewById(R.id.newtitle);
+		// EditText newAuthor = (EditText) findViewById(R.id.newauthor);
+		EditText newBody = (EditText) findViewById(R.id.newbody);
+		newTitle.setText(currentFragement.getTitle());
+		newBody.setText(currentFragement.body());
+	}
 
+	protected void saveTextForView(View v, String text) {
+
+		switch (v.getId()) {
+		case R.id.newtitle:
+			AdventureApplication.getStoryController().currentFragement()
+					.setTitle(text);
+			break;
+		case R.id.newbody:
+			AdventureApplication.getStoryController().currentFragement()
+					.setBody(text);
+			break;
+		default:
+			break;
 		}
+
+		AdventureApplication.getActivityController().update();
+
+	}
 }
