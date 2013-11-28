@@ -87,7 +87,7 @@ public class StoryActivity extends AdventureActivity {
 		
 		currentFragement = AdventureApplication.getStoryController().currentFragement();
 		bodyTextView.setText(currentFragement.body());
-		SortedMap<Integer,Media> media = currentFragement.media();
+		ArrayList<Media> media = currentFragement.media();
 		//imageView.setImageDrawable(Drawable.createFromPath(media.get(media.firstKey()).path()));
 
 		bodyTextView.setText(currentFragement.body());
