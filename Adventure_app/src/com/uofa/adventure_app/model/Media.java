@@ -76,6 +76,10 @@ public class Media extends UniqueId implements Serializable {
 		// fields
 		aOutputStream.defaultWriteObject();
 	}
+	
+	public Media localCopy() { 
+		return null;
+	}
 }
 	
 
