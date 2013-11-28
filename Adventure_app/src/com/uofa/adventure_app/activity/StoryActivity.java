@@ -447,6 +447,7 @@ public class StoryActivity extends AdventureActivity {
     	Story newStory = AdventureApplication.getStoryController().currentStory().localCopy();
 		AdventureApplication.getStoryController().addStory(newStory);
 		AdventureApplication.getActivityController().update();
+		AdventureApplication.getStoryController().saveStories();
     }
     
    protected void openLastFragement() {

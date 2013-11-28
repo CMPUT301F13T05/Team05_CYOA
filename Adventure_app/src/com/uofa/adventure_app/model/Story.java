@@ -214,6 +214,11 @@ public class Story implements Serializable, Cloneable {
 			s.addUser(user);
 		}
 		s.addUser(AdventureApplication.user());
+		
+		for(User user: s.users()) {
+		System.out.println(user.uid().toString());
+		}
+		//
 		s.setIsLocal(true);
 		Fragement startFragement = this.startFragement().localCopy();
 		s.setStartFragement(startFragement);
