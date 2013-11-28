@@ -30,18 +30,7 @@ public class Media extends UniqueId implements Serializable {
 	
 	private String path;
 	private MediaType mediaType;
-	/**
-	 * @return the path
-	 */
-	public String path() {
-		return path;
-	}
-	/**
-	 * @param path the path to set
-	 */
-	public void setPath(String path) {
-		this.path = path;
-	}
+	
 	/**
 	 * @return the mediaType
 	 */
@@ -78,7 +67,9 @@ public class Media extends UniqueId implements Serializable {
 	}
 	
 	public Media localCopy() { 
-		return null;
+		Media newMedia = new Media();
+		newMedia.setMediaType(this.mediaType());
+		return newMedia;
 	}
 }
 	

@@ -23,6 +23,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
@@ -209,22 +210,37 @@ public class Story implements Serializable, Cloneable {
 	public Story localCopy() {
 		Story s = new Story();
 		s.setTitle(new String(this.title()));
-		s.setUsers(this.users());
+		for (User user : this.users()) {
+			s.addUser(user);
+		}
 		s.addUser(AdventureApplication.user());
 		s.setIsLocal(true);
 		Fragement startFragement = this.startFragement().localCopy();
 		s.setStartFragement(startFragement);
 		
-		Map<String, String> uidMap;
+		Map<UUID, UUID> uidMap = new HashMap<UUID,UUID>();
+		uidMap.put(this.startFragement().uid(), startFragement.uid());
 		
 		ArrayList<Fragement> copyFragements = new ArrayList<Fragement>();
 		for (Fragement f : this.getFragements()) 
 		{
 			if(!f.equals(startFragement)) {
-				copyFragements.add(f.localCopy());
+				Fragement localCopy = f.localCopy();
+				uidMap.put(f.uid(), localCopy.uid());
+				copyFragements.add(localCopy);
 			}
 		}
 		
+		for (Fragement f : copyFragements) 
+			{
+			ArrayList<Choice> copyChoices = new ArrayList<Choice>();
+			for (Choice c : f.choices()) {
+					UUID oldUid = uidMap.get(c.getChoice().uid());
+					Fragement newFragementChoice = copyFragements.get(copyFragements.indexOf(new Fragement(oldUid)));
+					c.setChoice(newFragementChoice);
+				}
+				f.setChoices(copyChoices);
+			}
 		s.setFragements(copyFragements);
 		
 		return s;
