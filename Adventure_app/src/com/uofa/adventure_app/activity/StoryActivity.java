@@ -498,18 +498,7 @@ public class StoryActivity extends AdventureActivity {
 		
 	}
 
-    /**
-     * Decodes string into bitmap
-     * 
-     * @param bArray
-     *            encoded string.
-     * @return decoded bitmap.
-     */
-    public Bitmap decodeBase64(String bArray) {
-            byte[] decodedByte = Base64.decode(bArray, 0);
-            return BitmapFactory
-                            .decodeByteArray(decodedByte, 0, decodedByte.length);
-    }
+
     public void fillImageDisplay(){
     	ArrayList<Media> fragementImages = currentFragement.media();
         LinearLayout images = (LinearLayout) findViewById(R.id.image_layout);
@@ -518,7 +507,7 @@ public class StoryActivity extends AdventureActivity {
                 String convertedString = mediaImage.getMedia();
                 if (convertedString != null) {
                         ImageView image = new ImageView(StoryActivity.this);
-                        Bitmap bitmap = decodeBase64(convertedString);
+                        Bitmap bitmap = Media.decodeBase64(convertedString);
                         image.setImageBitmap(bitmap);
                         images.setGravity(Gravity.CENTER);
                         images.addView(image);

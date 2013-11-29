@@ -231,7 +231,8 @@ public class EditFragementActivity extends AdventureActivity {
                 try {
                     Bitmap bitmap = MediaStore.Images.Media.getBitmap(
                                     this.getContentResolver(), imageFileUri);
-                    String image = encodeToBase64(bitmap);
+                    Bitmap resizedBitmap = Media.resizeImage(bitmap);
+                    String image = Media.encodeToBase64(resizedBitmap);
                     AdventureApplication.getStoryController().currentFragement().addMedia(new Media(image));
                 } catch (FileNotFoundException e) {
                 	e.printStackTrace();
@@ -382,20 +383,7 @@ public class EditFragementActivity extends AdventureActivity {
 	    }
 	    return super.onKeyDown(keyCode, event);
 	}
-    /**
-     * Encodes bitmap into base64 string.
-     * 
-     * @param bm
-     *            bitmap to be encoded.
-     * @return encoded string.
-     */
-    public String encodeToBase64(Bitmap bm) {
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            bm.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-            byte[] bArray = baos.toByteArray();
-            String imageEncoded = Base64.encodeToString(bArray, Base64.DEFAULT);
-            return imageEncoded;
-    }
+
 
 
 }
