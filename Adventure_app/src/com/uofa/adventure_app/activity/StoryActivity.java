@@ -464,18 +464,9 @@ public class StoryActivity extends AdventureActivity {
 
     
     public void copy(){
-		Story newStory = new Story(UUID.randomUUID());
-		newStory.setIsLocal(true);
-		//LocalStorageController localStoryController = new LocalStorageController(this);
-		newStory.setTitle(currentStory.title());
-		for(int i = 0; i < currentStory.users().size(); i++)
-			newStory.addUser(currentStory.users().get(i));
-		for(int j = 0; j < currentStory.getFragements().size(); j++){
-			newStory.addFragement(currentStory.getFragements().get(j));
-			for(int w = 0; w<currentStory.getFragements().get(j).choices().size(); w++)
-				newStory.getFragements().get(j).addChoice(currentStory.getFragements().get(j).choices().get(w));
-			// TODO: get annotations for fragments & add them to newStory
-		}
+    	
+    	Story newStory = AdventureApplication.getStoryController().currentStory().localCopy();
+
 		AdventureApplication.getStoryController().addStory(newStory);
 		AdventureApplication.getActivityController().update();
     }

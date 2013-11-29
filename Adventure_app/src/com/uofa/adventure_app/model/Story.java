@@ -209,7 +209,7 @@ public class Story implements Serializable, Cloneable {
 	
 	public Story localCopy() {
 		Story s = new Story();
-		s.setTitle(new String(this.title()));
+		s.setTitle(new String("Copy of " + this.title()));
 		for (User user : this.users()) {
 			s.addUser(user);
 		}
@@ -220,11 +220,16 @@ public class Story implements Serializable, Cloneable {
 		//}
 		//
 		s.setIsLocal(true);
-		Fragement startFragement = this.startFragement().localCopy();
-		s.setStartFragement(startFragement);
-		
 		Map<UUID, UUID> uidMap = new HashMap<UUID,UUID>();
-		uidMap.put(this.startFragement().uid(), startFragement.uid());
+		
+		// Start Fragement should always be set!
+		if(this.startFragement() != null) {
+			Fragement startFragement = this.startFragement().localCopy();
+			s.setStartFragement(startFragement);
+			uidMap.put(this.startFragement().uid(), startFragement.uid());
+		} else {
+			return null;
+		}
 		
 		ArrayList<Fragement> copyFragements = new ArrayList<Fragement>();
 		for (Fragement f : this.getFragements()) 
