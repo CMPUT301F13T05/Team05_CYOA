@@ -15,35 +15,44 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 package com.uofa.adventure_app.model;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
+
 import com.uofa.adventure_app.enums.MediaType;
 import com.uofa.adventure_app.interfaces.UniqueId;
 
 public class Media extends UniqueId implements Serializable {
-	
-	private String path;
-	private MediaType mediaType;
-	
-	/**
-	 * @return the mediaType
-	 */
-	public MediaType mediaType() {
-		return mediaType;
+
+	private String image;
+
+	// private MediaType mediaType;
+
+	public Media( String image) {
+
+		this.image = image;
 	}
-	/**
-	 * @param mediaType the mediaType to set
-	 */
-	public void setMediaType(MediaType mediaType) {
-		this.mediaType = mediaType;
+	public Media(){
+		this.image = null;
 	}
-	
+
+	public void setMedia(String image) {
+		this.image = image;
+	}
+
+	public String getMedia() {
+		return this.image;
+	}
+
 	/**
 	 * Always treat de-serialization as a full-blown constructor, by validating
 	 * the final state of the de-serialized object.
@@ -65,12 +74,11 @@ public class Media extends UniqueId implements Serializable {
 		// fields
 		aOutputStream.defaultWriteObject();
 	}
-	
-	public Media localCopy() { 
+
+	public Media localCopy() {
 		Media newMedia = new Media();
-		newMedia.setMediaType(this.mediaType());
+		newMedia.setMedia(this.image);
 		return newMedia;
 	}
-}
-	
 
+}

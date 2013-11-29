@@ -18,15 +18,21 @@
  */
 package com.uofa.adventure_app.activity;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Base64;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.KeyEvent;
@@ -44,7 +50,9 @@ import com.uofa.adventure_app.application.AdventureApplication;
 import com.uofa.adventure_app.interfaces.AdventureActivity;
 import com.uofa.adventure_app.model.Choice;
 import com.uofa.adventure_app.model.Fragement;
+import com.uofa.adventure_app.model.Media;
 import com.uofa.adventure_app.model.Story;
+
 
 public class EditFragementActivity extends AdventureActivity {
 	View currentView;
@@ -195,20 +203,20 @@ public class EditFragementActivity extends AdventureActivity {
 	 * Takes the photo with the camera
 	 */
 	public void takeAPhoto() {
-		Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-		String folder = Environment.getExternalStorageDirectory()
-				.getAbsolutePath() + "/Adventure_App/";
-		File folderF = new File(folder);
-		if (!folderF.exists()) {
-			folderF.mkdir();
-		}
-
-		String imageFilePath = folder + "/" + "Adventure_App"
-				+ String.valueOf(System.currentTimeMillis()) + "jpg";
-		File imageFile = new File(imageFilePath);
-		imageFileUri = Uri.fromFile(imageFile);
-
-		intent.putExtra(MediaStore.EXTRA_OUTPUT, imageFileUri);
+		 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+	        
+	     String folder = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Adventure_App";
+	     File folderF = new File(folder);
+	     
+	     if (!folderF.exists()) {
+	            folderF.mkdir();
+	     }
+	        
+	     String imageFilePath = folder + "/" + "Adventure_App" + String.valueOf(System.currentTimeMillis()) + "jpg";
+	     File imageFile = new File(imageFilePath);
+	     imageFileUri = Uri.fromFile(imageFile);
+	       System.out.println(imageFileUri.toString());
+	     intent.putExtra(MediaStore.EXTRA_OUTPUT, imageFileUri);
 		startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
 	}
 
@@ -218,9 +226,18 @@ public class EditFragementActivity extends AdventureActivity {
 			if (resultCode == RESULT_OK) {
 				System.out.println("Photo OK!");
 				ImageView annotation = (ImageView) findViewById(R.id.annotation);
-				annotation.setImageDrawable(Drawable
-						.createFromPath(imageFileUri.getPath()));
-
+				//annotation.setImageDrawable(Drawable
+				//		.createFromPath(imageFileUri.getPath()));
+                try {
+                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(
+                                    this.getContentResolver(), imageFileUri);
+                    String image = encodeToBase64(bitmap);
+                    AdventureApplication.getStoryController().currentFragement().addMedia(new Media(image));
+                } catch (FileNotFoundException e) {
+                	e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
 			} else if (resultCode == RESULT_CANCELED) {
 				System.out.println("Photo canceled");
 			} else {
@@ -365,6 +382,20 @@ public class EditFragementActivity extends AdventureActivity {
 	    }
 	    return super.onKeyDown(keyCode, event);
 	}
-	
+    /**
+     * Encodes bitmap into base64 string.
+     * 
+     * @param bm
+     *            bitmap to be encoded.
+     * @return encoded string.
+     */
+    public String encodeToBase64(Bitmap bm) {
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            bm.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+            byte[] bArray = baos.toByteArray();
+            String imageEncoded = Base64.encodeToString(bArray, Base64.DEFAULT);
+            return imageEncoded;
+    }
+
 
 }

@@ -30,19 +30,24 @@ import java.util.UUID;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Base64;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -97,7 +102,8 @@ public class StoryActivity extends AdventureActivity {
 		AdventureApplication.getStoryController().replaceStory(currentStory);
 		AdventureApplication.getActivityController().update();
 			
-		currentView = this.findViewById(android.R.id.content);	
+		currentView = this.findViewById(android.R.id.content);
+		fillImageDisplay();
 	}
 
 	@Override
@@ -298,7 +304,7 @@ public class StoryActivity extends AdventureActivity {
 	 public void takeAPhoto() {
 		 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 	        
-	     String folder = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Adventure_App/Images";
+	     String folder = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Adventure_App";
 	     File folderF = new File(folder);
 	     
 	     if (!folderF.exists()) {
@@ -491,6 +497,34 @@ public class StoryActivity extends AdventureActivity {
 	protected void saveTextForView(View v, String text) {
 		
 	}
+
+    /**
+     * Decodes string into bitmap
+     * 
+     * @param bArray
+     *            encoded string.
+     * @return decoded bitmap.
+     */
+    public Bitmap decodeBase64(String bArray) {
+            byte[] decodedByte = Base64.decode(bArray, 0);
+            return BitmapFactory
+                            .decodeByteArray(decodedByte, 0, decodedByte.length);
+    }
+    public void fillImageDisplay(){
+    	ArrayList<Media> fragementImages = currentFragement.media();
+        LinearLayout images = (LinearLayout) findViewById(R.id.image_layout);
+        for (int i = 0; i < fragementImages.size(); i++) {
+                Media mediaImage = fragementImages.get(i);
+                String convertedString = mediaImage.getMedia();
+                if (convertedString != null) {
+                        ImageView image = new ImageView(StoryActivity.this);
+                        Bitmap bitmap = decodeBase64(convertedString);
+                        image.setImageBitmap(bitmap);
+                        images.setGravity(Gravity.CENTER);
+                        images.addView(image);
+                }
+        }
+    }
     
     
 }// end class
