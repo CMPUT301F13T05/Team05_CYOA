@@ -35,6 +35,7 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.uofa.adventure_app.R;
 import com.uofa.adventure_app.application.AdventureApplication;
@@ -88,6 +89,12 @@ public class EditStoryActivity extends AdventureActivity {
 		switch (item.getItemId()) {
 			case R.id.newfragment:
 				newFragment();
+				break;
+			case R.id.help:
+				String helpText = new String();
+				helpText="Touch New fragement to add an empty fragement to the story\n\n";
+				helpText=helpText+"Choose fragement you want to edit\n\n";
+				Toast.makeText(this, helpText, Toast.LENGTH_LONG).show();
 				break;
 			default:
 				return super.onOptionsItemSelected(item);

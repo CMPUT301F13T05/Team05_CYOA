@@ -37,6 +37,7 @@ import android.view.View;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.uofa.adventure_app.R;
 import com.uofa.adventure_app.application.AdventureApplication;
@@ -125,6 +126,13 @@ public class EditFragementActivity extends AdventureActivity {
 			break;
 		case R.id.save:
 			save();
+			break;
+		case R.id.help:
+			String helpText = new String();
+			helpText="Touch Add Media, to add images to the fragement\n\n";
+			helpText=helpText+"Touch save, to save the fragement\n\n";
+			helpText=helpText+"Touch Add choice to add a fragement as a choice\n\n";
+			Toast.makeText(this, helpText, Toast.LENGTH_LONG).show();
 			break;
 		default:
 			return super.onOptionsItemSelected(item);

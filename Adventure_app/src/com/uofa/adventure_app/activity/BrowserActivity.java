@@ -23,20 +23,17 @@ import java.util.UUID;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.ActionBarDrawerToggle;
-import android.support.v4.widget.DrawerLayout;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
-import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.uofa.adventure_app.R;
-import com.uofa.adventure_app.activity.StoryGridAdapter;
 import com.uofa.adventure_app.application.AdventureApplication;
 import com.uofa.adventure_app.controller.LocalStorageController;
 import com.uofa.adventure_app.controller.http.HttpObjectStory;
@@ -144,6 +141,14 @@ public class BrowserActivity extends AdventureActivity {
 			int size = AdventureApplication.getStoryController().stories().size();
 			int  n = rand.nextInt(size - 1);
 			viewStory(v, AdventureApplication.getStoryController().stories().get(n));
+			break;
+		case R.id.help:
+			String helpText = new String();
+			helpText="Search for a specific story using search bar\n\n";
+			helpText=helpText+"Choose story, to read the first fragement of the story\n\n";
+			helpText=helpText+"Touch New Story to create new story from scratch\n\n";
+			helpText=helpText+"Touch Refresh to refresh stories\n\n";
+			Toast.makeText(this, helpText, Toast.LENGTH_LONG).show();
 			break;
 		case R.id.logout:
 			getSharedPreferences("PREFERENCE", MODE_PRIVATE).edit().putBoolean("firstrun", true).commit();
