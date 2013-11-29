@@ -83,7 +83,11 @@ public class Fragement extends UniqueId implements Serializable  {
          */
         public void addChoice(Choice choice)
         {
+        	// Don't add duplicate choices.
+        	// Should be handled in ui but this is a double check
+        	if(!this.choices().contains(choice)) {
                 this.choices.add(choice);
+        	}
         }
 
         /**

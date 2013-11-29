@@ -18,8 +18,15 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 package com.uofa.adventure_app.controller.test;
 
-import com.uofa.adventure_app.activity.BrowserActivity;
+import java.util.ArrayList;
+
 import android.test.ActivityInstrumentationTestCase2;
+
+import com.uofa.adventure_app.activity.BrowserActivity;
+import com.uofa.adventure_app.controller.StoryParser;
+import com.uofa.adventure_app.controller.WebServiceController;
+import com.uofa.adventure_app.controller.http.HttpObjectStory;
+import com.uofa.adventure_app.model.Story;
 
 /**
  * @author Joel
@@ -29,6 +36,10 @@ public class WebServiceControllerTest extends
 		ActivityInstrumentationTestCase2<BrowserActivity>
 {
 	
+	HttpObjectStory httpStory = null;
+	WebServiceController webServiceController = new WebServiceController();
+	StoryParser parser = null;
+	
 	public WebServiceControllerTest()
 	{
 		super(BrowserActivity.class);
@@ -37,6 +48,26 @@ public class WebServiceControllerTest extends
 	protected void setUp() throws Exception
 	{
 		super.setUp();
+		httpStory = new HttpObjectStory();
+		parser = new StoryParser();
+	}
+	
+	/**
+	 * Tests all functions
+	 */
+	public void testPublishFetchAllDelete() {
+		Story s = new Story();
+		webServiceController.httpWithType(httpStory.publishObject(s));
+		String parseString = webServiceController.httpWithType(httpStory.fetchAll());
+		ArrayList<Story> stories = parser.parse(parseString);
+		assertNotNull(stories);
+		
+		assertFalse(stories.contains(s));
+		
+		// Delete Story after publish
+		webServiceController.httpWithType(httpStory.deleteObject(s.id().toString()));
+		
+		
 	}
 	
 } // class end

@@ -80,5 +80,20 @@ public class Choice implements Serializable {
 		aOutputStream.defaultWriteObject();
 	}
 	
-	
+	@Override
+	public boolean equals(Object o) {
+		// TODO Auto-generated method stub
+		if(o.getClass().equals(this.getClass())) {
+			Choice frag = (Choice) o;
+			if (this.getChoice().equals(frag.getChoice()))
+				return true;
+			else
+				return false;
+		}
+		
+		if (this == o)
+			return true;
+		else
+			return false;
+	}
 }
