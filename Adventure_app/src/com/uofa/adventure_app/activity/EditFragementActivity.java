@@ -187,10 +187,13 @@ public class EditFragementActivity extends AdventureActivity {
 			for (int j = 0; j < AdventureApplication.getStoryController()
 					.currentStory().getFragements().size(); j++) {
 				if (!AdventureApplication.getStoryController().currentStory().getFragements().get(j).equals(AdventureApplication.getStoryController().currentFragement())) {
+					Choice aChoice = new Choice(AdventureApplication.getStoryController().currentStory().getFragements().get(j));
+					if(!AdventureApplication.getStoryController().currentFragement().choices().contains(aChoice)) {
 					menu.add(0, counter, 0, "Add: "
 							+ AdventureApplication.getStoryController()
 									.currentStory().getFragements().get(j)
 									.getTitle());
+					}
 				}
 				counter++;
 			}
@@ -233,6 +236,7 @@ public class EditFragementActivity extends AdventureActivity {
                                     this.getContentResolver(), imageFileUri);
                     Bitmap resizedBitmap = Media.resizeImage(bitmap);
                     String image = Media.encodeToBase64(resizedBitmap);
+                    System.out.println(AdventureApplication.getStoryController().currentFragement().getTitle());
                     AdventureApplication.getStoryController().currentFragement().addMedia(new Media(image));
                 } catch (FileNotFoundException e) {
                 	e.printStackTrace();

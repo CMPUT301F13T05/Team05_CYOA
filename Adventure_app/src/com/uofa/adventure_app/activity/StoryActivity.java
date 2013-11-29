@@ -154,6 +154,7 @@ public class StoryActivity extends AdventureActivity {
 		AdventureApplication.getStoryController().addPreviousFragement(currentFragement);
 		AdventureApplication.getStoryController().setCurrentFragement(f);
 		currentFragement = f;
+		fillImageDisplay();
 	}
 	
 	public void openFragement(Fragement f) {
@@ -477,6 +478,7 @@ public class StoryActivity extends AdventureActivity {
 	   AdventureApplication.getStoryController().popPreviousFragement();
 	   tileTextView.setText(currentFragement.getTitle());
 	   bodyTextView.setText(currentFragement.body());
+	   fillImageDisplay();
     }
    
 	protected void saveTextForView(View v, String text) {
@@ -486,7 +488,6 @@ public class StoryActivity extends AdventureActivity {
 
     public void fillImageDisplay(){
     	ArrayList<Media> fragementImages = currentFragement.media();
-
 //        LinearLayout images = (LinearLayout) findViewById(R.id.image_layout);
 //        for (int i = 0; i < fragementImages.size(); i++) {
 //                Media mediaImage = fragementImages.get(i);
@@ -501,6 +502,7 @@ public class StoryActivity extends AdventureActivity {
 //                }
 //        }
     	LinearLayout listView = (LinearLayout) findViewById(R.id.imageItemView);
+    	listView.removeAllViews();
     	 for (int i = 0; i < fragementImages.size(); i++) {
              Media mediaImage = fragementImages.get(i);
              String convertedString = mediaImage.getMedia();
