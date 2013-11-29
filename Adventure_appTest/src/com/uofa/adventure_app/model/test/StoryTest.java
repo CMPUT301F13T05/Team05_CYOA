@@ -1,11 +1,13 @@
 package com.uofa.adventure_app.model.test;
 
 import java.util.ArrayList;
-
-import com.uofa.adventure_app.model.Story;
-import com.uofa.adventure_app.model.User;
+import java.util.UUID;
 
 import junit.framework.TestCase;
+
+import com.uofa.adventure_app.model.Fragement;
+import com.uofa.adventure_app.model.Story;
+import com.uofa.adventure_app.model.User;
 
 public class StoryTest extends TestCase {
 
@@ -17,6 +19,82 @@ public class StoryTest extends TestCase {
 	{
 		
 	}
+	
+	public void testStoryTitle() {
+		Story s = new Story();
+		s.setTitle("Title");
+		assertEquals(s.title(),"Title");
+	}
+	
+	public void testStorySetUsers() {
+		Story s = new Story();
+		ArrayList<User> users = new ArrayList<User>();
+		users.add(new User("Name"));
+		users.add(new User("Name2"));
+		users.add(new User("Nam3"));
+		
+		s.setUsers(users);
+		assertEquals(s.users(),users);
+	}
+	
+	public void testStoryAddUser() {
+		Story s = new Story();
+		User u = new User("Username");
+		s.addUser(u);
+		assertTrue(s.users().contains(u));
+	}
+	
+	public void testStorySetFragement() {
+		Story story = new Story();
+		ArrayList<Fragement> fragements = new ArrayList<Fragement>();
+		fragements.add(new Fragement());
+		fragements.add(new Fragement());
+		fragements.add(new Fragement());
+		fragements.add(new Fragement());
+		
+		story.setFragements(fragements);
+		assertEquals(story.getFragements(),fragements);
+	}
+	
+	public void testAddFragement() {
+		Story s = new Story();
+		Fragement f = new Fragement();
+		s.addFragement(f);
+		assertTrue(s.getFragements().contains(f));
+	}
+	
+	public void testIsLocal() {
+		Story s = new Story();
+		s.setIsLocal(true);
+		assertTrue(s.isLocal());
+	}
+	
+	public void testSetId() {
+		Story s = new Story();
+		UUID newId = UUID.randomUUID();
+		s.setId(newId);
+		assertEquals(s.id(),newId);
+	}
+	
+	public void testSetStartFragement() {
+		Story s = new Story();
+		Fragement f = new Fragement();
+		s.addFragement(f);
+		s.setStartFragement(f);
+		assertEquals(s.startFragement(),f);
+	}
+	
+	public void testLocalCopy() {
+		Story s = new Story();
+		s.addUser(new User());
+		Fragement f = new Fragement();
+		f.setTitle("title");
+		s.addFragement(f);
+		s.setStartFragement(f);
+		Story copy = s.localCopy();
+		assertNotSame(copy,s);
+	}
+	
 	public void testStory()
 	{
 		Story testStory = new Story();
