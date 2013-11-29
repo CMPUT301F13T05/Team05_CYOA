@@ -31,7 +31,7 @@ public class StoryParser implements Parser<Story> {
 
 	public ArrayList<Story> parseStory(String parseString) {
 		
-		System.out.println("This one: " + parseString);
+		//System.out.println("This one: " + parseString);
 		ArrayList<Story> stories = new ArrayList<Story>();
 		if (parseString != null) {
 			Gson gson = new Gson();
