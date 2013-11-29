@@ -52,7 +52,6 @@ import android.widget.Toast;
 
 import com.uofa.adventure_app.R;
 import com.uofa.adventure_app.application.AdventureApplication;
-import com.uofa.adventure_app.controller.LocalStorageController;
 import com.uofa.adventure_app.controller.http.HttpObjectStory;
 import com.uofa.adventure_app.interfaces.AdventureActivity;
 import com.uofa.adventure_app.model.Choice;
@@ -71,7 +70,6 @@ public class StoryActivity extends AdventureActivity {
 	Uri chosenImageUri;
 	Story currentStory;
 	Fragement currentFragement = null;
-	LocalStorageController localStorageController = null;
 	private static final int PICK_IMAGE = 1111; 
 	
 	@Override
@@ -349,7 +347,7 @@ public class StoryActivity extends AdventureActivity {
 	                assert(currentFragement.uid().toString() != null);
 	                
 	                // currentStory.startFragement().uid().toString() // another option that should technically get the same thing in this one case
-	                localStorageController.insertImage( imageId, imageFileUri.getPath().toString(), 0, currentFragement.uid().toString());
+	                //localStorageController.insertImage( imageId, imageFileUri.getPath().toString(), 0, currentFragement.uid().toString());
 	                
 	               // localStorageController.getImage(currentFragement.uid().toString());
 	                
@@ -395,12 +393,10 @@ public class StoryActivity extends AdventureActivity {
 				}
 	            
 	            String imageId = UUID.randomUUID().toString();
-	            localStorageController.insertImage( imageId, imageFilePath, 0, currentFragement.uid().toString());
+	           // localStorageController.insertImage( imageId, imageFilePath, 0, currentFragement.uid().toString());
                 
 	        }
 	    }
-	    
-
 	    
 	    /**
 	     * updates the view
