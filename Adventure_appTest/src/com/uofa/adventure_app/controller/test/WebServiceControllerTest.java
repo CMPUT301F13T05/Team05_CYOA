@@ -67,6 +67,7 @@ public class WebServiceControllerTest extends
 		// Delete Story after publish
 		webServiceController.httpWithType(httpStory.deleteObject(s.id().toString()));
 		
+		
 	}
 	
 } // class end
