@@ -48,6 +48,7 @@ import android.view.View;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -91,7 +92,6 @@ public class StoryActivity extends AdventureActivity {
 		bodyTextView.setText(currentFragement.body());
 		ArrayList<Media> media = currentFragement.media();
 		//imageView.setImageDrawable(Drawable.createFromPath(media.get(media.firstKey()).path()));
-
 
 		bodyTextView.setText(currentFragement.body());
 		authorTextView.setText("");
@@ -501,18 +501,11 @@ public class StoryActivity extends AdventureActivity {
 
     public void fillImageDisplay(){
     	ArrayList<Media> fragementImages = currentFragement.media();
-        LinearLayout images = (LinearLayout) findViewById(R.id.image_layout);
-        for (int i = 0; i < fragementImages.size(); i++) {
-                Media mediaImage = fragementImages.get(i);
-                String convertedString = mediaImage.getMedia();
-                if (convertedString != null) {
-                        ImageView image = new ImageView(StoryActivity.this);
-                        Bitmap bitmap = Media.decodeBase64(convertedString);
-                        image.setImageBitmap(bitmap);
-                        images.setGravity(Gravity.CENTER);
-                        images.addView(image);
-                }
-        }
+    	ListView listView = (ListView) findViewById(R.id.imageListView);
+
+    	System.out.println("Add Adapter");
+    	MediaAdapter adapter = new MediaAdapter(this, R.id.imageListView, fragementImages);
+    	listView.setAdapter(adapter);
     }
     
     
