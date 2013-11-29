@@ -46,6 +46,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView.AdapterContextMenuInfo;
+import android.widget.Gallery;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -83,7 +84,7 @@ public class StoryActivity extends AdventureActivity {
 		tileTextView = (TextView) findViewById(R.id.titleview);
 		authorTextView = (TextView) findViewById(R.id.authorview);
 		bodyTextView = (TextView) findViewById(R.id.storyview);
-		imageView = (ImageView) findViewById(R.id.annotation); // YOU ARE HERE -- JOEL
+		//imageView = (ImageView) findViewById(R.id.annotation); // YOU ARE HERE -- JOEL
 
 		currentStory = AdventureApplication.getStoryController().currentStory();
 		
@@ -511,6 +512,7 @@ public class StoryActivity extends AdventureActivity {
                         image.setImageBitmap(bitmap);
                         images.setGravity(Gravity.CENTER);
                         images.addView(image);
+                        image.setImageBitmap(bitmap);
                 }
         }
     }
