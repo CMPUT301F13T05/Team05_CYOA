@@ -31,13 +31,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.util.Base64;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Gravity;
@@ -48,7 +46,6 @@ import android.view.View;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -501,11 +498,20 @@ public class StoryActivity extends AdventureActivity {
 
     public void fillImageDisplay(){
     	ArrayList<Media> fragementImages = currentFragement.media();
-    	ListView listView = (ListView) findViewById(R.id.imageListView);
+    	LinearLayout listView = (LinearLayout) findViewById(R.id.imageItemView);
+    	 for (int i = 0; i < fragementImages.size(); i++) {
+             Media mediaImage = fragementImages.get(i);
+             String convertedString = mediaImage.getMedia();
+             if (convertedString != null) {
+                     ImageView image = new ImageView(StoryActivity.this);
+                     Bitmap bitmap = Media.decodeBase64(convertedString);
+                     image.setImageBitmap(bitmap);
+                     image.setPadding(0, 15, 0, 15);
+                     listView.addView(image);
+             }
+     }
+    	 listView.setGravity(Gravity.CENTER);
 
-    	System.out.println("Add Adapter");
-    	MediaAdapter adapter = new MediaAdapter(this, R.id.imageListView, fragementImages);
-    	listView.setAdapter(adapter);
     }
     
     
