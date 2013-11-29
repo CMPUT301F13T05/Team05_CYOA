@@ -35,7 +35,6 @@ import android.widget.Toast;
 
 import com.uofa.adventure_app.R;
 import com.uofa.adventure_app.application.AdventureApplication;
-import com.uofa.adventure_app.controller.LocalStorageController;
 import com.uofa.adventure_app.controller.http.HttpObjectStory;
 import com.uofa.adventure_app.interfaces.AdventureActivity;
 import com.uofa.adventure_app.model.Fragement;
@@ -46,7 +45,6 @@ public class BrowserActivity extends AdventureActivity {
 
 	private StoryGridAdapter storyGridAdapter;
 	ArrayList<String> List;
-	LocalStorageController localStorageController;
 	View v;
 	TextView search;
 	String searchQuery = "";

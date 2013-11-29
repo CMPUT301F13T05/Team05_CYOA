@@ -51,6 +51,12 @@
         <requestFocus />
     </EditText>
 
-
+    <Gallery
+        android:id="@+id/gallery1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/bchoice"
+        android:layout_alignLeft="@+id/newauthor"
+        android:layout_marginBottom="74dp" />
 
 </RelativeLayout>

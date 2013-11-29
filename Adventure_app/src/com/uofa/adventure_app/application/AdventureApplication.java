@@ -23,7 +23,6 @@ import android.app.Application;
 import android.content.Context;
 
 import com.uofa.adventure_app.controller.ActivityController;
-import com.uofa.adventure_app.controller.LocalStorageController;
 import com.uofa.adventure_app.controller.StoryController;
 import com.uofa.adventure_app.controller.WebServiceController;
 import com.uofa.adventure_app.model.User;
@@ -32,8 +31,6 @@ public class AdventureApplication extends Application {
 	
 	transient private static StoryController storyController;
 	transient private static WebServiceController webServiceController;
-
-	transient private static LocalStorageController localStorageController;
 
 	transient private static ActivityController activityController;
 	
@@ -71,14 +68,6 @@ public class AdventureApplication extends Application {
 			webServiceController = new WebServiceController();
 		}
 		return webServiceController;	
-	}
-	
-
-	public  LocalStorageController getLocalStorageController(){
-		if(localStorageController == null) {
-			localStorageController = new LocalStorageController(this);
-		}
-		return localStorageController;	
 	}
 
 	public static ActivityController getActivityController() {

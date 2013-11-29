@@ -44,6 +44,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView.AdapterContextMenuInfo;
+import android.widget.Gallery;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -51,7 +52,6 @@ import android.widget.Toast;
 
 import com.uofa.adventure_app.R;
 import com.uofa.adventure_app.application.AdventureApplication;
-import com.uofa.adventure_app.controller.LocalStorageController;
 import com.uofa.adventure_app.controller.http.HttpObjectStory;
 import com.uofa.adventure_app.interfaces.AdventureActivity;
 import com.uofa.adventure_app.model.Choice;
@@ -70,7 +70,6 @@ public class StoryActivity extends AdventureActivity {
 	Uri chosenImageUri;
 	Story currentStory;
 	Fragement currentFragement = null;
-	LocalStorageController localStorageController = null;
 	private static final int PICK_IMAGE = 1111; 
 	
 	@Override
@@ -81,7 +80,7 @@ public class StoryActivity extends AdventureActivity {
 		tileTextView = (TextView) findViewById(R.id.titleview);
 		authorTextView = (TextView) findViewById(R.id.authorview);
 		bodyTextView = (TextView) findViewById(R.id.storyview);
-		imageView = (ImageView) findViewById(R.id.annotation); // YOU ARE HERE -- JOEL
+		//imageView = (ImageView) findViewById(R.id.annotation); // YOU ARE HERE -- JOEL
 
 		currentStory = AdventureApplication.getStoryController().currentStory();
 		
@@ -351,7 +350,7 @@ public class StoryActivity extends AdventureActivity {
 	                assert(currentFragement.uid().toString() != null);
 	                
 	                // currentStory.startFragement().uid().toString() // another option that should technically get the same thing in this one case
-	                localStorageController.insertImage( imageId, imageFileUri.getPath().toString(), 0, currentFragement.uid().toString());
+	                //localStorageController.insertImage( imageId, imageFileUri.getPath().toString(), 0, currentFragement.uid().toString());
 	                
 	               // localStorageController.getImage(currentFragement.uid().toString());
 	                
@@ -397,12 +396,10 @@ public class StoryActivity extends AdventureActivity {
 				}
 	            
 	            String imageId = UUID.randomUUID().toString();
-	            localStorageController.insertImage( imageId, imageFilePath, 0, currentFragement.uid().toString());
+	           // localStorageController.insertImage( imageId, imageFilePath, 0, currentFragement.uid().toString());
                 
 	        }
 	    }
-	    
-
 	    
 	    /**
 	     * updates the view
@@ -501,6 +498,20 @@ public class StoryActivity extends AdventureActivity {
 
     public void fillImageDisplay(){
     	ArrayList<Media> fragementImages = currentFragement.media();
+
+//        LinearLayout images = (LinearLayout) findViewById(R.id.image_layout);
+//        for (int i = 0; i < fragementImages.size(); i++) {
+//                Media mediaImage = fragementImages.get(i);
+//                String convertedString = mediaImage.getMedia();
+//                if (convertedString != null) {
+//                        ImageView image = new ImageView(StoryActivity.this);
+//                        Bitmap bitmap = Media.decodeBase64(convertedString);
+//                        image.setImageBitmap(bitmap);
+//                        images.setGravity(Gravity.CENTER);
+//                        images.addView(image);
+//                        image.setImageBitmap(bitmap);
+//                }
+//        }
     	LinearLayout listView = (LinearLayout) findViewById(R.id.imageItemView);
     	 for (int i = 0; i < fragementImages.size(); i++) {
              Media mediaImage = fragementImages.get(i);
