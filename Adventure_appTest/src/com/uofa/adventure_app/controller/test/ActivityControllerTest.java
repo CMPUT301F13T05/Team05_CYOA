@@ -18,9 +18,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 package com.uofa.adventure_app.controller.test;
 
-import com.uofa.adventure_app.activity.BrowserActivity;
+import java.util.ArrayList;
 
 import android.test.ActivityInstrumentationTestCase2;
+
+import com.uofa.adventure_app.activity.BrowserActivity;
+import com.uofa.adventure_app.controller.ActivityController;
+import com.uofa.adventure_app.model.Fragement;
+import com.uofa.adventure_app.model.Story;
 
 /**
  * @author Joel
@@ -32,6 +37,8 @@ import android.test.ActivityInstrumentationTestCase2;
 public class ActivityControllerTest extends
 		ActivityInstrumentationTestCase2<BrowserActivity> {
 
+	private ActivityController testActivityController;
+	
 	/**
 	 * @param name
 	 */
@@ -44,7 +51,24 @@ public class ActivityControllerTest extends
 	 */
 	protected void setUp() throws Exception {
 		super.setUp();
+		testActivityController = new ActivityController();
 		
+	}
+	
+	/**
+	 * Should not crash
+	 */
+	public void testAddActivity() {
+		testActivityController.addActivity(this.getActivity());
+		testActivityController.update();
+	}
+	
+	/**
+	 * Add activity and remove it should work, no real way to test...
+	 */
+	public void testRemoveActivtiy() {
+		testActivityController.addActivity(this.getActivity());
+		testActivityController.removeActivitiy(this.getActivity());
 	}
 
 }
