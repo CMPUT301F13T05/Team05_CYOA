@@ -194,8 +194,11 @@ public class StoryActivity extends AdventureActivity {
 			case R.id.editstory:
 				editStory();
 				break;
-			case R.id.annotatem:	
-				openAnnotateContext(currentView);
+			case R.id.annotatem:
+				Intent myIntent = new Intent(this, AnnotateActivity.class);
+				this.startActivity(myIntent);
+				finish();
+				//openAnnotateContext(currentView);
 				//takeAPhoto();
 				break;
 			case R.id.editfragment:

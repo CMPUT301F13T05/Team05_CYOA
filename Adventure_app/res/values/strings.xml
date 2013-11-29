@@ -8,6 +8,9 @@
     <string name="title_activity_edit_story">Edit Story</string>
     <string name="title_activity_edit_fragement">Edit Fragment</string>
     <string name="title_activity_first_run_only">Username</string>
-
+    <string name="title_activity_annotate">AnnotateActivity</string>
+    <string name="name">ListViewBaseAdapter</string>
+    <string name="image">Thumbnail</string>
+    <string name="hello_world">Hello world!</string>
 
 </resources>
