@@ -24,10 +24,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
-
 import java.util.Random;
-
-import java.util.SortedMap;
 import java.util.UUID;
 
 import android.content.Context;
@@ -40,7 +37,6 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -90,6 +86,7 @@ public class StoryActivity extends AdventureActivity {
 		bodyTextView.setText(currentFragement.body());
 		ArrayList<Media> media = currentFragement.media();
 		//imageView.setImageDrawable(Drawable.createFromPath(media.get(media.firstKey()).path()));
+
 
 		bodyTextView.setText(currentFragement.body());
 		authorTextView.setText("");
@@ -241,9 +238,20 @@ public class StoryActivity extends AdventureActivity {
 			if (item.getGroupId() == 1){
 			Random rand = new Random();
 			int size = AdventureApplication.getStoryController().currentFragement().choices().size();
-			int  n = rand.nextInt(size - 1);
-			openFragement(AdventureApplication.getStoryController().currentFragement().choices().get(n).getChoice());
-			
+			int  n = 0;
+			if (size > 1){
+			    n = rand.nextInt(size);
+			}else
+				if(size == 1){
+					n = 0;
+					openFragement(AdventureApplication.getStoryController().currentFragement().choices().get(n).getChoice());
+				}else{
+					Toast toast = Toast.makeText(this, "This story doesn't have any fragments to choose from", Toast.LENGTH_SHORT);
+					toast.show();
+				}
+			if(size != 0){
+				openFragement(AdventureApplication.getStoryController().currentFragement().choices().get(n).getChoice());
+			}
 		} else{
 		
 		switch (item.getItemId()) {
@@ -456,10 +464,20 @@ public class StoryActivity extends AdventureActivity {
 
     
     public void copy(){
-    	Story newStory = AdventureApplication.getStoryController().currentStory().localCopy();
+		Story newStory = new Story(UUID.randomUUID());
+		newStory.setIsLocal(true);
+		//LocalStorageController localStoryController = new LocalStorageController(this);
+		newStory.setTitle(currentStory.title());
+		for(int i = 0; i < currentStory.users().size(); i++)
+			newStory.addUser(currentStory.users().get(i));
+		for(int j = 0; j < currentStory.getFragements().size(); j++){
+			newStory.addFragement(currentStory.getFragements().get(j));
+			for(int w = 0; w<currentStory.getFragements().get(j).choices().size(); w++)
+				newStory.getFragements().get(j).addChoice(currentStory.getFragements().get(j).choices().get(w));
+			// TODO: get annotations for fragments & add them to newStory
+		}
 		AdventureApplication.getStoryController().addStory(newStory);
 		AdventureApplication.getActivityController().update();
-		AdventureApplication.getStoryController().saveStories();
     }
     
    protected void openLastFragement() {

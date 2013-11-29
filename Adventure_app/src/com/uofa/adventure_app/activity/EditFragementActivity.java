@@ -197,7 +197,7 @@ public class EditFragementActivity extends AdventureActivity {
 	public void takeAPhoto() {
 		Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 		String folder = Environment.getExternalStorageDirectory()
-				.getAbsolutePath() + "/Adventure_App/Images";
+				.getAbsolutePath() + "/Adventure_App/";
 		File folderF = new File(folder);
 		if (!folderF.exists()) {
 			folderF.mkdir();
@@ -216,7 +216,7 @@ public class EditFragementActivity extends AdventureActivity {
 		if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
 			// TextView tv = (TextView) findViewById(R.id.status);
 			if (resultCode == RESULT_OK) {
-				// System.out.println("Photo OK!");
+				System.out.println("Photo OK!");
 				ImageView annotation = (ImageView) findViewById(R.id.annotation);
 				annotation.setImageDrawable(Drawable
 						.createFromPath(imageFileUri.getPath()));
@@ -243,6 +243,7 @@ public class EditFragementActivity extends AdventureActivity {
 					.get(item.getItemId()));
 			AdventureApplication.getStoryController().currentFragement()
 					.addChoice(choice);
+			AdventureApplication.getStoryController().saveStories();
 		} else {
 
 			switch (item.getItemId()) {
@@ -264,6 +265,7 @@ public class EditFragementActivity extends AdventureActivity {
 			case R.id.randomchoice:
 				AdventureApplication.getStoryController().currentFragement()
 						.setRandomFlag(true);
+				AdventureApplication.getStoryController().saveStories();
 
 				break;
 			default:
@@ -289,8 +291,8 @@ public class EditFragementActivity extends AdventureActivity {
 				currentFragement);
 		AdventureApplication.getStoryController().setCurrentFragement(
 				newFragement);
-		AdventureApplication.getStoryController().currentStory().addFragement(newFragement);
-		
+		if (!AdventureApplication.getStoryController().currentStory().getFragements().contains(currentFragement))
+			AdventureApplication.getStoryController().currentStory().addFragement(currentFragement);
 		EditText newTitle = (EditText) findViewById(R.id.newtitle);
 		newTitle.setText("");
 		EditText newBody = (EditText) findViewById(R.id.newbody);
@@ -345,6 +347,15 @@ public class EditFragementActivity extends AdventureActivity {
 		AdventureApplication.getActivityController().update();
 
 	}
+
+
+	@Override
+	public void onBackPressed() {
+		// TODO Auto-generated method stub
+		super.onBackPressed();
+		AdventureApplication.getStoryController().saveStories();
+		
+	}
 	
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -355,4 +366,5 @@ public class EditFragementActivity extends AdventureActivity {
 	    return super.onKeyDown(keyCode, event);
 	}
 	
+
 }

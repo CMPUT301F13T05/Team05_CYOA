@@ -181,6 +181,13 @@ public class EditStoryActivity extends AdventureActivity {
 			AdventureApplication.getActivityController().update();
 
 		}
+		@Override
+		public void onBackPressed() {
+			// TODO Auto-generated method stub
+			super.onBackPressed();
+			AdventureApplication.getStoryController().saveStories();
+			
+		}
 
 		
 		
