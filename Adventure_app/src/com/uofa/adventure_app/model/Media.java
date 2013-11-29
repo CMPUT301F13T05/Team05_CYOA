@@ -34,7 +34,7 @@ import com.uofa.adventure_app.interfaces.UniqueId;
 public class Media extends UniqueId implements Serializable {
 
 	private String image;
-
+    private static final int IMAGE_MAX = 250;
 	// private MediaType mediaType;
 
 	public Media( String image) {
@@ -52,7 +52,28 @@ public class Media extends UniqueId implements Serializable {
 	public String getMedia() {
 		return this.image;
 	}
+    /**
+     * Rescales an image to set the height to match the max image height.
+     * 
+     * @param bitmap
+     *            bitmap to be rescaled.
+     * @return rescaled bitmap.
+     */
+    public static Bitmap resizeImage(Bitmap bitmap) {
+            float width = bitmap.getWidth();
+            float height = bitmap.getHeight();
+            float scale = 1;
 
+            scale = IMAGE_MAX / height;
+
+            float newWidth = width * scale;
+            float newHeight = height * scale;
+            int newWidthInt = (int) newWidth;
+            int newHeightInt = (int) newHeight;
+            Bitmap resizedBitmap = Bitmap.createScaledBitmap(bitmap, newWidthInt,
+                            newHeightInt, false);
+            return resizedBitmap;
+    }
 	/**
 	 * Always treat de-serialization as a full-blown constructor, by validating
 	 * the final state of the de-serialized object.
@@ -80,5 +101,31 @@ public class Media extends UniqueId implements Serializable {
 		newMedia.setMedia(this.image);
 		return newMedia;
 	}
+    /**
+     * Encodes bitmap into base64 string.
+     * 
+     * @param bm
+     *            bitmap to be encoded.
+     * @return encoded string.
+     */
+    public static  String encodeToBase64(Bitmap bm) {
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            bm.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+            byte[] bArray = baos.toByteArray();
+            String imageEncoded = Base64.encodeToString(bArray, Base64.DEFAULT);
+            return imageEncoded;
+    }
+    /**
+     * Decodes string into bitmap
+     * 
+     * @param bArray
+     *            encoded string.
+     * @return decoded bitmap.
+     */
+    public static Bitmap decodeBase64(String bArray) {
+            byte[] decodedByte = Base64.decode(bArray, 0);
+            return BitmapFactory
+                            .decodeByteArray(decodedByte, 0, decodedByte.length);
+    }
 
 }
