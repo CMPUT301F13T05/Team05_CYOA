@@ -3,7 +3,6 @@ package com.uofa.adventure_app.activity;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
@@ -13,9 +12,11 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.uofa.adventure_app.R;
+import com.uofa.adventure_app.interfaces.AdventureActivity;
+import com.uofa.adventure_app.model.Story;
 
 
-public class AnnotateActivity extends Activity implements
+public class AnnotateActivity extends AdventureActivity implements
        OnItemClickListener {
 
    public static final String[] titles = new String[] { "Strawberry",
@@ -60,4 +61,28 @@ public class AnnotateActivity extends Activity implements
        toast.setGravity(Gravity.BOTTOM|Gravity.CENTER_HORIZONTAL, 0, 0);
        toast.show();
    }
+
+@Override
+public void dataReturn(ArrayList<Story> result, String method) {
+	// TODO Auto-generated method stub
+	
+}
+
+@Override
+public void updateView() {
+	// TODO Auto-generated method stub
+	
+}
+
+@Override
+protected void openLastFragement() {
+	// TODO Auto-generated method stub
+	
+}
+
+@Override
+protected void saveTextForView(View v, String text) {
+	// TODO Auto-generated method stub
+	
+}
 }

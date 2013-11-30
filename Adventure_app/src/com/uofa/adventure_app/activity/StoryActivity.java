@@ -197,9 +197,6 @@ public class StoryActivity extends AdventureActivity {
 			case R.id.annotatem:
 				Intent myIntent = new Intent(this, AnnotateActivity.class);
 				this.startActivity(myIntent);
-				finish();
-				//openAnnotateContext(currentView);
-				//takeAPhoto();
 				break;
 			case R.id.editfragment:
 				editFragment();
@@ -214,15 +211,7 @@ public class StoryActivity extends AdventureActivity {
 				publish();
 				break;
 			case R.id.help:
-				String helpText = new String();
-				helpText="Touch Annotate, to add an annotation to the fragement\n\n";
-				helpText=helpText+"Touch Edit Story, to open the screen with the list of the fragements allowing the user to edit the story\n\n";
-				helpText=helpText+"Touch Edit Fragement, to edit the fragement\n\n";
-				helpText=helpText+"Touch Publish, to publish your work\n\n";
-				helpText=helpText+"Touch Create Copy of Story, to get the duplicate of the story\n\n";
-				helpText=helpText+"Touch Quit Story, to go to the main screen\n\n";
-				helpText=helpText+"Touch Choices, to see the list of the choices available for the fragement\n\n";
-				Toast.makeText(this, helpText, Toast.LENGTH_LONG).show();
+				helpToast();
 				break;
 			default:
 				return super.onOptionsItemSelected(item);
@@ -231,6 +220,18 @@ public class StoryActivity extends AdventureActivity {
 		return super.onOptionsItemSelected(item);
 	}
 	
+
+	public void helpToast() {
+		String helpText = new String();
+		helpText="Touch Annotate, to add an annotation to the fragement\n\n";
+		helpText=helpText+"Touch Edit Story, to open the screen with the list of the fragements allowing the user to edit the story\n\n";
+		helpText=helpText+"Touch Edit Fragement, to edit the fragement\n\n";
+		helpText=helpText+"Touch Publish, to publish your work\n\n";
+		helpText=helpText+"Touch Create Copy of Story, to get the duplicate of the story\n\n";
+		helpText=helpText+"Touch Quit Story, to go to the main screen\n\n";
+		helpText=helpText+"Touch Choices, to see the list of the choices available for the fragement\n\n";
+		Toast.makeText(this, helpText, Toast.LENGTH_LONG).show();
+	}
 	
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
@@ -406,7 +407,9 @@ public class StoryActivity extends AdventureActivity {
 	     * updates the view
 	     */
 	public void updateView(){
-		//AdventureApplication.getStoryController();
+		   tileTextView.setText(currentFragement.getTitle());
+		   bodyTextView.setText(currentFragement.body());
+		   fillImageDisplay();
 	}
 
 	@Override

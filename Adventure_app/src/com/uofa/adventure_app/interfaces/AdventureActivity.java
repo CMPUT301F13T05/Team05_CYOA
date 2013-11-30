@@ -133,7 +133,7 @@ public abstract class AdventureActivity extends Activity implements DataReturn<S
         	
         	Fragement prevFrag = AdventureApplication.getStoryController().lastFragement();
              if(prevFrag != null) {
-            	 //ystem.out.println("Button Clicked");
+            	 //System.out.println("Button Clicked");
             	 openLastFragement();
             	 
             	 return true;
