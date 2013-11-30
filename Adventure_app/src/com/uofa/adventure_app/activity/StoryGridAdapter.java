@@ -37,7 +37,13 @@ import com.uofa.adventure_app.interfaces.DataReturn;
 import com.uofa.adventure_app.interfaces.PerformHttp;
 import com.uofa.adventure_app.model.Story;
 import com.uofa.adventure_app.model.User;
-
+/**
+ * Adapter for the Browse view Story list.
+ * Displays all of the Stories in an organized and good
+ * looking manner.
+ * @author Kevin Lafond
+ *
+ */
 public class StoryGridAdapter extends BaseAdapter {
 
 	private ArrayList<Story> stories;
@@ -54,7 +60,11 @@ public class StoryGridAdapter extends BaseAdapter {
 		this.storiesClone.addAll(stories);
 		this.query = "";
 	}
-
+	/**
+	 * filters the stories being displayed based on the string passed
+	 * into the method
+	 * @param String query
+	 */
 	public void filter(String query) {
 		if (query != null) {
 			this.query = query;
@@ -117,11 +127,16 @@ public class StoryGridAdapter extends BaseAdapter {
 
 				title.setText(story.title());
 
-			String authors = new String();
-			// TODO: Format this better!
-			for (User u : story.users()) {
-				authors += "By: " + u.getName();
-			}
+				String authors = "Author: " + story.users().get(0).toString();
+				if (story.users().size() > 1){
+					authors += "\nEdited by: ";
+				}
+				for(int i = 1; i<story.users().size(); i++){
+					authors +=  story.users().get(i);
+					if (i != story.users().size()-1 ){
+						authors  += ", ";
+					}
+				}
 			sub.setText(authors);
 		}
 

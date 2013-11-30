@@ -58,7 +58,12 @@ import com.uofa.adventure_app.model.Choice;
 import com.uofa.adventure_app.model.Fragement;
 import com.uofa.adventure_app.model.Media;
 import com.uofa.adventure_app.model.Story;
-
+/**
+ * Displays the Fragements in the story so that the user can read them.  
+ * It allows the user to go to the next fragement of the users choosing
+ * @author Kevin Lafond
+ *
+ */
 public class StoryActivity extends AdventureActivity {
 	TextView tileTextView;
 	TextView authorTextView;
@@ -80,7 +85,7 @@ public class StoryActivity extends AdventureActivity {
 		tileTextView = (TextView) findViewById(R.id.titleview);
 		authorTextView = (TextView) findViewById(R.id.authorview);
 		bodyTextView = (TextView) findViewById(R.id.storyview);
-		//imageView = (ImageView) findViewById(R.id.annotation); // YOU ARE HERE -- JOEL
+		
 
 		currentStory = AdventureApplication.getStoryController().currentStory();
 		
@@ -90,7 +95,17 @@ public class StoryActivity extends AdventureActivity {
 		//imageView.setImageDrawable(Drawable.createFromPath(media.get(media.firstKey()).path()));
 
 		bodyTextView.setText(currentFragement.body());
-		authorTextView.setText("");
+		String authors = "Author: " + currentStory.users().get(0).toString();
+		if (currentStory.users().size() > 1){
+			authors += "\nEdited by: ";
+		}
+		for(int i = 1; i<currentStory.users().size(); i++){
+			authors +=  currentStory.users().get(i);
+			if (i != currentStory.users().size()-1 ){
+				authors  += ", ";
+			}
+		}
+		authorTextView.setText(authors);
 		tileTextView.setText(currentFragement.getTitle());
 
 		currentStory.setIsLocal(true);
@@ -149,14 +164,20 @@ public class StoryActivity extends AdventureActivity {
 		}
 		
 	}
-	
+	/**
+	 * sets the current fragement to the new one.
+	 * @param Fragement f
+	 */
 	private void adjustCurrentFragement(Fragement f) {
 		AdventureApplication.getStoryController().addPreviousFragement(currentFragement);
 		AdventureApplication.getStoryController().setCurrentFragement(f);
 		currentFragement = f;
 		fillImageDisplay();
 	}
-	
+	/**
+	 * Displays a Fragement 
+	 * @param Fragement f
+	 */
 	public void openFragement(Fragement f) {
 		adjustCurrentFragement(f);
 		tileTextView.setText(currentFragement.getTitle());
@@ -220,7 +241,9 @@ public class StoryActivity extends AdventureActivity {
 		return super.onOptionsItemSelected(item);
 	}
 	
-
+	/**
+	 * Displays the help toast for the user to be able to read
+	 */
 	public void helpToast() {
 		String helpText = new String();
 		helpText="Touch Annotate, to add an annotation to the fragement\n\n";
@@ -459,7 +482,9 @@ public class StoryActivity extends AdventureActivity {
     		}
     	}
     }
-    
+    /**
+     * publishes the current story being read to the server.
+     */
     public void publish(){
     	if (currentStory.isLocal()){
     		currentStory.setIsLocal(false);
@@ -469,7 +494,9 @@ public class StoryActivity extends AdventureActivity {
     	}
     }
 
-    
+    /**
+     * creates a local mirror of a story.
+     */
     public void copy(){
     	
     	Story newStory = AdventureApplication.getStoryController().currentStory().localCopy();
@@ -491,22 +518,12 @@ public class StoryActivity extends AdventureActivity {
 		
 	}
 
-
+	/**
+	 * fills the liear layout with the images for the current fragement.
+	 */
     public void fillImageDisplay(){
     	ArrayList<Media> fragementImages = currentFragement.media();
-//        LinearLayout images = (LinearLayout) findViewById(R.id.image_layout);
-//        for (int i = 0; i < fragementImages.size(); i++) {
-//                Media mediaImage = fragementImages.get(i);
-//                String convertedString = mediaImage.getMedia();
-//                if (convertedString != null) {
-//                        ImageView image = new ImageView(StoryActivity.this);
-//                        Bitmap bitmap = Media.decodeBase64(convertedString);
-//                        image.setImageBitmap(bitmap);
-//                        images.setGravity(Gravity.CENTER);
-//                        images.addView(image);
-//                        image.setImageBitmap(bitmap);
-//                }
-//        }
+
     	LinearLayout listView = (LinearLayout) findViewById(R.id.imageItemView);
     	listView.removeAllViews();
     	 for (int i = 0; i < fragementImages.size(); i++) {

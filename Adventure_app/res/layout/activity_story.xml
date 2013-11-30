@@ -24,7 +24,7 @@
             android:layout_alignParentTop="true"
             android:gravity="center"
             android:text="Title"
-            android:textSize="35dp" />
+            android:textSize="25dp" />
 
         <TextView
             android:id="@+id/authorview"
@@ -33,7 +33,9 @@
             android:layout_below="@+id/titleview"
             android:gravity="center"
             android:text="Author"
-            android:textSize="25dp" />
+            android:textSize="16dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp" />
 
         <TextView
             android:id="@+id/storyview"
@@ -53,22 +55,25 @@
         <LinearLayout
             android:id="@+id/imageItemView"
             android:layout_width="match_parent"
-            android:layout_height="fill_parent"
-            android:layout_weight="718.06"
-            android:orientation="vertical"
-            android:paddingTop="15dp"
+            android:layout_height="wrap_content"
             android:layout_below="@id/authorview"
-             >
+            android:layout_weight="100"
+            android:orientation="vertical"
+            android:paddingTop="15dp" >
             
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/LinearLayout01"
             android:layout_width="match_parent"
-            android:layout_height="fill_parent"
+            android:layout_height="match_parent"
             android:layout_weight="718.06"
+            android:focusable="false"
+            android:gravity="bottom"
             android:orientation="vertical"
-            android:paddingTop="15dp" >
+            android:paddingTop="15dp" 
+            android:paddingBottom="25dp"
+            >
 
             <Button
                 android:id="@+id/choicesbutton"

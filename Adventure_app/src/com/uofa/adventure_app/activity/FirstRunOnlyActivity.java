@@ -31,7 +31,13 @@ import android.app.Activity;
 import android.view.Menu;
 import android.view.View;
 import android.widget.EditText;
-
+import android.widget.TextView;
+/**
+ * This activity is only ran if the user logs out of the applciation or on first run after install 
+ * to allow us to have a user for the applciation.
+ * @author Kevin Lafond
+ *
+ */
 public class FirstRunOnlyActivity extends Activity {
 
 	@Override
@@ -58,11 +64,15 @@ public class FirstRunOnlyActivity extends Activity {
 	 */
 	public void okClicked(View v){
 		EditText usern = (EditText) findViewById(R.id.usern);
+		TextView error = (TextView) findViewById(R.id.textView2);
 		String username = getSharedPreferences("PREFERENCE", MODE_PRIVATE).getString("username", null);
 		username = usern.getText().toString();
 		if (username.equals("")){
-			usern.setText("Please Enter your name here!");
-		}else{
+			error.setText("Please Enter your name here!");
+		}else 
+			if (username.length() > 15){
+				error.setText("The user name you entered is too long");
+			}else {
 			getSharedPreferences("PREFERENCE", MODE_PRIVATE)
 			.edit()
 			.putString("username", username)

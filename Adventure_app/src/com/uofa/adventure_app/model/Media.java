@@ -18,6 +18,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package com.uofa.adventure_app.model;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -34,7 +35,7 @@ import com.uofa.adventure_app.interfaces.UniqueId;
 public class Media extends UniqueId implements Serializable {
 
 	private String image;
-    private static final int IMAGE_MAX = 200;
+    private static final int IMAGE_MAX = 2000;
 	// private MediaType mediaType;
 
 	public Media( String image) {
@@ -60,7 +61,8 @@ public class Media extends UniqueId implements Serializable {
      * @return rescaled bitmap.
      */
     public static Bitmap resizeImage(Bitmap bitmap) {
-            float width = bitmap.getWidth();
+           
+    		float width = bitmap.getWidth();
             float height = bitmap.getHeight();
             float scale = 1;
 
@@ -72,6 +74,7 @@ public class Media extends UniqueId implements Serializable {
             int newHeightInt = (int) newHeight;
             Bitmap resizedBitmap = Bitmap.createScaledBitmap(bitmap, newWidthInt,
                             newHeightInt, false);
+
             return resizedBitmap;
     }
 	/**
@@ -110,7 +113,7 @@ public class Media extends UniqueId implements Serializable {
      */
     public static  String encodeToBase64(Bitmap bm) {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            bm.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+            bm.compress(Bitmap.CompressFormat.JPEG, 75, baos);
             byte[] bArray = baos.toByteArray();
             String imageEncoded = Base64.encodeToString(bArray, Base64.DEFAULT);
             return imageEncoded;

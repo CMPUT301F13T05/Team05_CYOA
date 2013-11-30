@@ -1,3 +1,21 @@
+/*
+	Adventure App - Allows you to create an Adventure Book, or Download
+ 	books from other authors.
+    Copyright (C) Fall 2013 Team 5 CMPUT 301 University of Alberta
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package com.uofa.adventure_app.activity;
 
 import java.util.ArrayList;
@@ -24,7 +42,15 @@ import com.uofa.adventure_app.application.AdventureApplication;
 import com.uofa.adventure_app.interfaces.AdventureActivity;
 import com.uofa.adventure_app.model.Annotation;
 import com.uofa.adventure_app.model.Story;
-
+/**
+ * This class takes in user input and processes it when the user
+ * is in the Annotate/Comment screen.  It interacts with the Annotation
+ * class in the model. It also calls a camera and the internal storage
+ * to allow the user to add pictures to their comment/annotation  
+ * 
+ * @author Ulvi Ibrahimov, Chris Pavlicek
+ *
+ */
 
 public class AnnotateActivity extends AdventureActivity implements
        OnItemClickListener {

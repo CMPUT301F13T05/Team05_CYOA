@@ -23,6 +23,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.UUID;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -43,6 +44,7 @@ import android.view.View;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.uofa.adventure_app.R;
@@ -52,7 +54,14 @@ import com.uofa.adventure_app.model.Choice;
 import com.uofa.adventure_app.model.Fragement;
 import com.uofa.adventure_app.model.Media;
 import com.uofa.adventure_app.model.Story;
-
+/**
+ * This class deals with users editing fragements.  It interacts with the majority of
+ * the model and allows the user to access the camera and the existing photo library in
+ * order to allow the user to add images to fragements.
+ * 
+ * @author Kevin Lafond
+ *
+ */
 
 public class EditFragementActivity extends AdventureActivity {
 	View currentView;
@@ -61,11 +70,14 @@ public class EditFragementActivity extends AdventureActivity {
 	String title;
 	String user;
 	String body;
+	Uri chosenImageUri;
 	Story s;
+	Story currentStory;
 	Fragement currentFragement;
 	String s_id;
 	String old_frag;
 	private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
+	private static final int PICK_IMAGE = 1111; 
 	boolean choice = false;
 
 	@Override
@@ -74,11 +86,25 @@ public class EditFragementActivity extends AdventureActivity {
 		setContentView(R.layout.activity_edit_fragement);
 		Fragement currentFragement = AdventureApplication.getStoryController()
 				.currentFragement();
+		Story currentStory = AdventureApplication.getStoryController()
+		.currentStory();
 		currentView = this.findViewById(android.R.id.content);
-		EditText newauthor = (EditText) findViewById(R.id.newauthor);
+		TextView newauthor = (TextView) findViewById(R.id.newauthor);
 		// This is wrong.......
-		newauthor.setText(getSharedPreferences("PREFERENCE", MODE_PRIVATE)
-				.getString("username", null));
+		
+		if (!currentStory.users().contains(AdventureApplication.user()))
+			currentStory.addUser(AdventureApplication.user());
+		String authors = "Author: " + currentStory.users().get(0).toString();
+		if (currentStory.users().size() > 1){
+			authors += "\nEdited by: ";
+		}
+		for(int i = 1; i<currentStory.users().size(); i++){
+			authors +=  currentStory.users().get(i);
+			if (i != currentStory.users().size()-1 ){
+				authors  += ", ";
+			}
+		}
+		newauthor.setText(authors);
 		EditText newTitle = (EditText) findViewById(R.id.newtitle);
 		newTitle.setText(currentFragement.getTitle());
 		EditText newBody = (EditText) findViewById(R.id.newbody);
@@ -102,8 +128,7 @@ public class EditFragementActivity extends AdventureActivity {
 	/**
 	 * Opens the menu of possible choices to add to the Fragment.
 	 * 
-	 * @param View
-	 *            v
+	 * @param View v
 	 */
 	public void openChoices(View v) {
 		choice = true;
@@ -152,8 +177,7 @@ public class EditFragementActivity extends AdventureActivity {
 	 * Method that is called to open the context view to allow the user to open
 	 * the camera or choose an existing piece of media.
 	 * 
-	 * @param View
-	 *            v
+	 * @param View v
 	 */
 	public void openMediaContext(View v) {
 		choice = false;
@@ -175,7 +199,7 @@ public class EditFragementActivity extends AdventureActivity {
 		MenuInflater inflater = getMenuInflater();
 		if (choice == false) {
 			// Open Menu
-			inflater.inflate(R.menu.annotatemenu, menu);
+			inflater.inflate(R.menu.addphoto, menu);
 		} else {
 			menu.clearHeader();
 			menu.clear();
@@ -249,6 +273,42 @@ public class EditFragementActivity extends AdventureActivity {
 				System.out.println("Not sure what happened!" + resultCode);
 			}
 		}
+		 // handles selecting an image from app of users choice (usually gallery).
+        if ((requestCode == PICK_IMAGE) && (resultCode == RESULT_OK) && (data != null))
+        {
+            chosenImageUri = data.getData();
+           // chosenImageUri
+            ImageView annotation = (ImageView) findViewById(R.id.annotation);
+          
+            String path = chosenImageUri.getPath();
+            
+            
+            String folder = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Adventure_App/";
+            File folderF = new File(folder);
+   	     
+            if (!folderF.exists()) {
+   	            folderF.mkdir();
+            }
+   	        
+   	     	String imageFilePath = folder + "/" + "Adventure_App" + String.valueOf(System.currentTimeMillis()) + "jpg";
+
+   	     	
+   	     
+            try {
+            // copyfile from gallery location to our app!
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(
+                        this.getContentResolver(), chosenImageUri);
+                Bitmap resizedBitmap = Media.resizeImage(bitmap);
+                String image = Media.encodeToBase64(resizedBitmap);
+                AdventureApplication.getStoryController().currentFragement().addMedia(new Media(image));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+            
+            String imageId = UUID.randomUUID().toString();
+           // localStorageController.insertImage( imageId, imageFilePath, 0, currentFragement.uid().toString());
+            
+        }
 	}
 
 	@Override
@@ -276,9 +336,7 @@ public class EditFragementActivity extends AdventureActivity {
 								KeyEvent.KEYCODE_BACK));
 				break;
 			case R.id.choosemedia:
-				currentView.getRootView().dispatchKeyEvent(
-						new KeyEvent(KeyEvent.ACTION_DOWN,
-								KeyEvent.KEYCODE_BACK));
+				chooseImage();
 				break;
 			case R.id.newchoice:
 				save();
@@ -301,7 +359,9 @@ public class EditFragementActivity extends AdventureActivity {
 		return super.onContextItemSelected(item);
 
 	}
-
+    /**
+     * creates a new fragement and adds it to the current fragment as a choice.
+     */
 	private void newChoice() {
 		Fragement currentFragement = AdventureApplication.getStoryController()
 				.currentFragement();
@@ -320,7 +380,9 @@ public class EditFragementActivity extends AdventureActivity {
 		EditText newBody = (EditText) findViewById(R.id.newbody);
 		newBody.setText("");
 	}
-
+	/**
+	 * Saves the users current work done.
+	 */
 	public void save() {
 		EditText newTitle = (EditText) findViewById(R.id.newtitle);
 		// EditText newAuthor = (EditText) findViewById(R.id.newauthor);
@@ -337,7 +399,9 @@ public class EditFragementActivity extends AdventureActivity {
 		AdventureApplication.getStoryController().saveStories();
 
 	}
-
+	/**
+	 * opens the last fragement visited.
+	 */
 	protected void openLastFragement() {
 		Fragement currentFragement = AdventureApplication.getStoryController()
 				.lastFragement();
@@ -387,6 +451,17 @@ public class EditFragementActivity extends AdventureActivity {
 	    }
 	    return super.onKeyDown(keyCode, event);
 	}
+	/**
+	 * called when the user chooses an existing photo and adds it to the fragement
+	 * passes the chosen fragement to the onActivityResult method.
+	 */
+	  public void chooseImage()
+	    {
+	    	Intent pickImage = new Intent();
+	    	pickImage.setType("image/*");
+	    	pickImage.setAction(Intent.ACTION_GET_CONTENT);
+	    	startActivityForResult(Intent.createChooser(pickImage, "Select Picture"), PICK_IMAGE);
+	    }
 
 
 

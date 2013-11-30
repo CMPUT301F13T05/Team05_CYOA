@@ -29,34 +29,22 @@
         android:ems="10"
         android:text="" />
 
-    <EditText
+    <TextView
         android:id="@+id/newauthor"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/newtitle"
-        android:layout_below="@+id/newtitle"
-        android:ems="10"
-        android:text="User name" />
+        android:layout_below="@id/newtitle"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:text="TextView" />
 
     <EditText
         android:id="@+id/newbody"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/okbutton"
-        android:layout_below="@+id/newauthor"
-        android:layout_marginTop="27dp"
-        android:ems="10"
-        android:text="" >
-
-        <requestFocus />
-    </EditText>
-
-    <Gallery
-        android:id="@+id/gallery1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/bchoice"
         android:layout_alignLeft="@+id/newauthor"
-        android:layout_marginBottom="74dp" />
+        android:layout_below="@+id/newauthor"
+        android:layout_marginTop="24dp"
+        android:ems="10" />
 
 </RelativeLayout>

@@ -42,21 +42,39 @@ import com.uofa.adventure_app.application.AdventureApplication;
 import com.uofa.adventure_app.interfaces.AdventureActivity;
 import com.uofa.adventure_app.model.Fragement;
 import com.uofa.adventure_app.model.Story;
-
+/**
+ * Allows the user to edit the title of a story and to see all of the fragements 
+ * available for that story.
+ * 
+ * @author Kevin Lafond
+ *
+ */
 public class EditStoryActivity extends AdventureActivity {
 	private ArrayAdapter<Fragement> adapter;
 	ListView list;
+	Story currentStory;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_edit_story);
 		list = (ListView) findViewById(R.id.fragments);
-		
+		currentStory = AdventureApplication.getStoryController().currentStory();
 		EditText titleEditText = (EditText) findViewById(R.id.titletext);
 		titleEditText.setText(AdventureApplication.getStoryController().currentStory().title());
-		
+		if (!currentStory.users().contains(AdventureApplication.user()))
+			currentStory.addUser(AdventureApplication.user());
+		String authors = "Author: " + currentStory.users().get(0).toString();
+		if (currentStory.users().size() > 1){
+			authors += "\nEdited by: ";
+		}
+		for(int i = 1; i<currentStory.users().size(); i++){
+			authors +=  currentStory.users().get(i);
+			if (i != currentStory.users().size()-1 ){
+				authors  += ", ";
+			}
+		}
 		TextView authorView = (TextView) findViewById(R.id.authortext);
-		authorView.setText(AdventureApplication.getStoryController().currentStory().users().toString());
+		authorView.setText(authors);
 		
 		adapter = new ArrayAdapter<Fragement>(this,
 				R.layout.list_item, AdventureApplication.getStoryController().currentStory().getFragements());
@@ -134,16 +152,24 @@ public class EditStoryActivity extends AdventureActivity {
 	}
 	
 
-	
+	/**
+	 * opens the context menu for the user to choose whether or not they want to edit that 
+	 * fragement
+	 * @param View v
+	 */
 	public void openContext(View v) {
 		registerForContextMenu( v );
 	}
-	
+	/**
+	 * Creates and throws an intent to the Edit Fragement activity.
+	 */
 	public void editFragment(){
 		Intent myIntent = new Intent(this, EditFragementActivity.class);
 		this.startActivity(myIntent);
 	}
-	
+	/**
+	 * Creates a new fragement and adds it to the story.
+	 */
 	public void newFragment(){
 		Fragement frag = new Fragement();
 		frag.setTitle("New Fragment");
@@ -153,7 +179,9 @@ public class EditStoryActivity extends AdventureActivity {
 		updateView();
 
 	}	
-	
+	/**
+	 * updates the all of the views if changes are made.
+	 */
 	public void updateView(){
 		adapter.notifyDataSetChanged();
 	}
