@@ -1,24 +1,26 @@
 package com.uofa.adventure_app.activity;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
 
-import android.content.Intent;
+import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.uofa.adventure_app.R;
 import com.uofa.adventure_app.application.AdventureApplication;
-import com.uofa.adventure_app.controller.http.HttpObjectStory;
 import com.uofa.adventure_app.interfaces.AdventureActivity;
 import com.uofa.adventure_app.model.Annotation;
 import com.uofa.adventure_app.model.Story;
@@ -44,6 +46,7 @@ public class AnnotateActivity extends AdventureActivity implements
                R.layout.list_item, rowItems);
        listView.setAdapter(adapter);
        listView.setOnItemClickListener(this);
+       alertBox();
    }
 
    @Override
@@ -59,7 +62,7 @@ public class AnnotateActivity extends AdventureActivity implements
 		// Handle presses on the action bar items
 		switch (item.getItemId()) {
 		case R.id.newAnnotation:
-			System.out.println("New Annotation");
+			alertBox();
 			break;
 		case R.id.choosemedia:
 			System.out.println("Choose Media");
@@ -73,6 +76,27 @@ public class AnnotateActivity extends AdventureActivity implements
 		return super.onOptionsItemSelected(item);
 	}
    
+	@SuppressLint("NewApi")
+	public void alertBox() {
+		AlertDialog alert = null;
+		 AlertDialog.Builder adb = new AlertDialog.Builder(this);
+		 LayoutInflater inflater = this.getLayoutInflater();
+		 adb.setIcon(android.R.drawable.ic_input_get);
+		 adb.setInverseBackgroundForced(true);
+		 adb.setTitle("Create a New Annotation");
+		 View alertView = inflater.inflate(R.layout.annotate_alert, null);
+        adb.setView(alertView);
+        TextView authorText = (TextView)alertView.findViewById(R.id.authorText);
+        EditText editText = (EditText)alertView.findViewById(R.id.editText);
+        editText.setText("Enter your Annotation Here");
+        authorText.setText("User: " + AdventureApplication.user().getName());
+        alert = adb.create();
+        View select = alert.findViewById(android.R.layout.select_dialog_multichoice);
+        select.findViewById(android.R.id.button1).setPadding(0, 0, 0, 0);
+      
+        alert.show();
+	}
+	
    @Override
    public void onItemClick(AdapterView<?> parent, View view, int position,
            long id) {
