@@ -52,17 +52,29 @@ import com.uofa.adventure_app.model.Story;
 public class EditStoryActivity extends AdventureActivity {
 	private ArrayAdapter<Fragement> adapter;
 	ListView list;
+	Story currentStory;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_edit_story);
 		list = (ListView) findViewById(R.id.fragments);
-		
+		currentStory = AdventureApplication.getStoryController().currentStory();
 		EditText titleEditText = (EditText) findViewById(R.id.titletext);
 		titleEditText.setText(AdventureApplication.getStoryController().currentStory().title());
-		
+		if (!currentStory.users().contains(AdventureApplication.user()))
+			currentStory.addUser(AdventureApplication.user());
+		String authors = "Author: " + currentStory.users().get(0).toString();
+		if (currentStory.users().size() > 1){
+			authors += "\nEdited by: ";
+		}
+		for(int i = 1; i<currentStory.users().size(); i++){
+			authors +=  currentStory.users().get(i);
+			if (i != currentStory.users().size()-1 ){
+				authors  += ", ";
+			}
+		}
 		TextView authorView = (TextView) findViewById(R.id.authortext);
-		authorView.setText(AdventureApplication.getStoryController().currentStory().users().toString());
+		authorView.setText(authors);
 		
 		adapter = new ArrayAdapter<Fragement>(this,
 				R.layout.list_item, AdventureApplication.getStoryController().currentStory().getFragements());

@@ -95,7 +95,17 @@ public class StoryActivity extends AdventureActivity {
 		//imageView.setImageDrawable(Drawable.createFromPath(media.get(media.firstKey()).path()));
 
 		bodyTextView.setText(currentFragement.body());
-		authorTextView.setText("");
+		String authors = "Author: " + currentStory.users().get(0).toString();
+		if (currentStory.users().size() > 1){
+			authors += "\nEdited by: ";
+		}
+		for(int i = 1; i<currentStory.users().size(); i++){
+			authors +=  currentStory.users().get(i);
+			if (i != currentStory.users().size()-1 ){
+				authors  += ", ";
+			}
+		}
+		authorTextView.setText(authors);
 		tileTextView.setText(currentFragement.getTitle());
 
 		currentStory.setIsLocal(true);

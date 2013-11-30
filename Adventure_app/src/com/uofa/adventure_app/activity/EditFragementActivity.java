@@ -72,6 +72,7 @@ public class EditFragementActivity extends AdventureActivity {
 	String body;
 	Uri chosenImageUri;
 	Story s;
+	Story currentStory;
 	Fragement currentFragement;
 	String s_id;
 	String old_frag;
@@ -85,11 +86,25 @@ public class EditFragementActivity extends AdventureActivity {
 		setContentView(R.layout.activity_edit_fragement);
 		Fragement currentFragement = AdventureApplication.getStoryController()
 				.currentFragement();
+		Story currentStory = AdventureApplication.getStoryController()
+		.currentStory();
 		currentView = this.findViewById(android.R.id.content);
 		TextView newauthor = (TextView) findViewById(R.id.newauthor);
 		// This is wrong.......
-		newauthor.setText(getSharedPreferences("PREFERENCE", MODE_PRIVATE)
-				.getString("username", null));
+		
+		if (!currentStory.users().contains(AdventureApplication.user()))
+			currentStory.addUser(AdventureApplication.user());
+		String authors = "Author: " + currentStory.users().get(0).toString();
+		if (currentStory.users().size() > 1){
+			authors += "\nEdited by: ";
+		}
+		for(int i = 1; i<currentStory.users().size(); i++){
+			authors +=  currentStory.users().get(i);
+			if (i != currentStory.users().size()-1 ){
+				authors  += ", ";
+			}
+		}
+		newauthor.setText(authors);
 		EditText newTitle = (EditText) findViewById(R.id.newtitle);
 		newTitle.setText(currentFragement.getTitle());
 		EditText newBody = (EditText) findViewById(R.id.newbody);
