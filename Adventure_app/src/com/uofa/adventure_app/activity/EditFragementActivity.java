@@ -44,6 +44,7 @@ import android.view.View;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.uofa.adventure_app.R;
@@ -85,7 +86,7 @@ public class EditFragementActivity extends AdventureActivity {
 		Fragement currentFragement = AdventureApplication.getStoryController()
 				.currentFragement();
 		currentView = this.findViewById(android.R.id.content);
-		EditText newauthor = (EditText) findViewById(R.id.newauthor);
+		TextView newauthor = (TextView) findViewById(R.id.newauthor);
 		// This is wrong.......
 		newauthor.setText(getSharedPreferences("PREFERENCE", MODE_PRIVATE)
 				.getString("username", null));

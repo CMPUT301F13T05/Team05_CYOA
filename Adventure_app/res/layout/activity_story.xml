@@ -53,22 +53,25 @@
         <LinearLayout
             android:id="@+id/imageItemView"
             android:layout_width="match_parent"
-            android:layout_height="fill_parent"
-            android:layout_weight="718.06"
-            android:orientation="vertical"
-            android:paddingTop="15dp"
+            android:layout_height="wrap_content"
             android:layout_below="@id/authorview"
-             >
+            android:layout_weight="100"
+            android:orientation="vertical"
+            android:paddingTop="15dp" >
             
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/LinearLayout01"
             android:layout_width="match_parent"
-            android:layout_height="fill_parent"
+            android:layout_height="match_parent"
             android:layout_weight="718.06"
+            android:focusable="false"
+            android:gravity="bottom"
             android:orientation="vertical"
-            android:paddingTop="15dp" >
+            android:paddingTop="15dp" 
+            android:paddingBottom="25dp"
+            >
 
             <Button
                 android:id="@+id/choicesbutton"
