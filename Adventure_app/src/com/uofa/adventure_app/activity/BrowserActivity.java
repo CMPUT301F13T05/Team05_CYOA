@@ -40,7 +40,13 @@ import com.uofa.adventure_app.interfaces.AdventureActivity;
 import com.uofa.adventure_app.model.Fragement;
 import com.uofa.adventure_app.model.Story;
 import com.uofa.adventure_app.model.User;
-
+/**
+ * This class takes in user input and processes it when the user
+ * is in the Story Browsing screen.  It interacts with the Story
+ * class in the model.
+ * @author Kevin Lafond, Chris Pavlicek
+ *
+ */
 public class BrowserActivity extends AdventureActivity {
 
 	private StoryGridAdapter storyGridAdapter;
@@ -59,7 +65,9 @@ public class BrowserActivity extends AdventureActivity {
 		View menuView = (View)this.findViewById(R.menu.main);
 		
 		boolean firstrun = getSharedPreferences("PREFERENCE", MODE_PRIVATE).getBoolean("firstrun", true);
-		
+		/*
+		 * Ran only on the first time after install or if the user logs out of the app.
+		 */
 		if (firstrun){
 			Intent myIntent = new Intent(this, FirstRunOnlyActivity.class);
 			this.startActivity(myIntent);
@@ -201,12 +209,18 @@ public class BrowserActivity extends AdventureActivity {
 			this.openStory(s);
 		}
 	}
-	
+	/**
+	 * Gets a single story from the server.
+	 * @param Story s
+	 */
 	public void fetchStory(Story s) {
 		HttpObjectStory httpStory = new HttpObjectStory();
 		this.httpRequest(httpStory.fetch(s.id()), GET_METHOD);
 	}
-	
+	/**
+	 * Opens the story passed into the method in the StoryActivity.
+	 * @param Story s
+	 */
 	public void openStory (Story s) {
 		// Set the Story as our current Story, Auto sets the current one we are on.
 		AdventureApplication.getStoryController().setCurrentStory(s);

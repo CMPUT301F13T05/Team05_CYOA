@@ -42,7 +42,13 @@ import com.uofa.adventure_app.application.AdventureApplication;
 import com.uofa.adventure_app.interfaces.AdventureActivity;
 import com.uofa.adventure_app.model.Fragement;
 import com.uofa.adventure_app.model.Story;
-
+/**
+ * Allows the user to edit the title of a story and to see all of the fragements 
+ * available for that story.
+ * 
+ * @author Kevin Lafond
+ *
+ */
 public class EditStoryActivity extends AdventureActivity {
 	private ArrayAdapter<Fragement> adapter;
 	ListView list;
@@ -134,16 +140,24 @@ public class EditStoryActivity extends AdventureActivity {
 	}
 	
 
-	
+	/**
+	 * opens the context menu for the user to choose whether or not they want to edit that 
+	 * fragement
+	 * @param View v
+	 */
 	public void openContext(View v) {
 		registerForContextMenu( v );
 	}
-	
+	/**
+	 * Creates and throws an intent to the Edit Fragement activity.
+	 */
 	public void editFragment(){
 		Intent myIntent = new Intent(this, EditFragementActivity.class);
 		this.startActivity(myIntent);
 	}
-	
+	/**
+	 * Creates a new fragement and adds it to the story.
+	 */
 	public void newFragment(){
 		Fragement frag = new Fragement();
 		frag.setTitle("New Fragment");
@@ -153,7 +167,9 @@ public class EditStoryActivity extends AdventureActivity {
 		updateView();
 
 	}	
-	
+	/**
+	 * updates the all of the views if changes are made.
+	 */
 	public void updateView(){
 		adapter.notifyDataSetChanged();
 	}

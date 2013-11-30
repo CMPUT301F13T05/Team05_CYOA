@@ -31,7 +31,12 @@ import android.app.Activity;
 import android.view.Menu;
 import android.view.View;
 import android.widget.EditText;
-
+/**
+ * This activity is only ran if the user logs out of the applciation or on first run after install 
+ * to allow us to have a user for the applciation.
+ * @author Kevin Lafond
+ *
+ */
 public class FirstRunOnlyActivity extends Activity {
 
 	@Override

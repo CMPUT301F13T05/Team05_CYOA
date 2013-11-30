@@ -37,7 +37,13 @@ import com.uofa.adventure_app.interfaces.DataReturn;
 import com.uofa.adventure_app.interfaces.PerformHttp;
 import com.uofa.adventure_app.model.Story;
 import com.uofa.adventure_app.model.User;
-
+/**
+ * Adapter for the Browse view Story list.
+ * Displays all of the Stories in an organized and good
+ * looking manner.
+ * @author Kevin Lafond
+ *
+ */
 public class StoryGridAdapter extends BaseAdapter {
 
 	private ArrayList<Story> stories;
@@ -54,7 +60,11 @@ public class StoryGridAdapter extends BaseAdapter {
 		this.storiesClone.addAll(stories);
 		this.query = "";
 	}
-
+	/**
+	 * filters the stories being displayed based on the string passed
+	 * into the method
+	 * @param String query
+	 */
 	public void filter(String query) {
 		if (query != null) {
 			this.query = query;

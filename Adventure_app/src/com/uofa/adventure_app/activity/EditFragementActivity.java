@@ -53,7 +53,14 @@ import com.uofa.adventure_app.model.Choice;
 import com.uofa.adventure_app.model.Fragement;
 import com.uofa.adventure_app.model.Media;
 import com.uofa.adventure_app.model.Story;
-
+/**
+ * This class deals with users editing fragements.  It interacts with the majority of
+ * the model and allows the user to access the camera and the existing photo library in
+ * order to allow the user to add images to fragements.
+ * 
+ * @author Kevin Lafond
+ *
+ */
 
 public class EditFragementActivity extends AdventureActivity {
 	View currentView;
@@ -105,8 +112,7 @@ public class EditFragementActivity extends AdventureActivity {
 	/**
 	 * Opens the menu of possible choices to add to the Fragment.
 	 * 
-	 * @param View
-	 *            v
+	 * @param View v
 	 */
 	public void openChoices(View v) {
 		choice = true;
@@ -155,8 +161,7 @@ public class EditFragementActivity extends AdventureActivity {
 	 * Method that is called to open the context view to allow the user to open
 	 * the camera or choose an existing piece of media.
 	 * 
-	 * @param View
-	 *            v
+	 * @param View v
 	 */
 	public void openMediaContext(View v) {
 		choice = false;
@@ -338,7 +343,9 @@ public class EditFragementActivity extends AdventureActivity {
 		return super.onContextItemSelected(item);
 
 	}
-
+    /**
+     * creates a new fragement and adds it to the current fragment as a choice.
+     */
 	private void newChoice() {
 		Fragement currentFragement = AdventureApplication.getStoryController()
 				.currentFragement();
@@ -357,7 +364,9 @@ public class EditFragementActivity extends AdventureActivity {
 		EditText newBody = (EditText) findViewById(R.id.newbody);
 		newBody.setText("");
 	}
-
+	/**
+	 * Saves the users current work done.
+	 */
 	public void save() {
 		EditText newTitle = (EditText) findViewById(R.id.newtitle);
 		// EditText newAuthor = (EditText) findViewById(R.id.newauthor);
@@ -374,7 +383,9 @@ public class EditFragementActivity extends AdventureActivity {
 		AdventureApplication.getStoryController().saveStories();
 
 	}
-
+	/**
+	 * opens the last fragement visited.
+	 */
 	protected void openLastFragement() {
 		Fragement currentFragement = AdventureApplication.getStoryController()
 				.lastFragement();
@@ -424,6 +435,10 @@ public class EditFragementActivity extends AdventureActivity {
 	    }
 	    return super.onKeyDown(keyCode, event);
 	}
+	/**
+	 * called when the user chooses an existing photo and adds it to the fragement
+	 * passes the chosen fragement to the onActivityResult method.
+	 */
 	  public void chooseImage()
 	    {
 	    	Intent pickImage = new Intent();

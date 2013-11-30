@@ -15,7 +15,12 @@ import android.widget.TextView;
 import com.uofa.adventure_app.R;
 import com.uofa.adventure_app.model.Annotation;
 import com.uofa.adventure_app.model.Media;
-
+/**
+ * This class populates the list view in the Annotation screen.
+ * 
+ * @author Ulvi Ibrahimov, Chris Pavlicek
+ *
+ */
 public class CustomListViewAdapter extends ArrayAdapter<Annotation> {
 	 
     Context context;
@@ -32,7 +37,7 @@ public class CustomListViewAdapter extends ArrayAdapter<Annotation> {
         TextView txtTitle;
         TextView txtDesc;
     }
- 
+    
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder = null;
         Annotation rowItem = getItem(position);
