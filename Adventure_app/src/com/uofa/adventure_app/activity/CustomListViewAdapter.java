@@ -1,9 +1,10 @@
 package com.uofa.adventure_app.activity;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,13 +13,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.uofa.adventure_app.R;
+import com.uofa.adventure_app.model.Annotation;
+import com.uofa.adventure_app.model.Media;
 
-public class CustomListViewAdapter extends ArrayAdapter<RowItem> {
+public class CustomListViewAdapter extends ArrayAdapter<Annotation> {
 	 
     Context context;
  
     public CustomListViewAdapter(Context context, int resourceId,
-            List<RowItem> items) {
+            ArrayList<Annotation> items) {
         super(context, resourceId, items);
         this.context = context;
     }
@@ -32,7 +35,7 @@ public class CustomListViewAdapter extends ArrayAdapter<RowItem> {
  
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder = null;
-        RowItem rowItem = getItem(position);
+        Annotation rowItem = getItem(position);
  
         LayoutInflater mInflater = (LayoutInflater) context
                 .getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
@@ -46,9 +49,10 @@ public class CustomListViewAdapter extends ArrayAdapter<RowItem> {
         } else
             holder = (ViewHolder) convertView.getTag();
         
-        holder.txtDesc.setText(rowItem.getDesc());
-        holder.txtTitle.setText(rowItem.getTitle());
-        holder.imageView.setImageResource(rowItem.getImageId());
+        holder.txtDesc.setText(rowItem.annotationString());
+        holder.txtTitle.setText(rowItem.user().getName());
+        Bitmap bitmap = Media.decodeBase64(rowItem.media().toString());
+        holder.imageView.setImageBitmap(bitmap);
  
         return convertView;
     }

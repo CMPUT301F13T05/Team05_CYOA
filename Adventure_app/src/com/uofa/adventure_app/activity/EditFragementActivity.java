@@ -178,7 +178,7 @@ public class EditFragementActivity extends AdventureActivity {
 		MenuInflater inflater = getMenuInflater();
 		if (choice == false) {
 			// Open Menu
-			inflater.inflate(R.menu.annotatemenu, menu);
+			inflater.inflate(R.menu.addphoto, menu);
 		} else {
 			menu.clearHeader();
 			menu.clear();
