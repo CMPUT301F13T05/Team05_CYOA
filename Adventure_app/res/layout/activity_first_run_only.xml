@@ -8,32 +8,6 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".FirstRunOnlyActivity" >
 
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_centerInParent="true"
-        android:layout_marginTop="72dp"
-        android:gravity="center"
-        android:text="Please enter your name and touch OK:"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textSize="25dp" />
-
-    <EditText
-        android:id="@+id/usern"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/textView1"
-        android:layout_centerHorizontal="true"
-      
-        android:layout_marginTop="80dp"
-        android:ems="10" >
-
-        <requestFocus />
-    </EditText>
-
     <Button
         android:id="@+id/okbutton"
         android:layout_width="wrap_content"
@@ -44,5 +18,34 @@
         android:layout_marginBottom="36dp"
         android:text="OK"
         android:onClick="okClicked" />
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="58dp"
+        android:gravity="center"
+        android:text="Please enter your name and touch OK:"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="25dp" />
+
+    <EditText
+        android:id="@+id/usern"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/okbutton"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="75dp"
+        android:ems="10" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView1"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="43dp" />
 
 </RelativeLayout>

@@ -127,11 +127,16 @@ public class StoryGridAdapter extends BaseAdapter {
 
 				title.setText(story.title());
 
-			String authors = new String();
-			// TODO: Format this better!
-			for (User u : story.users()) {
-				authors += "By: " + u.getName();
-			}
+				String authors = "Author: " + story.users().get(0).toString();
+				if (story.users().size() > 1){
+					authors += "\nEdited by: ";
+				}
+				for(int i = 1; i<story.users().size(); i++){
+					authors +=  story.users().get(i);
+					if (i != story.users().size()-1 ){
+						authors  += ", ";
+					}
+				}
 			sub.setText(authors);
 		}
 

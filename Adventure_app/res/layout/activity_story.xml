@@ -1,84 +1,75 @@
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/ScrollView"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:layout_gravity="fill_vertical" 
-    android:fillViewport="true">
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:scrollbars="vertical"
+    tools:context=".StoryActivity" >
 
-    <LinearLayout
-        android:layout_width="fill_parent"
+    <TextView
+        android:id="@+id/titleview"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingBottom="@dimen/activity_vertical_margin"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin"
-        android:paddingTop="@dimen/activity_vertical_margin"
-        android:weightSum="1000" >
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:gravity="center"
+        android:text="Title"
+        android:textSize="35dp" />
 
-        <TextView
-            android:id="@+id/titleview"
-            android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:gravity="center"
-            android:text="Title"
-            android:textSize="35dp" />
-
-        <TextView
-            android:id="@+id/authorview"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/titleview"
-            android:gravity="center"
-            android:text="Author"
-            android:textSize="25dp" />
-
-        <TextView
+    <TextView
+        android:id="@+id/authorview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/titleview"
+        android:layout_below="@+id/titleview"
+        android:gravity="center"
+        android:text="Author"
+        android:textSize="25dp" />
+            <TextView
             android:id="@+id/storyview"
             android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-            android:layout_weight="10"
+            android:layout_height="150dp"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/authorview"
+            android:layout_marginTop="26dp"
+            android:scrollbars="vertical"
             android:text="Story"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
-        <ImageView
-            android:visibility="gone"
-            android:id="@+id/annotation"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/border" />
+    <ImageView
+        android:id="@+id/annotation"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/choicesbutton" />
 
-        <LinearLayout
-            android:id="@+id/imageItemView"
-            android:layout_width="match_parent"
-            android:layout_height="fill_parent"
-            android:layout_weight="718.06"
-            android:orientation="vertical"
-            android:paddingTop="15dp"
-            android:layout_below="@id/authorview"
-             >
-            
-        </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/LinearLayout01"
-            android:layout_width="match_parent"
-            android:layout_height="fill_parent"
-            android:layout_weight="718.06"
-            android:orientation="vertical"
-            android:paddingTop="15dp" >
+                        <HorizontalScrollView
+        android:id="@+id/scrollView1"
+        android:layout_width="fill_parent"
+        android:layout_height="100dp"
+        android:layout_above="@id/choicesbutton"
+        android:layout_alignParentRight="true" >
+                        <LinearLayout
+                            android:id="@+id/image_layout"
+                            android:layout_width="wrap_content"
+                            android:layout_height="fill_parent"
+                            android:orientation="horizontal" />
+                    </HorizontalScrollView>
 
-            <Button
-                android:id="@+id/choicesbutton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:onClick="openChoices"
-                android:text="Choices" />
+    <Button
+        android:id="@+id/choicesbutton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignRight="@+id/annotation"
+        android:layout_marginBottom="18dp"
+        android:onClick="openChoices"
+        android:text="Choices" />
 
-        </LinearLayout>
-        
-        </LinearLayout>
 
-</ScrollView>
+
+</RelativeLayout>

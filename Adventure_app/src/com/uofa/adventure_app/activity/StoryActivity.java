@@ -95,7 +95,17 @@ public class StoryActivity extends AdventureActivity {
 		//imageView.setImageDrawable(Drawable.createFromPath(media.get(media.firstKey()).path()));
 
 		bodyTextView.setText(currentFragement.body());
-		authorTextView.setText("");
+		String authors = "Author: " + currentStory.users().get(0).toString();
+		if (currentStory.users().size() > 1){
+			authors += "\nEdited by: ";
+		}
+		for(int i = 1; i<currentStory.users().size(); i++){
+			authors +=  currentStory.users().get(i);
+			if (i != currentStory.users().size()-1 ){
+				authors  += ", ";
+			}
+		}
+		authorTextView.setText(authors);
 		tileTextView.setText(currentFragement.getTitle());
 
 		currentStory.setIsLocal(true);
@@ -516,7 +526,7 @@ public class StoryActivity extends AdventureActivity {
     public void fillImageDisplay(){
     	ArrayList<Media> fragementImages = currentFragement.media();
 
-    	LinearLayout listView = (LinearLayout) findViewById(R.id.imageItemView);
+    	LinearLayout listView = (LinearLayout) findViewById(R.id.image_layout);
     	listView.removeAllViews();
     	 for (int i = 0; i < fragementImages.size(); i++) {
              Media mediaImage = fragementImages.get(i);
@@ -529,7 +539,7 @@ public class StoryActivity extends AdventureActivity {
                      listView.addView(image);
              }
      }
-    	 listView.setGravity(Gravity.CENTER);
+    	 //listView.setGravity(Gravity.CENTER);
 
     }
     
