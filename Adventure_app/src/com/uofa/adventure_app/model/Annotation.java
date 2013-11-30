@@ -28,17 +28,24 @@ import com.uofa.adventure_app.interfaces.UniqueId;
 
 public class Annotation extends UniqueId implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	// the video, audio, or image 
 	private Media media;
 	
 	// same as user
-	private User author;
+	private User user;
+	private String annotationString;
+	
 	/**
 	 * creates annotation Object
 	 * @param author
 	 */
-	public Annotation(User author) {
-		this.author = author;
+	public Annotation(User user) {
+		this.user = user;
 	}
 	
 	
@@ -66,5 +73,53 @@ public class Annotation extends UniqueId implements Serializable {
 		// perform the default serialization for all non-transient, non-static
 		// fields
 		aOutputStream.defaultWriteObject();
+	}
+
+
+	/**
+	 * @return the annotationString
+	 */
+	public String annotationString() {
+		return annotationString;
+	}
+
+
+	/**
+	 * @param annotationString the annotationString to set
+	 */
+	public void setAnnotationString(String annotationString) {
+		this.annotationString = annotationString;
+	}
+
+
+	/**
+	 * @return the user
+	 */
+	public User user() {
+		return user;
+	}
+
+
+	/**
+	 * @param user the user to set
+	 */
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+
+	/**
+	 * @return the media
+	 */
+	public Media media() {
+		return media;
+	}
+
+
+	/**
+	 * @param media the media to set
+	 */
+	public void setMedia(Media media) {
+		this.media = media;
 	}
 }

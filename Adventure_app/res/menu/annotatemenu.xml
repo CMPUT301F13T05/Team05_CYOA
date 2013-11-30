@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
-<group android:id="@+id/annotategroup"><item android:id="@+id/takepic" android:title="Take Picture"></item>
+<group android:id="@+id/annotategroup">
+<item android:id="@+id/newAnnotation" android:title="New Annotation"></item>
+<item android:id="@+id/takepic" android:title="Take Picture"></item>
 <item android:id="@+id/choosemedia" android:title="Choose Media"></item>
-<item android:id="@+id/cancelAnnotate" android:title="Cancel"></item></group>
+<item android:id="@+id/cancelAnnotate" android:title="Cancel"></item>
+
+</group>
 </menu>
