@@ -20,9 +20,7 @@ package com.uofa.adventure_app.activity;
 
 import java.util.ArrayList;
 
-import android.annotation.SuppressLint;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
+import android.app.Dialog;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -32,6 +30,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -57,6 +56,7 @@ public class AnnotateActivity extends AdventureActivity implements
 
    ListView listView;
    ArrayList<Annotation> rowItems;
+   Annotation newAnnotation = null;
 
    /** Called when the activity is first created. */
    @Override
@@ -72,7 +72,12 @@ public class AnnotateActivity extends AdventureActivity implements
                R.layout.list_item, rowItems);
        listView.setAdapter(adapter);
        listView.setOnItemClickListener(this);
-       alertBox();
+       
+       EditText editTextView = (EditText) findViewById(R.id.editText);
+       
+       newAnnotation = new Annotation(AdventureApplication.user());
+       
+       //alertBox();
    }
 
    @Override
@@ -102,25 +107,40 @@ public class AnnotateActivity extends AdventureActivity implements
 		return super.onOptionsItemSelected(item);
 	}
    
-	@SuppressLint("NewApi")
 	public void alertBox() {
-		AlertDialog alert = null;
-		 AlertDialog.Builder adb = new AlertDialog.Builder(this);
+
+		 final Dialog dialog = new Dialog(this,R.style.DialogTheme);
 		 LayoutInflater inflater = this.getLayoutInflater();
-		 adb.setIcon(android.R.drawable.ic_input_get);
-		 adb.setInverseBackgroundForced(true);
-		 adb.setTitle("Create a New Annotation");
+		 dialog.setTitle("Create an Annotation");
 		 View alertView = inflater.inflate(R.layout.annotate_alert, null);
-        adb.setView(alertView);
-        TextView authorText = (TextView)alertView.findViewById(R.id.authorText);
-        EditText editText = (EditText)alertView.findViewById(R.id.editText);
-        editText.setText("Enter your Annotation Here");
+	        
+        TextView authorText = (TextView)alertView.findViewById(R.id.alertTitleAnnotation);
         authorText.setText("User: " + AdventureApplication.user().getName());
-        alert = adb.create();
-        View select = alert.findViewById(android.R.layout.select_dialog_multichoice);
-        select.findViewById(android.R.id.button1).setPadding(0, 0, 0, 0);
-      
-        alert.show();
+        
+        EditText editTextView = (EditText) alertView.findViewById(R.id.editText);
+        editTextView.addTextChangedListener(new GenericTextWatcher(editTextView));
+        
+        alertView.findViewById(R.id.cancelAnnotation).setOnClickListener(
+        		new Button.OnClickListener() {  
+        	        public void onClick(View v)
+        	            {
+        	                dialog.dismiss();
+        	            }});
+        	            
+       alertView.findViewById(R.id.okAnnotation).setOnClickListener(
+        	            		new Button.OnClickListener() {  
+        	            	        public void onClick(View v)
+        	            	            {
+        	            	                AdventureApplication.getStoryController().currentFragement().addAnnotation(newAnnotation);
+        	            	    }});
+        
+        
+        
+        dialog.setContentView(alertView);
+    	dialog.show();
+       
+    	
+    	
 	}
 	
    @Override
@@ -153,7 +173,15 @@ protected void openLastFragement() {
 
 @Override
 protected void saveTextForView(View v, String text) {
-	// TODO Auto-generated method stub
-	
+
+	switch (v.getId()) {
+	case R.id.editText:
+		newAnnotation.setAnnotationString(text);
+	default:
+		break;
+	}
+
+	AdventureApplication.getActivityController().update();
+
 }
 }

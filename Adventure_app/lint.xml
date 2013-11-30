@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lint>
+    <issue id="TextFields">
+        <ignore path="res/layout/annotate_alert.xml" />
+    </issue>
+</lint>
