@@ -80,7 +80,7 @@ public class StoryActivity extends AdventureActivity {
 		tileTextView = (TextView) findViewById(R.id.titleview);
 		authorTextView = (TextView) findViewById(R.id.authorview);
 		bodyTextView = (TextView) findViewById(R.id.storyview);
-		//imageView = (ImageView) findViewById(R.id.annotation); // YOU ARE HERE -- JOEL
+		
 
 		currentStory = AdventureApplication.getStoryController().currentStory();
 		
@@ -196,7 +196,6 @@ public class StoryActivity extends AdventureActivity {
 			case R.id.annotatem:
 				Intent myIntent = new Intent(this, AnnotateActivity.class);
 				this.startActivity(myIntent);
-				finish();
 				//openAnnotateContext(currentView);
 				//takeAPhoto();
 				break;

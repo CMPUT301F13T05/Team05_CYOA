@@ -1,5 +1,5 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
-	<item android:id="@+id/annotatem" android:showAsAction="never" android:title="Annotate"></item>
+	<item android:id="@+id/annotatem" android:showAsAction="never" android:title="Comments"></item>
 	<item android:id="@+id/editstory" android:showAsAction="never" android:title="Edit Story"></item>
 	<item android:id="@+id/editfragment" android:showAsAction="never" android:title="Edit Fragement"></item>
 	<!-- <item android:id="@+id/store" android:showAsAction="never" android:title="Store in Favorites"></item> -->

@@ -66,6 +66,7 @@ public class EditFragementActivity extends AdventureActivity {
 	String s_id;
 	String old_frag;
 	private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
+	private static final int PICK_IMAGE = 1111; 
 	boolean choice = false;
 
 	@Override
@@ -272,9 +273,7 @@ public class EditFragementActivity extends AdventureActivity {
 								KeyEvent.KEYCODE_BACK));
 				break;
 			case R.id.choosemedia:
-				currentView.getRootView().dispatchKeyEvent(
-						new KeyEvent(KeyEvent.ACTION_DOWN,
-								KeyEvent.KEYCODE_BACK));
+				chooseImage();
 				break;
 			case R.id.newchoice:
 				save();
@@ -383,6 +382,13 @@ public class EditFragementActivity extends AdventureActivity {
 	    }
 	    return super.onKeyDown(keyCode, event);
 	}
+	  public void chooseImage()
+	    {
+	    	Intent pickImage = new Intent();
+	    	pickImage.setType("image/*");
+	    	pickImage.setAction(Intent.ACTION_GET_CONTENT);
+	    	startActivityForResult(Intent.createChooser(pickImage, "Select Picture"), PICK_IMAGE);
+	    }
 
 
 
