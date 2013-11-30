@@ -40,7 +40,7 @@ public class Fragement extends UniqueId implements Serializable  {
         public Fragement()
         {
             super();
-            this.annotations = new ArrayList<Annotation>();
+            this.setAnnotations(new ArrayList<Annotation>());
             this.choices = new ArrayList<Choice>(); 
             this.media = new ArrayList<Media>();
             this.randomFlag = false;
@@ -51,7 +51,7 @@ public class Fragement extends UniqueId implements Serializable  {
         public Fragement(boolean flag)
         {
                 super();
-                this.annotations = new ArrayList<Annotation>();
+                this.setAnnotations(new ArrayList<Annotation>());
                 this.choices = new ArrayList<Choice>(); 
                 this.media = null;
                 this.randomFlag = flag;
@@ -214,6 +214,20 @@ public class Fragement extends UniqueId implements Serializable  {
 			f.setMedia(copyMedia);
 			
 			return f;
+		}
+
+		/**
+		 * @return the annotations
+		 */
+		public ArrayList<Annotation> annotations() {
+			return annotations;
+		}
+
+		/**
+		 * @param annotations the annotations to set
+		 */
+		public void setAnnotations(ArrayList<Annotation> annotations) {
+			this.annotations = annotations;
 		}
 		
 
