@@ -20,15 +20,16 @@ package com.uofa.adventure_app.controller.test;
 
 import java.util.ArrayList;
 
+import android.test.ActivityInstrumentationTestCase2;
+
 import com.uofa.adventure_app.activity.BrowserActivity;
 import com.uofa.adventure_app.controller.StoryController;
+import com.uofa.adventure_app.model.Fragement;
 import com.uofa.adventure_app.model.Story;
 import com.uofa.adventure_app.model.User;
 
-import android.test.ActivityInstrumentationTestCase2;
-
 /**
- * @author Joel
+ * @author Joel, Chris
  * See documentation for StoryController 
  */
 public class StoryControllerTest extends
@@ -38,6 +39,7 @@ public class StoryControllerTest extends
 	private StoryController testStoryController;
 	private Story testStory = new Story();
 	ArrayList<Story> testStories = null;
+	Fragement testFragement = null;
 	
 	/**
 	 * @param name
@@ -55,13 +57,16 @@ public class StoryControllerTest extends
 		super.setUp();
 		
 		testStoryController = new StoryController();
+		// Empty Fragement
+		testFragement = new Fragement();
+		testStory.addFragement(testFragement);
 		//testStory = new ArrayList<Story>();
 	}
 	
 	public void testAddStory()
 	{
 		testStoryController.addStory(testStory);
-		testStories = testStoryController.getStories();
+		testStories = testStoryController.stories();
 		assertTrue(testStories.contains(testStory));
 	}
 	
@@ -75,8 +80,60 @@ public class StoryControllerTest extends
 	
 	public void testGetStories(){
 		//testStories.clear();
-		testStories = testStoryController.getStories();
+		testStories = testStoryController.stories();
 		assertNotNull(testStories);
+	}
+	
+	public void testCurrentStory(){
+		testStoryController.setCurrentStory(testStory);
+		Story returnedStory = testStoryController.currentStory();
+		
+		System.out.println(testStory.id().toString());
+		System.out.println(returnedStory.id().toString());
+		System.out.println(returnedStory.equals(testStory));
+		
+		assertTrue(returnedStory.equals(testStory));
+	}
+	
+	public void testCurrentFragement(){
+		testStoryController.setCurrentFragement(testFragement);
+		Fragement returnedFragement = testStoryController.currentFragement();
+		assertTrue(returnedFragement.equals(testFragement));
+	}
+	
+	public void testAddPreviousFragement(){
+		testStoryController.addPreviousFragement(testFragement);
+		// Add and Remove Fragement
+		
+		Fragement returnedFragement = testStoryController.lastFragement();
+		assertTrue(returnedFragement.equals(testFragement));
+		
+		// Remove Last Fragement List Should be empty
+		testStoryController.popPreviousFragement();
+		
+		// See if it is null.
+		assertNull(testStoryController.lastFragement());
+	}
+	
+	public void testPreviousFragementList(){
+		testStoryController.addPreviousFragement(testFragement);
+		ArrayList<Fragement> fragementList = testStoryController.previousFragementList();
+		assertTrue(fragementList.contains(testFragement));
+	}
+	
+	public void testSetStories() {
+		ArrayList<Story> stories = new ArrayList<Story>();
+		Story story1 = new Story();
+		story1.setTitle("Title 1");
+		Story story2 = new Story();
+		story2.setTitle("Title 2");
+		stories.add(story1);
+		stories.add(story2);
+		
+		testStoryController.setStories(stories);
+		ArrayList<Story> returnedStories = testStoryController.stories();
+		
+		assertTrue(returnedStories.equals(stories));
 	}
 	
 } // class end

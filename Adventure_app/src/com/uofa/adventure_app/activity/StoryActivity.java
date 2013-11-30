@@ -154,6 +154,7 @@ public class StoryActivity extends AdventureActivity {
 		AdventureApplication.getStoryController().addPreviousFragement(currentFragement);
 		AdventureApplication.getStoryController().setCurrentFragement(f);
 		currentFragement = f;
+		fillImageDisplay();
 	}
 	
 	public void openFragement(Fragement f) {
@@ -466,18 +467,9 @@ public class StoryActivity extends AdventureActivity {
 
     
     public void copy(){
-		Story newStory = new Story(UUID.randomUUID());
-		newStory.setIsLocal(true);
-		//LocalStorageController localStoryController = new LocalStorageController(this);
-		newStory.setTitle(currentStory.title());
-		for(int i = 0; i < currentStory.users().size(); i++)
-			newStory.addUser(currentStory.users().get(i));
-		for(int j = 0; j < currentStory.getFragements().size(); j++){
-			newStory.addFragement(currentStory.getFragements().get(j));
-			for(int w = 0; w<currentStory.getFragements().get(j).choices().size(); w++)
-				newStory.getFragements().get(j).addChoice(currentStory.getFragements().get(j).choices().get(w));
-			// TODO: get annotations for fragments & add them to newStory
-		}
+    	
+    	Story newStory = AdventureApplication.getStoryController().currentStory().localCopy();
+
 		AdventureApplication.getStoryController().addStory(newStory);
 		AdventureApplication.getActivityController().update();
     }
@@ -488,6 +480,7 @@ public class StoryActivity extends AdventureActivity {
 	   AdventureApplication.getStoryController().popPreviousFragement();
 	   tileTextView.setText(currentFragement.getTitle());
 	   bodyTextView.setText(currentFragement.body());
+	   fillImageDisplay();
     }
    
 	protected void saveTextForView(View v, String text) {
@@ -497,7 +490,6 @@ public class StoryActivity extends AdventureActivity {
 
     public void fillImageDisplay(){
     	ArrayList<Media> fragementImages = currentFragement.media();
-
 //        LinearLayout images = (LinearLayout) findViewById(R.id.image_layout);
 //        for (int i = 0; i < fragementImages.size(); i++) {
 //                Media mediaImage = fragementImages.get(i);
@@ -512,6 +504,7 @@ public class StoryActivity extends AdventureActivity {
 //                }
 //        }
     	LinearLayout listView = (LinearLayout) findViewById(R.id.imageItemView);
+    	listView.removeAllViews();
     	 for (int i = 0; i < fragementImages.size(); i++) {
              Media mediaImage = fragementImages.get(i);
              String convertedString = mediaImage.getMedia();

@@ -23,6 +23,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.UUID;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -61,6 +62,7 @@ public class EditFragementActivity extends AdventureActivity {
 	String title;
 	String user;
 	String body;
+	Uri chosenImageUri;
 	Story s;
 	Fragement currentFragement;
 	String s_id;
@@ -188,10 +190,13 @@ public class EditFragementActivity extends AdventureActivity {
 			for (int j = 0; j < AdventureApplication.getStoryController()
 					.currentStory().getFragements().size(); j++) {
 				if (!AdventureApplication.getStoryController().currentStory().getFragements().get(j).equals(AdventureApplication.getStoryController().currentFragement())) {
+					Choice aChoice = new Choice(AdventureApplication.getStoryController().currentStory().getFragements().get(j));
+					if(!AdventureApplication.getStoryController().currentFragement().choices().contains(aChoice)) {
 					menu.add(0, counter, 0, "Add: "
 							+ AdventureApplication.getStoryController()
 									.currentStory().getFragements().get(j)
 									.getTitle());
+					}
 				}
 				counter++;
 			}
@@ -234,6 +239,7 @@ public class EditFragementActivity extends AdventureActivity {
                                     this.getContentResolver(), imageFileUri);
                     Bitmap resizedBitmap = Media.resizeImage(bitmap);
                     String image = Media.encodeToBase64(resizedBitmap);
+                    System.out.println(AdventureApplication.getStoryController().currentFragement().getTitle());
                     AdventureApplication.getStoryController().currentFragement().addMedia(new Media(image));
                 } catch (FileNotFoundException e) {
                 	e.printStackTrace();
@@ -246,6 +252,42 @@ public class EditFragementActivity extends AdventureActivity {
 				System.out.println("Not sure what happened!" + resultCode);
 			}
 		}
+		 // handles selecting an image from app of users choice (usually gallery).
+        if ((requestCode == PICK_IMAGE) && (resultCode == RESULT_OK) && (data != null))
+        {
+            chosenImageUri = data.getData();
+           // chosenImageUri
+            ImageView annotation = (ImageView) findViewById(R.id.annotation);
+          
+            String path = chosenImageUri.getPath();
+            
+            
+            String folder = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Adventure_App/";
+            File folderF = new File(folder);
+   	     
+            if (!folderF.exists()) {
+   	            folderF.mkdir();
+            }
+   	        
+   	     	String imageFilePath = folder + "/" + "Adventure_App" + String.valueOf(System.currentTimeMillis()) + "jpg";
+
+   	     	
+   	     
+            try {
+            // copyfile from gallery location to our app!
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(
+                        this.getContentResolver(), chosenImageUri);
+                Bitmap resizedBitmap = Media.resizeImage(bitmap);
+                String image = Media.encodeToBase64(resizedBitmap);
+                AdventureApplication.getStoryController().currentFragement().addMedia(new Media(image));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+            
+            String imageId = UUID.randomUUID().toString();
+           // localStorageController.insertImage( imageId, imageFilePath, 0, currentFragement.uid().toString());
+            
+        }
 	}
 
 	@Override
