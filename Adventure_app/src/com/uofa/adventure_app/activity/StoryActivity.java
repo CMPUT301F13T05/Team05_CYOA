@@ -307,6 +307,8 @@ public class StoryActivity extends AdventureActivity {
 	 * CHanges the screen to the Browse View
 	 */
 	public void browseView(){
+		AdventureApplication.getActivityController().getActivityStack().clear();
+		AdventureApplication.getActivityController().setActivityStack(new ArrayList<AdventureActivity>());
 		Intent myIntent = new Intent(this, BrowserActivity.class);
 		this.startActivity(myIntent);
 	}

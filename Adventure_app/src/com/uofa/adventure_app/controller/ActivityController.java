@@ -53,7 +53,13 @@ public class ActivityController {
 	public void removeActivitiy(AdventureActivity activity) {
 		activities.remove(activity);
 	}
-	
+	public ArrayList<AdventureActivity> getActivityStack(){
+		return this.activities;
+	}
+	public void setActivityStack(ArrayList<AdventureActivity> list){
+		this.activities.clear();
+		this.activities.addAll(list);
+	}
 	public void update() {
 		for(AdventureActivity a: activities) {
 			a.updateView();

@@ -151,6 +151,12 @@ public class EditFragementActivity extends AdventureActivity {
 			helpText=helpText+"Touch Add choice to add a fragement as a choice\n\n";
 			Toast.makeText(this, helpText, Toast.LENGTH_LONG).show();
 			break;
+		case R.id.gohome:
+			 AdventureApplication.getActivityController().getActivityStack().clear();
+			Intent myIntent = new Intent(this, BrowserActivity.class);
+			this.startActivity(myIntent);
+			finish();
+			 break;
 		default:
 			return super.onOptionsItemSelected(item);
 		}
