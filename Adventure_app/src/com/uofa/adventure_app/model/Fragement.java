@@ -244,5 +244,8 @@ public class Fragement extends UniqueId implements Serializable  {
 			this.annotations = annotations;
 		}
 		
+		public Fragement stripFragement() {
+			return new Fragement(this.uid());
+		}
 
 }

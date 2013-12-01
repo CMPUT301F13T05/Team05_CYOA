@@ -20,15 +20,18 @@ package com.uofa.adventure_app.controller.http;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.UUID;
 
 import com.google.gson.Gson;
 import com.uofa.adventure_app.enums.HttpRequestType;
+import com.uofa.adventure_app.model.Fragement;
 import com.uofa.adventure_app.model.Story;
 
  public class HttpObjectStory {
 	
 	private static final String commonUrlString = "http://cmput301.softwareprocess.es:8080/cmput301f13t05/story/";
+	private static final String commonUrlFragement = "http://cmput301.softwareprocess.es:8080/cmput301f13t05/fragements/";
 
 
 	public HttpObject fetchAll() {
@@ -65,6 +68,21 @@ import com.uofa.adventure_app.model.Story;
 		}
 		return obj;
 	}
+	
+	public HttpObject fetchFragement(UUID id) {
+		// This should search all Fields
+		HttpObject obj = null;
+		//String searchQuery = "{\"query\" : {\"term\" : {\"_id\" : \"" + id.toString() + "\"}}}";
+		//searchQuery = "";
+		//String searchQuery = "{ \"query\": { \"match_all\": {}}}";
+		try {
+			obj = new HttpObject(HttpRequestType.POST, "" , new URL(commonUrlFragement+ "_search?q=_id:" + id.toString()));
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return obj;
+	}
 
 	/**
 	 * Publishes a Story to the Internet!
@@ -75,8 +93,22 @@ import com.uofa.adventure_app.model.Story;
 	public HttpObject publishObject(Story story) {
 		Gson gson = new Gson();
 		HttpObject obj = null;
+		
 		try {
 			obj = new HttpObject(HttpRequestType.POST, gson.toJson(story), new URL(commonUrlString + story.id()));
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return obj;
+	}
+	
+	public HttpObject publishFragement(Fragement fragement, UUID storyId) {
+		Gson gson = new Gson();
+		HttpObject obj = null;
+		
+		try {
+			obj = new HttpObject(HttpRequestType.POST, gson.toJson(fragement), new URL(commonUrlFragement + fragement.uid().toString()));
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

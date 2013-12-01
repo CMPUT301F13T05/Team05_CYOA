@@ -257,5 +257,17 @@ public class Story implements Serializable, Cloneable {
 		
 	}
 	
+	/**
+	 * Replaces fragment, if it does not exist than it is added
+	 * @param frag
+	 */
+	public void replaceFragement(Fragement frag) {
+		if(this.fragements.contains(frag)) {
+			int index = this.fragements.indexOf(frag);
+			this.fragements.set(index, frag);
+		} else {
+			this.fragements.add(frag);
+		}
+	}
 	
 }
