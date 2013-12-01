@@ -6,4 +6,5 @@ public interface DataReturn<T> {
 	
 	 public void dataReturn(ArrayList<T> result, String method);
 
+
 }

@@ -31,6 +31,7 @@ import android.widget.EditText;
 
 import com.uofa.adventure_app.application.AdventureApplication;
 import com.uofa.adventure_app.controller.ActivityController;
+import com.uofa.adventure_app.controller.FragementParser;
 import com.uofa.adventure_app.controller.StoryParser;
 import com.uofa.adventure_app.controller.WebServiceController;
 import com.uofa.adventure_app.controller.http.HttpObject;
@@ -45,6 +46,7 @@ public abstract class AdventureActivity extends Activity implements DataReturn<S
 	protected static final String GET_ALL_METHOD = "GET_ALL_METHOD";
 	protected static final String GET_METHOD = "GET_METHOD";
 	protected static final String POST_METHOD = "POST_METHOD";
+	protected static final String GET_FRAGEMENT = "GET_FRAGEMENT";
 	
 	ProgressDialog progDailog;
 	
@@ -85,10 +87,24 @@ public abstract class AdventureActivity extends Activity implements DataReturn<S
 	    return activeNetworkInfo != null && activeNetworkInfo.isConnected();
 	}
 	
+	/**
+	 * Used for Parsing a Story ONLY
+	 * @param httpObject
+	 * @param method
+	 */
 	protected void httpRequest(HttpObject httpObject, String method) {
 		if(this.isNetworkAvailable()) {
 			WebServiceController wsc = AdventureApplication.getWebServiceController();
 		new PerformHttp<Story>(this, method, wsc ,new StoryParser()).execute(httpObject);
+		} else {
+			// do nothing...
+		}
+	}
+	
+	protected void httpRequestFragement(HttpObject httpObject, String method) {
+		if(this.isNetworkAvailable()) {
+			WebServiceController wsc = AdventureApplication.getWebServiceController();
+		new PerformHttp<Story>(this, method, wsc ,new FragementParser()).execute(httpObject);
 		} else {
 			// do nothing...
 		}
@@ -147,7 +163,7 @@ public abstract class AdventureActivity extends Activity implements DataReturn<S
     }
 	
 	public void loadingWindow() {
-		progDailog = ProgressDialog.show(this, "Progress_bar or give anything you want", "Message");
+		progDailog = ProgressDialog.show(this, "Loading...", "");
 	}
 	
 	public void closeLoadingWindow() {

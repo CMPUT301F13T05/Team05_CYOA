@@ -20,15 +20,12 @@ package com.uofa.adventure_app.activity;
 
 import java.util.ArrayList;
 import java.util.Random;
-
+import java.util.concurrent.locks.Lock;
 
 import android.content.Intent;
-
 import android.graphics.Bitmap;
-
 import android.net.Uri;
 import android.os.Bundle;
-
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Gravity;
@@ -52,10 +49,11 @@ import com.uofa.adventure_app.model.Story;
 /**
  * Displays the Fragements in the story so that the user can read them.  
  * It allows the user to go to the next fragement of the users choosing
- * @author Kevin Lafond
+ * @author Kevin Lafond, Chris Pavlicek
+ * @param <T>
  *
  */
-public class StoryActivity extends AdventureActivity {
+public class StoryActivity<T> extends AdventureActivity {
 	TextView tileTextView;
 	TextView authorTextView;
 	TextView bodyTextView;
@@ -66,6 +64,10 @@ public class StoryActivity extends AdventureActivity {
 	Uri chosenImageUri;
 	Story currentStory;
 	Fragement currentFragement = null;
+	
+	// Used for Async Task
+	Fragement startFragement = null;
+	ArrayList<Fragement> fragements = null;
 
 	
 	@Override
@@ -80,9 +82,13 @@ public class StoryActivity extends AdventureActivity {
 
 		currentStory = AdventureApplication.getStoryController().currentStory();
 		
+		
+		
 		currentFragement = AdventureApplication.getStoryController().currentFragement();
 		bodyTextView.setText(currentFragement.body());
 
+		System.out.println(currentFragement);
+		
 		bodyTextView.setText(currentFragement.body());
 		String authors = "Author: " + currentStory.users().get(0).toString();
 		if (currentStory.users().size() > 1){
@@ -306,14 +312,11 @@ public class StoryActivity extends AdventureActivity {
 	     * updates the view
 	     */
 	public void updateView(){
+		   currentFragement = AdventureApplication.getStoryController().currentFragement();
+		   System.out.println(currentFragement);
 		   tileTextView.setText(currentFragement.getTitle());
 		   bodyTextView.setText(currentFragement.body());
 		   fillImageDisplay();
-	}
-
-	@Override
-	public void dataReturn(ArrayList<Story> result, String method) {
-			// TODO Auto-generated method stub
 	}
 
 
@@ -326,8 +329,26 @@ public class StoryActivity extends AdventureActivity {
     	if (currentStory.isLocal()){
     		currentStory.setIsLocal(false);
     		HttpObjectStory httpStory = new HttpObjectStory();
+    		fragements = currentStory.getFragements();
+    		ArrayList<Fragement> stripedFragements = new ArrayList<Fragement>();
+    		
+    		for(Fragement f: fragements) {
+    			stripedFragements.add(f.stripFragement());
+    		}
+    		
+    		startFragement = currentStory.startFragement();
+    		currentStory.setStartFragement(startFragement.stripFragement());
+    		
+    		// Strip fragements to have id only for publishing
+    		currentStory.setFragements(stripedFragements);
     		this.httpRequest(httpStory.publishObject(currentStory), "PUBLISH");
-    		currentStory.setIsLocal(true);
+    		
+    		System.out.println("Publishing Story: " + currentStory.id().toString());
+    		for (Fragement f: fragements){
+    			System.out.println("Publish Fragement ID "+ f.uid().toString());
+    			this.httpRequest(httpStory.publishFragement(f, currentStory.id()), "PUBLISH_FRAGEMENT");
+    		}
+    		
     	}
     }
 
@@ -377,6 +398,20 @@ public class StoryActivity extends AdventureActivity {
     	 listView.setGravity(Gravity.CENTER);
 
     }
+
+	@Override
+	public void dataReturn(ArrayList<Story> result, String method) {
+		if(method.equals("PUBLISH")) {
+    		// Reset Start for Local Use
+    		currentStory.setStartFragement(startFragement);
+    		// Set story back to fragements
+    		currentStory.setFragements(fragements);
+    		currentStory.setIsLocal(true);
+    		this.updateView();
+		}
+		// TODO Auto-generated method stub
+		
+	}
     
     
 }// end class

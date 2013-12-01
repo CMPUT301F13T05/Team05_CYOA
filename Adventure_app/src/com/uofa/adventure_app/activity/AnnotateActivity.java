@@ -180,6 +180,7 @@ public class AnnotateActivity extends AdventureActivity implements
 		AdventureApplication.getStoryController().currentFragement()
 				.addAnnotation(newAnnotation);
 		} else {
+			System.out.println("Replace");
 			AdventureApplication.getStoryController().currentFragement()
 			.replaceAnnotation(newAnnotation);
 		}
@@ -241,7 +242,7 @@ public class AnnotateActivity extends AdventureActivity implements
 	            folderF.mkdir();
 	     }
 	        
-	     String imageFilePath = folder + "/" + "Adventure_App" + String.valueOf(System.currentTimeMillis()) + "jpg";
+	     String imageFilePath = folder + "/" + "Adventure_App" + String.valueOf(System.currentTimeMillis()) + ".jpg";
 	     File imageFile = new File(imageFilePath);
 	     imageFileUri = Uri.fromFile(imageFile);
 	       System.out.println(imageFileUri.toString());
@@ -255,10 +256,14 @@ public class AnnotateActivity extends AdventureActivity implements
 			if (resultCode == RESULT_OK) {
 				System.out.println("Photo OK!");
                 try {
+                	
                     Bitmap bitmap = MediaStore.Images.Media.getBitmap(
                                     this.getContentResolver(), imageFileUri);
                     Bitmap resizedBitmap = Media.resizeImage(bitmap);
                     String image = Media.encodeToBase64(resizedBitmap);
+                    
+                    // Set null just to make sure it's reset
+                    newAnnotation.setAnnotationPic(null);
                     newAnnotation.setAnnotationPic(image);
                     saveAnnotation();
                 } catch (FileNotFoundException e) {

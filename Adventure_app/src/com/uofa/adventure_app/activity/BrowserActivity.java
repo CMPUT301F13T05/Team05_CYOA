@@ -35,6 +35,7 @@ import android.widget.Toast;
 
 import com.uofa.adventure_app.R;
 import com.uofa.adventure_app.application.AdventureApplication;
+import com.uofa.adventure_app.controller.FragementParser;
 import com.uofa.adventure_app.controller.http.HttpObjectStory;
 import com.uofa.adventure_app.interfaces.AdventureActivity;
 import com.uofa.adventure_app.model.Fragement;
@@ -220,7 +221,7 @@ public class BrowserActivity extends AdventureActivity {
 		}
 	}
 
-	@Override
+
 	/**
 	 * 
 	 * This is called every time the code checks json for an update.
@@ -228,10 +229,10 @@ public class BrowserActivity extends AdventureActivity {
 	 * @param String method
 	 * @param ArrayList<Story> result
 	 */
+	@Override
 	public void dataReturn(ArrayList<Story> result, String method) {
 		if(method.equals(GET_ALL_METHOD)) {
 			for(int i = 0; i < result.size(); i++ ) {
-				//System.out.println(result);
 					AdventureApplication.getStoryController().addStory(result.get(i));
 			}
 		      GridView grid = (GridView) findViewById(R.id.gridView1);
@@ -245,14 +246,18 @@ public class BrowserActivity extends AdventureActivity {
                               viewStory(v, AdventureApplication.getStoryController().stories().get(i));
                       }
               });
-		}
-		if(method.equals(GET_METHOD)) {
+		}else if(method.equals(GET_METHOD)) {
 			//System.out.println("RESULT " + result);
 			Story currentStory = result.get(0);
 			if(currentStory != null) {
 				currentStory.setIsLocal(true);
 				//System.out.println(currentStory.getFragements().get(0).getTitle());
 				AdventureApplication.getStoryController().replaceStory(currentStory);
+				
+				for (Fragement f : currentStory.getFragements()) {
+					HttpObjectStory httpStory = new HttpObjectStory();
+					this.httpRequestFragement(httpStory.fetchFragement(f.uid()), GET_FRAGEMENT);
+				}
 				
 				// Updates all views to proper content
 				AdventureApplication.getActivityController().update();
@@ -264,6 +269,26 @@ public class BrowserActivity extends AdventureActivity {
 				openStory(currentStory);
 
 			}
+		} else if(method.equals(GET_FRAGEMENT)) {
+			Story currentStory = AdventureApplication.getStoryController().currentStory();
+			if(result != null && result.get(0)  != null) {
+				ArrayList<Fragement> fragList = result.get(0).getFragements();
+				for(Fragement f : fragList) {
+						System.out.println("f : " + f.uid().toString());
+						currentStory.replaceFragement(f);
+						
+						if(currentStory.startFragement().equals(f)) {
+							currentStory.setStartFragement(f);
+						}
+						if(AdventureApplication.getStoryController().currentFragement().equals(f)) {
+							AdventureApplication.getStoryController().setCurrentFragement(f);
+						}
+				}
+				
+			}
+			AdventureApplication.getStoryController().replaceStory(currentStory);
+			AdventureApplication.getActivityController().update();
+			
 		}
 	}
 	 protected void openLastFragement() {

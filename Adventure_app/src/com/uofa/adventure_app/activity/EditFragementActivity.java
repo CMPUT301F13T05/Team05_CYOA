@@ -138,7 +138,7 @@ public class EditFragementActivity extends AdventureActivity {
 	}
 
 	@Override
-	public void dataReturn(ArrayList<Story> result, String method) {
+	public void dataReturn(ArrayList result, String method) {
 		// TODO Auto-generated method stub
 
 	}
