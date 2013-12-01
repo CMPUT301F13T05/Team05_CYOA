@@ -57,11 +57,15 @@ public class EditStoryActivity extends AdventureActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_edit_story);
 		list = (ListView) findViewById(R.id.fragments);
-		currentStory = AdventureApplication.getStoryController().currentStory();
 		EditText titleEditText = (EditText) findViewById(R.id.titletext);
+		currentStory = AdventureApplication.getStoryController().currentStory();
 		titleEditText.setText(AdventureApplication.getStoryController().currentStory().title());
-		if (!currentStory.users().contains(AdventureApplication.user()))
+		if (!currentStory.users().contains(AdventureApplication.user())){
+			currentStory = AdventureApplication.getStoryController().currentStory().localCopy();
+			AdventureApplication.getStoryController().setCurrentStory(currentStory);
+			AdventureApplication.getStoryController().saveStories();
 			currentStory.addUser(AdventureApplication.user());
+		}
 		String authors = "Author: " + currentStory.users().get(0).toString();
 		if (currentStory.users().size() > 1){
 			authors += "\nEdited by: ";
@@ -179,7 +183,7 @@ public class EditStoryActivity extends AdventureActivity {
 	 * updates the all of the views if changes are made.
 	 */
 	public void updateView(){
-		adapter.notifyDataSetChanged();
+		//adapter.notifyDataSetChanged();
 	}
 
 	@Override

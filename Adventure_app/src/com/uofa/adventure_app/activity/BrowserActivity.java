@@ -79,9 +79,10 @@ public class BrowserActivity extends AdventureActivity {
 		}
 		
 		HttpObjectStory httpStory = new HttpObjectStory();
-
+		
 		AdventureApplication.getStoryController().stories().clear();
 		AdventureApplication.getStoryController().loadStories();
+		
 		this.httpRequest(httpStory.fetchAll(), GET_ALL_METHOD);
 
 	}

@@ -79,14 +79,18 @@ public class EditFragementActivity extends AdventureActivity {
 		setContentView(R.layout.activity_edit_fragement);
 		Fragement currentFragement = AdventureApplication.getStoryController()
 				.currentFragement();
-		Story currentStory = AdventureApplication.getStoryController()
+		currentStory = AdventureApplication.getStoryController()
 		.currentStory();
 		currentView = this.findViewById(android.R.id.content);
 		TextView newauthor = (TextView) findViewById(R.id.newauthor);
 		// This is wrong.......
 		
-		if (!currentStory.users().contains(AdventureApplication.user()))
+		if (!currentStory.users().contains(AdventureApplication.user())){
+			currentStory = AdventureApplication.getStoryController().currentStory().localCopy();
+			AdventureApplication.getStoryController().setCurrentStory(currentStory);
+			AdventureApplication.getStoryController().saveStories();
 			currentStory.addUser(AdventureApplication.user());
+		}
 		String authors = "Author: " + currentStory.users().get(0).toString();
 		if (currentStory.users().size() > 1){
 			authors += "\nEdited by: ";

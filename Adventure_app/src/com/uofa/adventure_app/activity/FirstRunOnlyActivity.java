@@ -71,6 +71,7 @@ public class FirstRunOnlyActivity extends Activity {
 			if (username.length() > 15){
 				error.setText("The user name you entered is too long");
 			}else {
+				
 			getSharedPreferences("PREFERENCE", MODE_PRIVATE)
 			.edit()
 			.putString("username", username)
