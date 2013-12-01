@@ -18,12 +18,11 @@ ttt	Adventure App - Allows you to create an Adventure Book, or Download
  */
 package com.uofa.adventure_app.interfaces;
 
-import android.R;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.provider.ContactsContract.CommonDataKinds.Note;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
@@ -46,6 +45,8 @@ public abstract class AdventureActivity extends Activity implements DataReturn<S
 	protected static final String GET_ALL_METHOD = "GET_ALL_METHOD";
 	protected static final String GET_METHOD = "GET_METHOD";
 	protected static final String POST_METHOD = "POST_METHOD";
+	
+	ProgressDialog progDailog;
 	
 	/**
 	 * Creates a New Activity and adds itself to the Activity Controller
@@ -144,5 +145,15 @@ public abstract class AdventureActivity extends Activity implements DataReturn<S
         	return super.onKeyDown(keyCode, event);
         }
     }
+	
+	public void loadingWindow() {
+		progDailog = ProgressDialog.show(this, "Progress_bar or give anything you want", "Message");
+	}
+	
+	public void closeLoadingWindow() {
+		if(progDailog != null) {
+			progDailog.cancel();
+		}
+	}
 
 }
