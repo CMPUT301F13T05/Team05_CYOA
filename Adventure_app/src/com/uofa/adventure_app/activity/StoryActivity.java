@@ -317,8 +317,6 @@ public class StoryActivity extends AdventureActivity {
 	 * CHanges the screen to the Browse View
 	 */
 	public void browseView(){
-		AdventureApplication.getActivityController().getActivityStack().clear();
-		AdventureApplication.getActivityController().setActivityStack(new ArrayList<AdventureActivity>());
 		Intent myIntent = new Intent(this, BrowserActivity.class);
 		this.startActivity(myIntent);
 	}
@@ -526,7 +524,7 @@ public class StoryActivity extends AdventureActivity {
     public void fillImageDisplay(){
     	ArrayList<Media> fragementImages = currentFragement.media();
 
-    	LinearLayout listView = (LinearLayout) findViewById(R.id.image_layout);
+    	LinearLayout listView = (LinearLayout) findViewById(R.id.imageItemView);
     	listView.removeAllViews();
     	 for (int i = 0; i < fragementImages.size(); i++) {
              Media mediaImage = fragementImages.get(i);
@@ -539,7 +537,7 @@ public class StoryActivity extends AdventureActivity {
                      listView.addView(image);
              }
      }
-    	 //listView.setGravity(Gravity.CENTER);
+    	 listView.setGravity(Gravity.CENTER);
 
     }
     

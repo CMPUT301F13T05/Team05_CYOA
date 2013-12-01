@@ -19,24 +19,25 @@
 package com.uofa.adventure_app.activity;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
 
-import android.content.Intent;
+import android.app.Dialog;
 import android.os.Bundle;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.uofa.adventure_app.R;
 import com.uofa.adventure_app.application.AdventureApplication;
-import com.uofa.adventure_app.controller.http.HttpObjectStory;
 import com.uofa.adventure_app.interfaces.AdventureActivity;
 import com.uofa.adventure_app.model.Annotation;
 import com.uofa.adventure_app.model.Story;
@@ -55,6 +56,7 @@ public class AnnotateActivity extends AdventureActivity implements
 
    ListView listView;
    ArrayList<Annotation> rowItems;
+   Annotation newAnnotation = null;
 
    /** Called when the activity is first created. */
    @Override
@@ -70,6 +72,12 @@ public class AnnotateActivity extends AdventureActivity implements
                R.layout.list_item, rowItems);
        listView.setAdapter(adapter);
        listView.setOnItemClickListener(this);
+       
+       EditText editTextView = (EditText) findViewById(R.id.editText);
+       
+       newAnnotation = new Annotation(AdventureApplication.user());
+       
+       //alertBox();
    }
 
    @Override
@@ -85,7 +93,7 @@ public class AnnotateActivity extends AdventureActivity implements
 		// Handle presses on the action bar items
 		switch (item.getItemId()) {
 		case R.id.newAnnotation:
-			System.out.println("New Annotation");
+			alertBox();
 			break;
 		case R.id.choosemedia:
 			System.out.println("Choose Media");
@@ -99,6 +107,42 @@ public class AnnotateActivity extends AdventureActivity implements
 		return super.onOptionsItemSelected(item);
 	}
    
+	public void alertBox() {
+
+		 final Dialog dialog = new Dialog(this,R.style.DialogTheme);
+		 LayoutInflater inflater = this.getLayoutInflater();
+		 dialog.setTitle("Create an Annotation");
+		 View alertView = inflater.inflate(R.layout.annotate_alert, null);
+	        
+        TextView authorText = (TextView)alertView.findViewById(R.id.alertTitleAnnotation);
+        authorText.setText("User: " + AdventureApplication.user().getName());
+        
+        EditText editTextView = (EditText) alertView.findViewById(R.id.editText);
+        editTextView.addTextChangedListener(new GenericTextWatcher(editTextView));
+        
+        alertView.findViewById(R.id.cancelAnnotation).setOnClickListener(
+        		new Button.OnClickListener() {  
+        	        public void onClick(View v)
+        	            {
+        	                dialog.dismiss();
+        	            }});
+        	            
+       alertView.findViewById(R.id.okAnnotation).setOnClickListener(
+        	            		new Button.OnClickListener() {  
+        	            	        public void onClick(View v)
+        	            	            {
+        	            	                AdventureApplication.getStoryController().currentFragement().addAnnotation(newAnnotation);
+        	            	    }});
+        
+        
+        
+        dialog.setContentView(alertView);
+    	dialog.show();
+       
+    	
+    	
+	}
+	
    @Override
    public void onItemClick(AdapterView<?> parent, View view, int position,
            long id) {
@@ -129,7 +173,15 @@ protected void openLastFragement() {
 
 @Override
 protected void saveTextForView(View v, String text) {
-	// TODO Auto-generated method stub
-	
+
+	switch (v.getId()) {
+	case R.id.editText:
+		newAnnotation.setAnnotationString(text);
+	default:
+		break;
+	}
+
+	AdventureApplication.getActivityController().update();
+
 }
 }
