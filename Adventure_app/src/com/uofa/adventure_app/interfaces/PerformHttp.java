@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import android.os.AsyncTask;
 
+import com.uofa.adventure_app.application.AdventureApplication;
 import com.uofa.adventure_app.controller.WebServiceController;
 import com.uofa.adventure_app.controller.http.HttpObject;
 
@@ -12,7 +13,7 @@ import com.uofa.adventure_app.controller.http.HttpObject;
  * @author chris
  *
  */
-	public class PerformHttp<T> extends AsyncTask<HttpObject, Void, ArrayList<T>> {
+	public class PerformHttp<T> extends AsyncTask<HttpObject, Integer, ArrayList<T>> {
 
 
 		DataReturn<T> activity = null;
@@ -30,14 +31,27 @@ import com.uofa.adventure_app.controller.http.HttpObject;
 		protected ArrayList<T> doInBackground(HttpObject... httpObj) {
 			ArrayList<T> stories = new ArrayList<T>();
 			stories.clear();
-			if(httpObj[0] != null)
+			
+			if(httpObj[0] != null) {
+				publishProgress(0);
 				return parser.parse(webServiceController.httpWithType(httpObj[0]));
-			else
+			} else {
+				publishProgress(0);
 				return stories;
+			}
 			
 		}
 
+		 protected void onProgressUpdate(Integer... progress) {
+	         for(AdventureActivity a : AdventureApplication.getActivityController().openActivities()) {
+	        	 a.loadingWindow();
+	         }
+	     }
+		
 		protected void onPostExecute(ArrayList<T> result) {
+	         for(AdventureActivity a : AdventureApplication.getActivityController().openActivities()) {
+	        	 a.closeLoadingWindow();
+	         }
 			activity.dataReturn(result,method); 
 		}
 

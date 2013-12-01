@@ -228,10 +228,15 @@ public class Fragement extends UniqueId implements Serializable  {
 		 * @param a
 		 */
 		public void addAnnotation(Annotation a) {
-			this.annotations().add(a);
+				this.annotations().add(a);
 		}
 
-		
+		public void replaceAnnotation(Annotation a) {
+			if(annotations.contains(a)) {
+				int index = this.annotations.indexOf(a);
+				this.annotations.set(index, a);
+			}
+		}
 		/**
 		 * @param annotations the annotations to set
 		 */
