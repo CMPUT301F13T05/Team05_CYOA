@@ -82,8 +82,11 @@ public class StoryGridAdapter extends BaseAdapter {
 
 	@Override
 	public Object getItem(int position) {
-
-		return this.stories.get(position);
+		if(this.stories != null) {
+			return this.stories.get(position);
+		} else {
+			return null;
+		}
 
 	}
 
@@ -96,8 +99,8 @@ public class StoryGridAdapter extends BaseAdapter {
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-
 		// Setup the multi line items in a listview
+		if(this.stories != null) {
 		if (convertView == null) {
 
 			convertView = mInflater.inflate(R.layout.browser_item, parent,
@@ -132,7 +135,7 @@ public class StoryGridAdapter extends BaseAdapter {
 				}
 			sub.setText(authors);
 		}
-
+		}
 		return convertView;
 	}
 

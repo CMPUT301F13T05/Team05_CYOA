@@ -124,8 +124,6 @@ public class StoryController {
 		this.previousFragementList.clear();
 	}
 	
-
-	
 	public void addStory(Story story) {
 		if(!stories.contains(story)) {
 			this.stories.add(story);
@@ -159,10 +157,17 @@ public class StoryController {
 	 */
 	public void saveStories() {
 		// Use file stream to save our array object.
+		ArrayList<Story> tempArray = new ArrayList<Story>();
+		for(Story s: AdventureApplication.getStoryController().stories()) {
+			if(s.isLocal()) {
+				tempArray.add(s);
+			}
+		}
+		
 				try {
 					FileOutputStream fos =  AdventureApplication.context().openFileOutput(FILENAME, 0);
 					ObjectOutputStream oos = new ObjectOutputStream(fos);
-					oos.writeObject(AdventureApplication.getStoryController().stories());
+					oos.writeObject(tempArray);
 					fos.close();
 				} catch (FileNotFoundException e) {
 					// TODO Auto-generated catch block
@@ -171,6 +176,7 @@ public class StoryController {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
+			tempArray = null;
 	}
 	
 	/**
@@ -183,7 +189,7 @@ public class StoryController {
 
 			ObjectInputStream ois = new ObjectInputStream(fis);
 			while (true) {
-				result = (ArrayList) ois.readObject();
+				result.addAll((ArrayList) ois.readObject());
 			}
 
 		} catch (FileNotFoundException e) {
@@ -196,6 +202,7 @@ public class StoryController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		System.out.println(result);
 		this.setStories(result);
 	}
 	

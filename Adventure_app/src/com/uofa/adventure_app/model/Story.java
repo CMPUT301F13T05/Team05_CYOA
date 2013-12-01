@@ -245,7 +245,7 @@ public class Story implements Serializable, Cloneable {
 			{
 			ArrayList<Choice> copyChoices = new ArrayList<Choice>();
 			for (Choice c : f.choices()) {
-					UUID oldUid = uidMap.get(c.getChoice().uid());
+					UUID oldUid = uidMap.get(c.getChoiceId());
 					Fragement newFragementChoice = copyFragements.get(copyFragements.indexOf(new Fragement(oldUid)));
 					c.setChoice(newFragementChoice);
 				}
@@ -255,6 +255,22 @@ public class Story implements Serializable, Cloneable {
 		
 		return s;
 		
+	}
+	
+	/**
+	 * Returns the fragement with the assosiated UUID,
+	 * if it does not exist null is returned.
+	 * @param UUID id
+	 * @return Fragement
+	 */
+	public Fragement fragementWithId(UUID id) {
+		Fragement compareFrag = new Fragement(id);
+		if(this.fragements.contains(compareFrag)) {
+			int index = this.fragements.indexOf(compareFrag);	
+			return this.fragements.get(index);
+		} else {
+			return null;
+		}
 	}
 	
 	/**

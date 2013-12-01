@@ -22,14 +22,11 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-
-import org.json.JSONObject;
-
-import android.app.Fragment;
+import java.util.UUID;
 
 public class Choice implements Serializable {
 	
-	private Fragement fragment;
+	private UUID fragId;
 	
 	/**
 	 * 
@@ -37,7 +34,7 @@ public class Choice implements Serializable {
 	 */
 	public Choice(Fragement frag)
 	{
-		this.fragment = frag;
+		this.fragId = frag.uid();
 	}
 	
 	/**
@@ -46,16 +43,16 @@ public class Choice implements Serializable {
 	 */
 	public void setChoice(Fragement frag)
 	{
-		this.fragment = frag;
+		this.fragId = frag.uid();
 	}
 
 	/**
 	 * getter
 	 * @return the choice for this fragment
 	 */
-	public Fragement getChoice()
+	public UUID getChoiceId()
 	{
-		 return this.fragment;
+		 return this.fragId;
 	}
 	
 	/**
@@ -85,7 +82,7 @@ public class Choice implements Serializable {
 		// TODO Auto-generated method stub
 		if(o.getClass().equals(this.getClass())) {
 			Choice frag = (Choice) o;
-			if (this.getChoice().equals(frag.getChoice()))
+			if (this.getChoiceId().equals(frag.getChoiceId()))
 				return true;
 			else
 				return false;

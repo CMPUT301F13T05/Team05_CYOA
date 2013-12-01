@@ -20,7 +20,7 @@ package com.uofa.adventure_app.activity;
 
 import java.util.ArrayList;
 import java.util.Random;
-import java.util.concurrent.locks.Lock;
+import java.util.UUID;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -145,7 +145,9 @@ public class StoryActivity<T> extends AdventureActivity {
 			menu.setHeaderTitle("Choices");
 			int counter = 0;
 			for(Choice f : currentFragement.choices()) {
-				menu.add(0, counter, 0, f.getChoice().getTitle());
+				UUID fragId  = f.getChoiceId();
+				String title = AdventureApplication.getStoryController().currentStory().fragementWithId(fragId).getTitle();
+				menu.add(0, counter, 0, title);
 				counter++;
 			}
 			if (currentFragement.getRandomflag()){
@@ -255,8 +257,13 @@ public class StoryActivity<T> extends AdventureActivity {
 		
 		if(item.getGroupId() == 0 && item.getItemId() != R.id.cancel && item.getGroupId() != 1) {
 			// TODO: This needs to be refactored....
-			Fragement frag = AdventureApplication.getStoryController().currentFragement().choices().get(item.getItemId()).getChoice();
-			openFragement(frag);
+			UUID fragId = AdventureApplication.getStoryController().currentFragement().choices().get(item.getItemId()).getChoiceId();
+			Fragement frag = AdventureApplication.getStoryController().currentStory().fragementWithId(fragId);
+			if(frag != null) {
+				openFragement(frag);
+			} else {
+				System.err.println("Could not load Fragement with uid, " + fragId);
+			}
 			
 		} else 
 			if (item.getGroupId() == 1){
@@ -268,13 +275,17 @@ public class StoryActivity<T> extends AdventureActivity {
 			}else
 				if(size == 1){
 					n = 0;
-					openFragement(AdventureApplication.getStoryController().currentFragement().choices().get(n).getChoice());
+					UUID fragId = AdventureApplication.getStoryController().currentFragement().choices().get(n).getChoiceId();
+					Fragement f = AdventureApplication.getStoryController().currentStory().fragementWithId(fragId);
+					openFragement(f);
 				}else{
 					Toast toast = Toast.makeText(this, "This story doesn't have any fragments to choose from", Toast.LENGTH_SHORT);
 					toast.show();
 				}
 			if(size != 0){
-				openFragement(AdventureApplication.getStoryController().currentFragement().choices().get(n).getChoice());
+				UUID fragId = AdventureApplication.getStoryController().currentFragement().choices().get(n).getChoiceId();
+				Fragement f = AdventureApplication.getStoryController().currentStory().fragementWithId(fragId);
+				openFragement(f);
 			}
 		} else{
 
