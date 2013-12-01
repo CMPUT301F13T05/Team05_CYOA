@@ -63,6 +63,7 @@ public class EditStoryActivity extends AdventureActivity {
 		if (!currentStory.users().contains(AdventureApplication.user())){
 			currentStory = AdventureApplication.getStoryController().currentStory().localCopy();
 			AdventureApplication.getStoryController().setCurrentStory(currentStory);
+			AdventureApplication.getStoryController().addStory(currentStory);
 			AdventureApplication.getStoryController().saveStories();
 			currentStory.addUser(AdventureApplication.user());
 		}
