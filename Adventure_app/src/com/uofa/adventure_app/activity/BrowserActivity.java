@@ -100,6 +100,8 @@ public class BrowserActivity extends AdventureActivity {
 		s.setStartFragement(f);
 		this.httpRequest(httpStory.publishObject(s), "PUBLISH");
 		}*/
+		AdventureApplication.getStoryController().stories().clear();
+		AdventureApplication.getStoryController().loadStories();
 		this.httpRequest(httpStory.fetchAll(), GET_ALL_METHOD);
 
 	}
@@ -249,8 +251,6 @@ public class BrowserActivity extends AdventureActivity {
 	 */
 	public void dataReturn(ArrayList<Story> result, String method) {
 		if(method.equals(GET_ALL_METHOD)) {
-			AdventureApplication.getStoryController().stories().clear();
-			AdventureApplication.getStoryController().loadStories();
 			for(int i = 0; i < result.size(); i++ ) {
 				//System.out.println(result);
 					AdventureApplication.getStoryController().addStory(result.get(i));
@@ -289,6 +289,7 @@ public class BrowserActivity extends AdventureActivity {
 	}
 	 protected void openLastFragement() {
 		 // Nothing Happens here.
+		 finish();
 	 }
 	 
 	protected void saveTextForView(View v, String text) {

@@ -54,6 +54,10 @@ public class ActivityController {
 		activities.remove(activity);
 	}
 	
+	public ArrayList<AdventureActivity> openActivities() {
+		return this.activities;
+	}
+	
 	public void update() {
 		for(AdventureActivity a: activities) {
 			a.updateView();

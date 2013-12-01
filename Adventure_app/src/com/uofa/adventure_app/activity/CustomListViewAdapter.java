@@ -54,10 +54,16 @@ public class CustomListViewAdapter extends ArrayAdapter<Annotation> {
         } else
             holder = (ViewHolder) convertView.getTag();
         
-        holder.txtDesc.setText(rowItem.annotationString());
-        holder.txtTitle.setText(rowItem.user().getName());
-        Bitmap bitmap = Media.decodeBase64(rowItem.media().toString());
-        holder.imageView.setImageBitmap(bitmap);
+        if(rowItem.annotationString() != null) {
+        	holder.txtDesc.setText(rowItem.annotationString());
+        }
+        if(rowItem.user().getName() != null) {
+        	holder.txtTitle.setText("By: " + rowItem.user().getName());
+        }
+        if(rowItem.media() != null) {
+        	Bitmap bitmap = Media.decodeBase64(rowItem.media().toString());
+        	holder.imageView.setImageBitmap(bitmap);
+        }
  
         return convertView;
     }
