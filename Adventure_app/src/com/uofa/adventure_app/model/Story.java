@@ -222,7 +222,7 @@ public class Story implements Serializable, Cloneable {
 			s.addUser(user);
 		}
 		s.addUser(AdventureApplication.user());
-		
+		ArrayList<Fragement> copyFragements = new ArrayList<Fragement>();
 		//for(User user: s.users()) {
 		//System.out.println(user.uid().toString());
 		//}
@@ -234,12 +234,13 @@ public class Story implements Serializable, Cloneable {
 		if(this.startFragement() != null) {
 			Fragement startFragement = this.startFragement().localCopy();
 			s.setStartFragement(startFragement);
+			copyFragements.add(startFragement);
 			uidMap.put(this.startFragement().uid(), startFragement.uid());
 		} else {
 			return null;
 		}
 		
-		ArrayList<Fragement> copyFragements = new ArrayList<Fragement>();
+		
 		for (Fragement f : this.getFragements()) 
 		{
 			if(!f.equals(startFragement)) {
