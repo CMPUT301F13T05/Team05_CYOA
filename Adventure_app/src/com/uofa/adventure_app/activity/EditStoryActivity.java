@@ -29,7 +29,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -126,9 +125,6 @@ public class EditStoryActivity extends AdventureActivity {
 			ContextMenuInfo menuInfo) {
 
 		super.onCreateContextMenu(menu, v, menuInfo);
-		AdapterContextMenuInfo aInfo = (AdapterContextMenuInfo) menuInfo;
-
-		
 		// Style our context menu
 		menu.setHeaderIcon(android.R.drawable.ic_input_get);
 		menu.setHeaderTitle("Options");

@@ -34,7 +34,7 @@ public class Annotation extends UniqueId implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	// the video, audio, or image 
-	private Media media;
+	private String media;
 	
 	// same as user
 	private User user;
@@ -50,7 +50,7 @@ public class Annotation extends UniqueId implements Serializable {
 	
 	
 	public void setAnnotationPic(String annotation){
-		
+		this.media = annotation;
 	}
 
 	/**
@@ -111,15 +111,9 @@ public class Annotation extends UniqueId implements Serializable {
 	/**
 	 * @return the media
 	 */
-	public Media media() {
+	public String media() {
 		return media;
 	}
 
 
-	/**
-	 * @param media the media to set
-	 */
-	public void setMedia(Media media) {
-		this.media = media;
-	}
 }

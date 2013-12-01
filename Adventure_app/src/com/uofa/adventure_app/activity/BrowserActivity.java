@@ -54,7 +54,6 @@ public class BrowserActivity extends AdventureActivity {
 	View v;
 	TextView search;
 	String searchQuery = "";
-	private ArrayList<Story> stories = AdventureApplication.getStoryController().stories();
 	SearchView searchView;
 	 
 	@Override
@@ -62,7 +61,6 @@ public class BrowserActivity extends AdventureActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_browser);
 		v = this.findViewById(android.R.id.content);
-		View menuView = (View)this.findViewById(R.menu.main);
 		
 		boolean firstrun = getSharedPreferences("PREFERENCE", MODE_PRIVATE).getBoolean("firstrun", true);
 		/*
@@ -80,26 +78,7 @@ public class BrowserActivity extends AdventureActivity {
 		}
 		
 		HttpObjectStory httpStory = new HttpObjectStory();
-		/*
-		for(int i = 0; i < 10; i ++) {
-		Story s = new Story();
-		s.setTitle("This is a Random Title" + i);
-		s.addUser(new User("User" + i));
-		s.addFragement(new Fragement("Title1","Body1",1));
-		s.addFragement(new Fragement("Title2","Body2",1));
-		s.addFragement(new Fragement("Title3","Body3",1));
-		s.addFragement(new Fragement("Title4","Body4",1));
-		Fragement f = new Fragement("Has Choices", "COOL", 2);
-		Fragement f2 = new Fragement("TileC1", "Bodyc1", 3);
-		Fragement f3 = new Fragement("TileC2", "Bodyc2", 3);
-		s.addFragement(f2);
-		s.addFragement(f3);
-		f.addChoice(new Choice(f2));
-		f.addChoice(new Choice(f3));
-		s.addFragement(f);
-		s.setStartFragement(f);
-		this.httpRequest(httpStory.publishObject(s), "PUBLISH");
-		}*/
+
 		AdventureApplication.getStoryController().stories().clear();
 		AdventureApplication.getStoryController().loadStories();
 		this.httpRequest(httpStory.fetchAll(), GET_ALL_METHOD);

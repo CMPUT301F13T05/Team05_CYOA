@@ -17,25 +17,18 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 package com.uofa.adventure_app.activity;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+
 import java.util.ArrayList;
 import java.util.Random;
-import java.util.UUID;
 
-import android.content.Context;
+
 import android.content.Intent;
-import android.database.Cursor;
+
 import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
+
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
-import android.provider.MediaStore;
+
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Gravity;
@@ -43,8 +36,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView.AdapterContextMenuInfo;
-import android.widget.Gallery;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -75,12 +66,12 @@ public class StoryActivity extends AdventureActivity {
 	Uri chosenImageUri;
 	Story currentStory;
 	Fragement currentFragement = null;
-	private static final int PICK_IMAGE = 1111; 
+
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		UUID storyID = null;
+
 		setContentView(R.layout.activity_story);
 		tileTextView = (TextView) findViewById(R.id.titleview);
 		authorTextView = (TextView) findViewById(R.id.authorview);
@@ -91,8 +82,6 @@ public class StoryActivity extends AdventureActivity {
 		
 		currentFragement = AdventureApplication.getStoryController().currentFragement();
 		bodyTextView.setText(currentFragement.body());
-		ArrayList<Media> media = currentFragement.media();
-		//imageView.setImageDrawable(Drawable.createFromPath(media.get(media.firstKey()).path()));
 
 		bodyTextView.setText(currentFragement.body());
 		String authors = "Author: " + currentStory.users().get(0).toString();
@@ -130,7 +119,7 @@ public class StoryActivity extends AdventureActivity {
 			ContextMenuInfo menuInfo) {
 		//
 		if (!choice.equals("CHOICE")){
-			AdapterContextMenuInfo aInfo = (AdapterContextMenuInfo) menuInfo;	
+
 
 			// Style our context menu
 			menu.setHeaderIcon(android.R.drawable.ic_input_get);
@@ -141,7 +130,6 @@ public class StoryActivity extends AdventureActivity {
 			inflater1.inflate(R.menu.annotatemenu, menu);
 		}else{
 			
-			AdapterContextMenuInfo aInfo = (AdapterContextMenuInfo) menuInfo;
 			//menu.clearHeader();
 			menu.clearHeader();
 			menu.clear();
@@ -283,19 +271,11 @@ public class StoryActivity extends AdventureActivity {
 				openFragement(AdventureApplication.getStoryController().currentFragement().choices().get(n).getChoice());
 			}
 		} else{
-		
-		switch (item.getItemId()) {
-		case R.id.takepic:
-			takeAPhoto();
-			break;
-		case R.id.choosemedia:
-			chooseImage();
-			break;
-		default:
+
 
 			return super.onContextItemSelected(item);
 	}
-		}
+		
 	return super.onContextItemSelected(item);
 		
 	}
@@ -321,111 +301,7 @@ public class StoryActivity extends AdventureActivity {
 		this.startActivity(myIntent);
 	}
 
-	 private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
-	    /**
-	     * Opens the camera and allows the user to take a picture if they so choose
-	     */
-	 public void takeAPhoto() {
-		 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-	        
-	     String folder = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Adventure_App";
-	     File folderF = new File(folder);
-	     
-	     if (!folderF.exists()) {
-	            folderF.mkdir();
-	     }
-	        
-	     String imageFilePath = folder + "/" + "Adventure_App" + String.valueOf(System.currentTimeMillis()) + "jpg";
-	     File imageFile = new File(imageFilePath);
-	     imageFileUri = Uri.fromFile(imageFile);
-	        
-	     intent.putExtra(MediaStore.EXTRA_OUTPUT, imageFileUri);
-	     startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
-	 }
-	 
-	    /**
-	     * Method for choosing media, invoked via context menu Annotate. 
-	     * Author - Joel Malina
-	     */
-	    public void chooseImage()
-	    {
-	    	Intent pickImage = new Intent();
-	    	pickImage.setType("image/*");
-	    	pickImage.setAction(Intent.ACTION_GET_CONTENT);
-	    	startActivityForResult(Intent.createChooser(pickImage, "Select Picture"), PICK_IMAGE);
-	    }
-	    // handles takeAPhoto return
-	    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-	        if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
-	           //TextView tv = (TextView) findViewById(R.id.status);
-	            if (resultCode == RESULT_OK) {
-	                // System.out.println("Photo OK!");
-	            	// putting photo into imageview
-	                ImageView annotation = (ImageView) findViewById(R.id.annotation);
-	                annotation.setImageDrawable(Drawable.createFromPath(imageFileUri.getPath()));
-	                
-	                // adding path & fragment the image belongs to into local Database
-	                //LocalStorageController lts = new LocalStorageController(this);
-	                String imageId = UUID.randomUUID().toString();
-	                
-	                // make sure things are safe incrementally (can take out later)
-	                assert(currentStory != null);
-	                assert(currentStory.startFragement() != null);
-	                assert(currentStory.startFragement().uid() != null);
-	                assert(currentFragement.uid().toString() != null);
-	                
-	                // currentStory.startFragement().uid().toString() // another option that should technically get the same thing in this one case
-	                //localStorageController.insertImage( imageId, imageFileUri.getPath().toString(), 0, currentFragement.uid().toString());
-	                
-	               // localStorageController.getImage(currentFragement.uid().toString());
-	                
-	            } else if (resultCode == RESULT_CANCELED) {
-	                System.out.println("Photo canceled");
-	            } else {
-	                System.out.println("Not sure what happened!" + resultCode);
-	            }
-	        }
-	        
-	        // handles selecting an image from app of users choice (usually gallery).
-	        if ((requestCode == PICK_IMAGE) && (resultCode == RESULT_OK) && (data != null))
-	        {
-	            chosenImageUri = data.getData();
-	           // chosenImageUri
-	            ImageView annotation = (ImageView) findViewById(R.id.annotation);
-                annotation.setImageURI(chosenImageUri);
-	          
-	            String path = chosenImageUri.getPath();
-	            System.out.println("SO I THINK I MADE CHOOSING MEDIA WORK BUT TO MAKE SURE I NEED TO SEE WHERE IT'S AT PATH: " + path + "/</,?<?,?,?<?,/,/,/,/,?<?<");
-	          //  Toast.MakeText(this, path, ToastLength.Long);
-	            
-	            String folder = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Adventure_App/Images";
-	            File folderF = new File(folder);
-	   	     
-	            if (!folderF.exists()) {
-	   	            folderF.mkdir();
-	            }
-	   	        
-	   	     	String imageFilePath = folder + "/" + "Adventure_App" + String.valueOf(System.currentTimeMillis()) + "jpg";
-	   	        // File imageFile = new File(imageFilePath);
-	   	        // imageFileUri = Uri.fromFile(imageFile);
-	   	        // imageFileUri = chosenImageUri;
-	   	     	//File imageView = new File(imageFilePath);
-	   	     	//chosenImageUri = Uri.fromFile(imageView);
-	   	     	
-	   	     
-	            try {
-	            // copyfile from gallery location to our app!
-					copyFile( getRealPathFromURI(this, chosenImageUri), imageFilePath);
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-	            
-	            String imageId = UUID.randomUUID().toString();
-	           // localStorageController.insertImage( imageId, imageFilePath, 0, currentFragement.uid().toString());
-                
-	        }
-	    }
-	    
+   
 	    /**
 	     * updates the view
 	     */
@@ -440,48 +316,9 @@ public class StoryActivity extends AdventureActivity {
 			// TODO Auto-generated method stub
 	}
 
-	/**
-	 * 
-	 * @param selectedImagePath - Path of image to be copied
-	 * @param string - Path of where the image is to be coppied to
-	 * @throws IOException
-	 */
-    public void copyFile(String selectedImagePath, String string) throws IOException {
-        InputStream in = new FileInputStream(selectedImagePath);
-        OutputStream out = new FileOutputStream(string);
-        
-        System.out.println("I'VE GOT WHAT YOU NEED, WELL AT LEAST I HOPE I DO HERE IS THE IMAGE FILE PATHS I GOT: FROM:" + selectedImagePath + " and here is where it's going to: " + string + " yup that's it");
-        
-        // Transfer bytes from in to out
-        byte[] buf = new byte[1024];
-        int len;
-        while ((len = in.read(buf)) > 0) {
-            out.write(buf, 0, len);
-        }
-        in.close();
-        out.close();
-      }
+
     
-/**
- * from http://stackoverflow.com/questions/3401579/get-filename-and-path-from-uri-from-mediastore
- * @param context
- * @param contentUri
- * @return
- */
-    public String getRealPathFromURI(Context context, Uri contentUri) {
-    	Cursor cursor = null;
-    	try { 
-    		String[] proj = { MediaStore.Images.Media.DATA };
-    		cursor = context.getContentResolver().query(contentUri,  proj, null, null, null);
-    		int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-    		cursor.moveToFirst();
-    		return cursor.getString(column_index);
-    	} finally {
-    		if (cursor != null) {
-    			cursor.close();
-    		}
-    	}
-    }
+
     /**
      * publishes the current story being read to the server.
      */

@@ -28,15 +28,8 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.uofa.adventure_app.R;
-import com.uofa.adventure_app.application.AdventureApplication;
-import com.uofa.adventure_app.controller.StoryParser;
-import com.uofa.adventure_app.controller.WebServiceController;
-import com.uofa.adventure_app.controller.http.HttpObject;
-import com.uofa.adventure_app.controller.http.HttpObjectStory;
-import com.uofa.adventure_app.interfaces.DataReturn;
-import com.uofa.adventure_app.interfaces.PerformHttp;
 import com.uofa.adventure_app.model.Story;
-import com.uofa.adventure_app.model.User;
+
 /**
  * Adapter for the Browse view Story list.
  * Displays all of the Stories in an organized and good

@@ -61,7 +61,7 @@ public class CustomListViewAdapter extends ArrayAdapter<Annotation> {
         	holder.txtTitle.setText("By: " + rowItem.user().getName());
         }
         if(rowItem.media() != null) {
-        	Bitmap bitmap = Media.decodeBase64(rowItem.media().toString());
+        	Bitmap bitmap = Media.decodeBase64(rowItem.media());
         	holder.imageView.setImageBitmap(bitmap);
         }
  

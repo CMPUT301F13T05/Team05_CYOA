@@ -18,11 +18,20 @@
  */
 package com.uofa.adventure_app.activity;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 
+
 import android.app.Dialog;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
-import android.view.Gravity;
+import android.os.Environment;
+import android.provider.MediaStore;
+
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -32,14 +41,16 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
+
 
 import com.uofa.adventure_app.R;
 import com.uofa.adventure_app.application.AdventureApplication;
 import com.uofa.adventure_app.interfaces.AdventureActivity;
 import com.uofa.adventure_app.model.Annotation;
+import com.uofa.adventure_app.model.Media;
 import com.uofa.adventure_app.model.Story;
 
 /**
@@ -60,6 +71,10 @@ public class AnnotateActivity extends AdventureActivity implements
 	Annotation newAnnotation = null;
 	boolean isNewAnnotation = false;
 	CustomListViewAdapter adapter;
+	Uri chosenImageUri;
+	Uri imageFileUri;
+	private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
+	private static final int PICK_IMAGE = 1111; 
 
 	/** Called when the activity is first created. */
 	@Override
@@ -96,10 +111,10 @@ public class AnnotateActivity extends AdventureActivity implements
 			alertBox();
 			break;
 		case R.id.choosemedia:
-			System.out.println("Choose Media");
+			chooseImage();			
 			break;
 		case R.id.takepic:
-			System.out.println("Take Pic");
+			takeAPhoto();
 			break;
 		default:
 			return super.onOptionsItemSelected(item);
@@ -142,14 +157,14 @@ public class AnnotateActivity extends AdventureActivity implements
 		alertView.findViewById(R.id.chooseMedia).setOnClickListener(
 				new Button.OnClickListener() {
 					public void onClick(View v) {
-						addMedia();
+						chooseImage();
 					}
 				});
 
 		alertView.findViewById(R.id.takePicture).setOnClickListener(
 				new Button.OnClickListener() {
 					public void onClick(View v) {
-						takePicture();
+						takeAPhoto();
 					}
 				});
 
@@ -158,13 +173,7 @@ public class AnnotateActivity extends AdventureActivity implements
 
 	}
 
-	public void addMedia() {
 
-	}
-
-	public void takePicture() {
-
-	}
 
 	public void saveAnnotation() {
 		if(isNewAnnotation) {
@@ -219,4 +228,93 @@ public class AnnotateActivity extends AdventureActivity implements
 		AdventureApplication.getActivityController().update();
 
 	}
+	/**
+	 * Takes the photo with the camera
+	 */
+	public void takeAPhoto() {
+		 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+	        
+	     String folder = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Adventure_App";
+	     File folderF = new File(folder);
+	     
+	     if (!folderF.exists()) {
+	            folderF.mkdir();
+	     }
+	        
+	     String imageFilePath = folder + "/" + "Adventure_App" + String.valueOf(System.currentTimeMillis()) + "jpg";
+	     File imageFile = new File(imageFilePath);
+	     imageFileUri = Uri.fromFile(imageFile);
+	       System.out.println(imageFileUri.toString());
+	     intent.putExtra(MediaStore.EXTRA_OUTPUT, imageFileUri);
+		startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
+	}
+
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
+			// TextView tv = (TextView) findViewById(R.id.status);
+			if (resultCode == RESULT_OK) {
+				System.out.println("Photo OK!");
+                try {
+                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(
+                                    this.getContentResolver(), imageFileUri);
+                    Bitmap resizedBitmap = Media.resizeImage(bitmap);
+                    String image = Media.encodeToBase64(resizedBitmap);
+                    newAnnotation.setAnnotationPic(image);
+                    saveAnnotation();
+                } catch (FileNotFoundException e) {
+                	e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+			} else if (resultCode == RESULT_CANCELED) {
+				System.out.println("Photo canceled");
+			} else {
+				System.out.println("Not sure what happened!" + resultCode);
+			}
+		}
+		 // handles selecting an image from app of users choice (usually gallery).
+        if ((requestCode == PICK_IMAGE) && (resultCode == RESULT_OK) && (data != null))
+        {
+            chosenImageUri = data.getData();
+            
+            
+            String folder = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Adventure_App/";
+            File folderF = new File(folder);
+   	     
+            if (!folderF.exists()) {
+   	            folderF.mkdir();
+            }
+   	        
+
+
+   	     	
+   	     
+            try {
+            // copyfile from gallery location to our app!
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(
+                        this.getContentResolver(), chosenImageUri);
+                Bitmap resizedBitmap = Media.resizeImage(bitmap);
+                String image = Media.encodeToBase64(resizedBitmap);
+                newAnnotation.setAnnotationPic(image);
+                System.out.println(newAnnotation.media());
+                saveAnnotation();
+                
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
+            
+        }
+	}
+	/**
+	 * called when the user chooses an existing photo and adds it to the fragement
+	 * passes the chosen fragement to the onActivityResult method.
+	 */
+	  public void chooseImage()
+	    {
+	    	Intent pickImage = new Intent();
+	    	pickImage.setType("image/*");
+	    	pickImage.setAction(Intent.ACTION_GET_CONTENT);
+	    	startActivityForResult(Intent.createChooser(pickImage, "Select Picture"), PICK_IMAGE);
+	    }
 }

@@ -18,22 +18,17 @@
  */
 package com.uofa.adventure_app.activity;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.UUID;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.util.Base64;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.KeyEvent;
@@ -41,9 +36,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -190,7 +183,7 @@ public class EditFragementActivity extends AdventureActivity {
 	public void onCreateContextMenu(ContextMenu menu, View v,
 			ContextMenuInfo menuInfo) {
 		super.onCreateContextMenu(menu, v, menuInfo);
-		AdapterContextMenuInfo aInfo = (AdapterContextMenuInfo) menuInfo;
+
 		menu.clearHeader();
 		menu.clear();
 		// Style our context menu
@@ -252,9 +245,6 @@ public class EditFragementActivity extends AdventureActivity {
 			// TextView tv = (TextView) findViewById(R.id.status);
 			if (resultCode == RESULT_OK) {
 				System.out.println("Photo OK!");
-				ImageView annotation = (ImageView) findViewById(R.id.annotation);
-				//annotation.setImageDrawable(Drawable
-				//		.createFromPath(imageFileUri.getPath()));
                 try {
                     Bitmap bitmap = MediaStore.Images.Media.getBitmap(
                                     this.getContentResolver(), imageFileUri);
@@ -277,10 +267,7 @@ public class EditFragementActivity extends AdventureActivity {
         if ((requestCode == PICK_IMAGE) && (resultCode == RESULT_OK) && (data != null))
         {
             chosenImageUri = data.getData();
-           // chosenImageUri
-            ImageView annotation = (ImageView) findViewById(R.id.annotation);
-          
-            String path = chosenImageUri.getPath();
+
             
             
             String folder = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Adventure_App/";
@@ -289,11 +276,7 @@ public class EditFragementActivity extends AdventureActivity {
             if (!folderF.exists()) {
    	            folderF.mkdir();
             }
-   	        
-   	     	String imageFilePath = folder + "/" + "Adventure_App" + String.valueOf(System.currentTimeMillis()) + "jpg";
 
-   	     	
-   	     
             try {
             // copyfile from gallery location to our app!
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(
@@ -304,10 +287,7 @@ public class EditFragementActivity extends AdventureActivity {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-            
-            String imageId = UUID.randomUUID().toString();
-           // localStorageController.insertImage( imageId, imageFilePath, 0, currentFragement.uid().toString());
-            
+  
         }
 	}
 

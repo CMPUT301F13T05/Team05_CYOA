@@ -25,10 +25,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.Charset;
 
-import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-
 import com.uofa.adventure_app.controller.http.HttpObject;
 import com.uofa.adventure_app.enums.HttpRequestType;
 

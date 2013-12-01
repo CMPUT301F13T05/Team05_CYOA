@@ -21,7 +21,7 @@ import java.util.ArrayList;
 
 import android.os.Handler;
 import android.os.HandlerThread;
-import android.os.Message;
+
 
 import com.uofa.adventure_app.interfaces.AdventureActivity;
 

@@ -21,8 +21,6 @@ package com.uofa.adventure_app.activity;
 import java.util.UUID;
 
 import com.uofa.adventure_app.R;
-import com.uofa.adventure_app.R.layout;
-import com.uofa.adventure_app.R.menu;
 import com.uofa.adventure_app.application.AdventureApplication;
 import com.uofa.adventure_app.model.User;
 
