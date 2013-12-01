@@ -65,17 +65,27 @@ public class FirstRunOnlyActivity extends Activity {
 		TextView error = (TextView) findViewById(R.id.textView2);
 		String username = getSharedPreferences("PREFERENCE", MODE_PRIVATE).getString("username", null);
 		username = usern.getText().toString();
+		UUID id = null;
 		if (username.equals("")){
 			error.setText("Please Enter your name here!");
 		}else 
 			if (username.length() > 15){
 				error.setText("The user name you entered is too long");
 			}else {
-				
+				for (int i = 0; i<AdventureApplication.getStoryController().stories().size(); i++){
+					for(int j = 0; j <AdventureApplication.getStoryController().stories().get(i).users().size(); j++){
+						if (AdventureApplication.getStoryController().stories().get(i).users().get(j).getName().equals(username)){
+							id = AdventureApplication.getStoryController().stories().get(i).users().get(j).uid();
+						}
+					}
+				}
+				if (id == null){
+						id = new User(username).uid();	
+				}
 			getSharedPreferences("PREFERENCE", MODE_PRIVATE)
 			.edit()
 			.putString("username", username)
-			.putString("uid", new User(username).uid().toString())
+			.putString("uid", id.toString())
 			.commit();
 			
 			String usernameString = getSharedPreferences("PREFERENCE", MODE_PRIVATE).getString("username", null);

@@ -22,6 +22,9 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.util.UUID;
+
+
 
 import org.json.JSONObject;
 
@@ -31,9 +34,10 @@ import android.app.Fragment;
  * @author Chris Pavlicek
  *
  */
+
 public class Choice implements Serializable {
 	
-	private Fragement fragment;
+	private UUID fragId;
 	
 	/**
 	 * creates the choice object.
@@ -41,7 +45,7 @@ public class Choice implements Serializable {
 	 */
 	public Choice(Fragement frag)
 	{
-		this.fragment = frag;
+		this.fragId = frag.uid();
 	}
 	
 	/**
@@ -50,16 +54,16 @@ public class Choice implements Serializable {
 	 */
 	public void setChoice(Fragement frag)
 	{
-		this.fragment = frag;
+		this.fragId = frag.uid();
 	}
 
 	/**
 	 * gets the Fragement object form the choice.
 	 * @return Fragement
 	 */
-	public Fragement getChoice()
+	public UUID getChoiceId()
 	{
-		 return this.fragment;
+		 return this.fragId;
 	}
 	
 	/**
@@ -89,7 +93,7 @@ public class Choice implements Serializable {
 		// TODO Auto-generated method stub
 		if(o.getClass().equals(this.getClass())) {
 			Choice frag = (Choice) o;
-			if (this.getChoice().equals(frag.getChoice()))
+			if (this.getChoiceId().equals(frag.getChoiceId()))
 				return true;
 			else
 				return false;

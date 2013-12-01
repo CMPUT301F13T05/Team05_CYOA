@@ -20,11 +20,11 @@ package com.uofa.adventure_app.controller.http;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.UUID;
 
 import com.google.gson.Gson;
 import com.uofa.adventure_app.enums.HttpRequestType;
+import com.uofa.adventure_app.model.Annotation;
 import com.uofa.adventure_app.model.Fragement;
 import com.uofa.adventure_app.model.Story;
 /**
@@ -125,6 +125,20 @@ import com.uofa.adventure_app.model.Story;
 		
 		try {
 			obj = new HttpObject(HttpRequestType.POST, gson.toJson(fragement), new URL(commonUrlFragement + fragement.uid().toString()));
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return obj;
+	}
+	
+	public HttpObject publishAnnotation(Annotation annotation, UUID fragementId) {
+		Gson gson = new Gson();
+		HttpObject obj = null;
+		String query = "{\"script\": \"if (ctx._source[\"annotations\"] == null) { ctx._source.annotations = annotation } else { ctx._source.annotations += annotation }\"\"params\": {\"annotation\": "+ gson.toJson(annotation) + "}}";
+		//
+		try {
+			obj = new HttpObject(HttpRequestType.POST, query, new URL(commonUrlFragement + fragementId.toString() + "/_update"));
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

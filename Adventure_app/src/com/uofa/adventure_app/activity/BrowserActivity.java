@@ -50,7 +50,7 @@ import com.uofa.adventure_app.model.User;
  */
 public class BrowserActivity extends AdventureActivity {
 
-	private StoryGridAdapter storyGridAdapter;
+	private StoryGridAdapter storyGridAdapter = null;
 	ArrayList<String> List;
 	View v;
 	TextView search;
@@ -62,7 +62,14 @@ public class BrowserActivity extends AdventureActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_browser);
 		v = this.findViewById(android.R.id.content);
+		HttpObjectStory httpStory = new HttpObjectStory();
 		
+		AdventureApplication.getStoryController().stories().clear();
+		AdventureApplication.getStoryController().loadStories();
+		
+		this.httpRequest(httpStory.fetchAll(), GET_ALL_METHOD);
+
+		loadAllStories();
 		boolean firstrun = getSharedPreferences("PREFERENCE", MODE_PRIVATE).getBoolean("firstrun", true);
 		/*
 		 * Ran only on the first time after install or if the user logs out of the app.
@@ -78,15 +85,22 @@ public class BrowserActivity extends AdventureActivity {
 			AdventureApplication.setUser(new User(username, UUID.fromString(uid)));
 		}
 		
-		HttpObjectStory httpStory = new HttpObjectStory();
-		
-		AdventureApplication.getStoryController().stories().clear();
-		AdventureApplication.getStoryController().loadStories();
-		
-		this.httpRequest(httpStory.fetchAll(), GET_ALL_METHOD);
+
+
+
 
 	}
 
+	public void loadAllStories() {
+		
+		AdventureApplication.getStoryController().loadStories();
+		if(this.isNetworkAvailable()) {
+			HttpObjectStory httpStory = new HttpObjectStory();
+			this.httpRequest(httpStory.fetchAll(), GET_ALL_METHOD);
+		} 
+		initGrid();
+	}
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
@@ -121,8 +135,7 @@ public class BrowserActivity extends AdventureActivity {
 			this.newStory();
 			break;
 		case R.id.refresh:
-			HttpObjectStory httpStory = new HttpObjectStory();
-			this.httpRequest(httpStory.fetchAll(), GET_ALL_METHOD);
+				this.loadAllStories();
 			break;
 
 		case R.id.random:
@@ -213,6 +226,16 @@ public class BrowserActivity extends AdventureActivity {
 		this.startActivity(myIntent);
 	}
 	
+	/* (non-Javadoc)
+	 * @see android.app.Activity#onResume()
+	 */
+	@Override
+	protected void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+		this.loadAllStories();
+	}
+
 	/**
 	 * Updates the view
 	 */
@@ -223,6 +246,23 @@ public class BrowserActivity extends AdventureActivity {
 	}
 
 
+	public void initGrid() {
+		//if(storyGridAdapter == null) {
+		GridView grid = (GridView) findViewById(R.id.gridView1);
+        storyGridAdapter = new StoryGridAdapter(this, AdventureApplication.getStoryController().stories());
+        grid.setAdapter(storyGridAdapter);
+        grid.setOnItemClickListener(new 
+                        GridView.OnItemClickListener() {
+                // @Override
+                public void onItemClick(AdapterView<?> a, View v, int i, long l) {                                        
+                        viewStory(v, AdventureApplication.getStoryController().stories().get(i));
+                }
+        });
+		//}  else {
+			//storyGridAdapter.notifyDataSetChanged();
+		//}
+	}
+	
 	/**
 	 * 
 	 * This is called every time the code checks json for an update.
@@ -232,21 +272,12 @@ public class BrowserActivity extends AdventureActivity {
 	 */
 	@Override
 	public void dataReturn(ArrayList<Story> result, String method) {
+		if(result.size() > 0) {
 		if(method.equals(GET_ALL_METHOD)) {
 			for(int i = 0; i < result.size(); i++ ) {
 					AdventureApplication.getStoryController().addStory(result.get(i));
 			}
-		      GridView grid = (GridView) findViewById(R.id.gridView1);
-              storyGridAdapter = new StoryGridAdapter(this, AdventureApplication.getStoryController().stories());
-              grid.setAdapter(storyGridAdapter);
-              grid.setOnItemClickListener(new 
-                              GridView.OnItemClickListener() {
-                      // @Override
-            	  //
-                      public void onItemClick(AdapterView<?> a, View v, int i, long l) {                                        
-                              viewStory(v, AdventureApplication.getStoryController().stories().get(i));
-                      }
-              });
+			initGrid();
 		}else if(method.equals(GET_METHOD)) {
 			//System.out.println("RESULT " + result);
 			Story currentStory = result.get(0);
@@ -290,6 +321,7 @@ public class BrowserActivity extends AdventureActivity {
 			AdventureApplication.getStoryController().replaceStory(currentStory);
 			AdventureApplication.getActivityController().update();
 			
+		}
 		}
 	}
 	 protected void openLastFragement() {

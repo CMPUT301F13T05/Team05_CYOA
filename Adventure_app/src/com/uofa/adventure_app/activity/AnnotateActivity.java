@@ -23,7 +23,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 
-
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -31,7 +30,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -41,15 +39,15 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.EditText;
-
 import android.widget.ListView;
 import android.widget.TextView;
 
-
 import com.uofa.adventure_app.R;
 import com.uofa.adventure_app.application.AdventureApplication;
+import com.uofa.adventure_app.controller.http.HttpObjectStory;
 import com.uofa.adventure_app.interfaces.AdventureActivity;
 import com.uofa.adventure_app.model.Annotation;
+import com.uofa.adventure_app.model.Fragement;
 import com.uofa.adventure_app.model.Media;
 import com.uofa.adventure_app.model.Story;
 
@@ -88,7 +86,7 @@ public class AnnotateActivity extends AdventureActivity implements
 		adapter = new CustomListViewAdapter(this, R.layout.list_item, rowItems);
 		listView.setAdapter(adapter);
 		listView.setOnItemClickListener(this);
-
+		
 		newAnnotation = new Annotation(AdventureApplication.user());
 
 		// alertBox();
@@ -124,6 +122,10 @@ public class AnnotateActivity extends AdventureActivity implements
 
 	public void alertBox() {
 
+		if(isNewAnnotation) {
+			newAnnotation = new Annotation(AdventureApplication.user());
+		}
+		
 		final Dialog dialog = new Dialog(this, R.style.DialogTheme);
 		LayoutInflater inflater = this.getLayoutInflater();
 		dialog.setTitle("Create an Annotation");
@@ -176,17 +178,24 @@ public class AnnotateActivity extends AdventureActivity implements
 
 
 	public void saveAnnotation() {
+		Fragement currentFragement = AdventureApplication.getStoryController().currentFragement();
 		if(isNewAnnotation) {
-		AdventureApplication.getStoryController().currentFragement()
-				.addAnnotation(newAnnotation);
+			currentFragement.addAnnotation(newAnnotation);
+		
+			// Upload annotation to the Fragement
+			HttpObjectStory httpObject = new HttpObjectStory();
+			this.httpRequest(httpObject.publishAnnotation(newAnnotation, currentFragement.uid()), "ADD_ANNOTATION");
+		
 		} else {
 			System.out.println("Replace");
-			AdventureApplication.getStoryController().currentFragement()
-			.replaceAnnotation(newAnnotation);
+			currentFragement.replaceAnnotation(newAnnotation);
 		}
 		isNewAnnotation = false;
 		AdventureApplication.getStoryController().saveStories();
 		newAnnotation = new Annotation(AdventureApplication.user());
+		
+
+		
 		this.updateView();
 	}
 
@@ -266,6 +275,7 @@ public class AnnotateActivity extends AdventureActivity implements
                     newAnnotation.setAnnotationPic(null);
                     newAnnotation.setAnnotationPic(image);
                     saveAnnotation();
+                    image = null;
                 } catch (FileNotFoundException e) {
                 	e.printStackTrace();
                 } catch (IOException e) {
@@ -303,7 +313,7 @@ public class AnnotateActivity extends AdventureActivity implements
                 newAnnotation.setAnnotationPic(image);
                 System.out.println(newAnnotation.media());
                 saveAnnotation();
-                
+                image = null;
 			} catch (IOException e) {
 				e.printStackTrace();
 			}

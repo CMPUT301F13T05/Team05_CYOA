@@ -18,6 +18,8 @@ ttt	Adventure App - Allows you to create an Adventure Book, or Download
  */
 package com.uofa.adventure_app.interfaces;
 
+import java.util.ArrayList;
+
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -44,6 +46,25 @@ import com.uofa.adventure_app.model.Story;
  */
 public abstract class AdventureActivity extends Activity implements DataReturn<Story> {
 	
+	/* (non-Javadoc)
+	 * @see com.uofa.adventure_app.interfaces.DataReturn#dataReturn(java.util.ArrayList, java.lang.String)
+	 */
+	@Override
+	public void dataReturn(ArrayList<Story> result, String method) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	/* (non-Javadoc)
+	 * @see android.app.Activity#onPause()
+	 */
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		AdventureApplication.getStoryController().saveStories();
+		super.onPause();
+	}
+
 	WebServiceController  webServiceController = AdventureApplication.getWebServiceController();
 	
 	protected static final String GET_ALL_METHOD = "GET_ALL_METHOD";
