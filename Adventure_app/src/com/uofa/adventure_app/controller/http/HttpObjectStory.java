@@ -27,13 +27,20 @@ import com.uofa.adventure_app.enums.HttpRequestType;
 import com.uofa.adventure_app.model.Annotation;
 import com.uofa.adventure_app.model.Fragement;
 import com.uofa.adventure_app.model.Story;
-
+/**
+ * gets the JSON String and either publishes (uploads) it, or downloads it.
+ * @author Chris Pavlicek
+ *
+ */
  public class HttpObjectStory {
 	
 	private static final String commonUrlString = "http://cmput301.softwareprocess.es:8080/cmput301f13t05/story/";
 	private static final String commonUrlFragement = "http://cmput301.softwareprocess.es:8080/cmput301f13t05/fragements/";
 
-
+	/**
+	 * Gets the ID, title, and users for all of the stories.
+	 * @return HttpObject
+	 */
 	public HttpObject fetchAll() {
 		HttpObject obj = null;
 		String searchQuery = "{  \"fields\" : [\"id\", \"title\", \"users\"]}";
@@ -49,8 +56,8 @@ import com.uofa.adventure_app.model.Story;
 	/**
 	 * Returns a story with a given id in JSON
 	 * 
-	 * @param id
-	 * @return
+	 * @param UUID id
+	 * @return HttpObject
 	 */
 
 	// TODO: implement
@@ -68,7 +75,11 @@ import com.uofa.adventure_app.model.Story;
 		}
 		return obj;
 	}
-	
+	/**
+	 * Fetches a specific fragement based onthe id.
+	 * @param UUID id
+	 * @return HttpObject
+	 */
 	public HttpObject fetchFragement(UUID id) {
 		// This should search all Fields
 		HttpObject obj = null;
@@ -87,8 +98,8 @@ import com.uofa.adventure_app.model.Story;
 	/**
 	 * Publishes a Story to the Internet!
 	 * 
-	 * @param story
-	 * @return
+	 * @param Story story
+	 * @return HttpObject
 	 */
 	public HttpObject publishObject(Story story) {
 		Gson gson = new Gson();
@@ -102,7 +113,12 @@ import com.uofa.adventure_app.model.Story;
 		}
 		return obj;
 	}
-	
+	/**
+	 * publishe s a specific fragement, and makes sure that it is added to the story.
+	 * @param Fragement fragement
+	 * @param UUID storyId
+	 * @return HttpObject
+	 */
 	public HttpObject publishFragement(Fragement fragement, UUID storyId) {
 		Gson gson = new Gson();
 		HttpObject obj = null;
@@ -133,8 +149,8 @@ import com.uofa.adventure_app.model.Story;
 	/**
 	 * Searches the Server for the given key
 	 * 
-	 * @param searchKey
-	 * @return
+	 * @param String searchKey
+	 * @return HttpObject
 	 */
 
 	public HttpObject searchObject(String searchKey) {
@@ -152,7 +168,11 @@ import com.uofa.adventure_app.model.Story;
 		}
 		return obj;
 	}
-
+	/**
+	 * Deletes a Story from the database.
+	 * @param String id
+	 * @return HttpObject
+	 */
 	public HttpObject deleteObject(String id) {
 		
 		String searchQuery = "";

@@ -52,7 +52,7 @@ import com.uofa.adventure_app.model.Story;
  * the model and allows the user to access the camera and the existing photo library in
  * order to allow the user to add images to fragements.
  * 
- * @author Kevin Lafond
+ * @author Kevin Lafond, Joel Malina
  *
  */
 

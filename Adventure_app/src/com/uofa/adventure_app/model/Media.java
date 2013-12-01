@@ -16,6 +16,8 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
+
 package com.uofa.adventure_app.model;
 
 import java.io.ByteArrayInputStream;
@@ -31,7 +33,11 @@ import android.util.Base64;
 
 import com.uofa.adventure_app.enums.MediaType;
 import com.uofa.adventure_app.interfaces.UniqueId;
-
+/**
+ * Holds the media objects getters and setters.
+ * @author Kevin Lafond, Joel Malina, Chris Pavlicek
+ *
+ */
 public class Media extends UniqueId implements Serializable {
 
 	private String image;
@@ -45,38 +51,21 @@ public class Media extends UniqueId implements Serializable {
 	public Media(){
 		this.image = null;
 	}
-
+	/**
+	 * Sets teh media object.
+	 * @param String image
+	 */
 	public void setMedia(String image) {
 		this.image = image;
 	}
-
+	/**
+	 * gets the media object for a fragement
+	 * @return String
+	 */
 	public String getMedia() {
 		return this.image;
 	}
-    /**
-     * Rescales an image to set the height to match the max image height.
-     * 
-     * @param bitmap
-     *            bitmap to be rescaled.
-     * @return rescaled bitmap.
-     */
-    public static Bitmap resizeImage(Bitmap bitmap) {
-           
-    		float width = bitmap.getWidth();
-            float height = bitmap.getHeight();
-            float scale = 1;
 
-            scale = IMAGE_MAX / height;
-
-            float newWidth = width * scale;
-            float newHeight = height * scale;
-            int newWidthInt = (int) newWidth;
-            int newHeightInt = (int) newHeight;
-            Bitmap resizedBitmap = Bitmap.createScaledBitmap(bitmap, newWidthInt,
-                            newHeightInt, false);
-
-            return resizedBitmap;
-    }
 	/**
 	 * Always treat de-serialization as a full-blown constructor, by validating
 	 * the final state of the de-serialized object.
@@ -104,6 +93,23 @@ public class Media extends UniqueId implements Serializable {
 		newMedia.setMedia(this.image);
 		return newMedia;
 	}
+	/*
+	 *  This program is free software: you can redistribute it and/or modify
+	 *  it under the terms of the GNU General Public License as published by
+	 *  the Free Software Foundation, either version 3 of the License, or
+	 *  (at your option) any later version.
+	 *
+	 *  This program is distributed in the hope that it will be useful,
+	 *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+	 *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	 *  GNU General Public License for more details.
+	 *
+	 *  You should have received a copy of the GNU General Public License
+	 *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+	 */
+	/*
+	 * Everything below this license is licensed under the above license!!!
+	 */
     /**
      * Encodes bitmap into base64 string.
      * 
@@ -129,6 +135,30 @@ public class Media extends UniqueId implements Serializable {
             byte[] decodedByte = Base64.decode(bArray, 0);
             return BitmapFactory
                             .decodeByteArray(decodedByte, 0, decodedByte.length);
+    }
+    /**
+     * Rescales an image to set the height to match the max image height.
+     * 
+     * @param bitmap
+     *            bitmap to be rescaled.
+     * @return rescaled bitmap.
+     */
+    public static Bitmap resizeImage(Bitmap bitmap) {
+           
+    		float width = bitmap.getWidth();
+            float height = bitmap.getHeight();
+            float scale = 1;
+
+            scale = IMAGE_MAX / height;
+
+            float newWidth = width * scale;
+            float newHeight = height * scale;
+            int newWidthInt = (int) newWidth;
+            int newHeightInt = (int) newHeight;
+            Bitmap resizedBitmap = Bitmap.createScaledBitmap(bitmap, newWidthInt,
+                            newHeightInt, false);
+
+            return resizedBitmap;
     }
 
 }

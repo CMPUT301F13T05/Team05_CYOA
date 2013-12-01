@@ -27,7 +27,11 @@ import java.util.SortedMap;
 import java.util.UUID;
 
 import com.uofa.adventure_app.interfaces.UniqueId;
-
+/**
+ * Holds the Fragement object in the model.
+ * @author Kevin Lafond, Chris Pavlicek, Joel Malina
+ *
+ */
 public class Fragement extends UniqueId implements Serializable  {
         
         private ArrayList<Media> media; // Key will be a line number
@@ -79,7 +83,7 @@ public class Fragement extends UniqueId implements Serializable  {
         
         /**
          * adds a choice to the fragment
-         * @param choice
+         * @param Choice choice
          */
         public void addChoice(Choice choice)
         {
@@ -91,7 +95,7 @@ public class Fragement extends UniqueId implements Serializable  {
         }
 
         /**
-         * @return the body
+         * @return String
          */
         public String body()
         {
@@ -105,41 +109,67 @@ public class Fragement extends UniqueId implements Serializable  {
         {
                 this.body = body;
         }
-        
+        /**
+         * Returns all of the choice for a fragement.
+         * @return ArrayList<Choice>
+         */
         public ArrayList<Choice> choices()
         {
         	return this.choices;
         }
-        
+        /**
+         * sets all of the choices for a fragement
+         * @param ArrayList<Choice> c
+         */
         public void setChoices(ArrayList<Choice> c)
         {	
         	this.choices = c;
         }
-        
+        /**
+         * sets a flag that allows the user to have a 
+         * random choice when reading the story.
+         * @param boolean flag
+         */
         public void setRandomFlag(boolean flag)
         {
         	this.randomFlag = flag;
         }
-        
+        /**
+         * gets the flag that allows the user to have a 
+         * random choice when reading the story.
+         * @return boolean
+         */
         public boolean getRandomflag()
         {
         	return this.randomFlag;
         }
-        
+        /**
+         * Sets the title of the Fragement.
+         * @param String title
+         */
         public void setTitle(String title)
         {
         	this.title = title;
         }
-        
+        /**
+         * Gets the title of the fragement
+         * @return String
+         */
         public String getTitle()
         {
         	return this.title;
         }
-
+        /**
+         * Returns a list of media associated with a fragement.
+         * @return ArrayList<Media>
+         */
     	public ArrayList<Media> media() {
     		return this.media;
     	}
-    	
+    	/**
+    	 * sets a list of media to be associated with a Fragement.
+    	 * @param ArrayList<Media> media
+    	 */
     	public void setMedia(ArrayList<Media> media) {
     		this.media = media;
     	}
@@ -147,7 +177,7 @@ public class Fragement extends UniqueId implements Serializable  {
     	/**
     	 * add media to the sorted set. Right now media will be added to the Start
     	 * Feature to add to any line later on.
-    	 * @param media
+    	 * @param Media media
     	 */
     	public void addMedia(Media media) {
     		this.media().add(media);
@@ -217,7 +247,8 @@ public class Fragement extends UniqueId implements Serializable  {
 		}
 
 		/**
-		 * @return the annotations
+		 * Returns a list of annotations associated with a fragement.
+		 * @return ArrayList<Annotation>
 		 */
 		public ArrayList<Annotation> annotations() {
 			return annotations;
@@ -225,12 +256,15 @@ public class Fragement extends UniqueId implements Serializable  {
 
 		/**
 		 * Adds an Annotation to the Fragement
-		 * @param a
+		 * @param Annotiation a
 		 */
 		public void addAnnotation(Annotation a) {
 				this.annotations().add(a);
 		}
-
+		/**
+		 * Replaces an annotation with another updates one.
+		 * @param Annotation a
+		 */
 		public void replaceAnnotation(Annotation a) {
 			if(annotations.contains(a)) {
 				int index = this.annotations.indexOf(a);
@@ -238,12 +272,16 @@ public class Fragement extends UniqueId implements Serializable  {
 			}
 		}
 		/**
-		 * @param annotations the annotations to set
+		 * adds a whole list of annotations to the Fragement
+		 * @param ArrayList<Annotation> annotations
 		 */
 		public void setAnnotations(ArrayList<Annotation> annotations) {
 			this.annotations = annotations;
 		}
-		
+		/**
+		 * creates a new fragement with the same ID.
+		 * @return Fragement
+		 */
 		public Fragement stripFragement() {
 			return new Fragement(this.uid());
 		}

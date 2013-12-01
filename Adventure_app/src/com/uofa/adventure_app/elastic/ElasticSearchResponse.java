@@ -20,7 +20,12 @@ package com.uofa.adventure_app.elastic;
 
 import java.util.ArrayList;
 import java.util.Collection;
-
+/**
+ * 
+ * @author Chris Pavlicek
+ *
+ * @param <T>
+ */
 public class ElasticSearchResponse<T> {
 	String _index;
 	String _type;

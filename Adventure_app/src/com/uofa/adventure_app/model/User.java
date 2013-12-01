@@ -25,12 +25,14 @@ import java.io.Serializable;
 import java.util.UUID;
 
 import com.uofa.adventure_app.interfaces.UniqueId;
-
+/**
+ * User model, contains all of the getters and setters for the user/users of a 
+ * story.
+ * @author Kevin Lafond, Joel Malina, Chris Pavlicek
+ *
+ */
 public class User extends UniqueId implements Serializable{
-	
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
 	private String name;
 	

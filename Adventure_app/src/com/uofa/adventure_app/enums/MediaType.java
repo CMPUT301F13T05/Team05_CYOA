@@ -17,7 +17,11 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 package com.uofa.adventure_app.enums;
-
+/**
+ * Holds the status code for the mediatype.
+ * @author Chris Pavlicek
+ *
+ */
 public enum MediaType {
 	MUSIC("M"), VIDEO("V"), AUDIO("A");
 	

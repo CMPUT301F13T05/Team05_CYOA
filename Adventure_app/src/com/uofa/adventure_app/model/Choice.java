@@ -24,13 +24,24 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.UUID;
 
+
+
+import org.json.JSONObject;
+
+import android.app.Fragment;
+/**
+ * Holds the Choice object in the model.
+ * @author Chris Pavlicek
+ *
+ */
+
 public class Choice implements Serializable {
 	
 	private UUID fragId;
 	
 	/**
-	 * 
-	 * @param frag the frag you want to create
+	 * creates the choice object.
+	 * @param Fragement frag
 	 */
 	public Choice(Fragement frag)
 	{
@@ -38,8 +49,8 @@ public class Choice implements Serializable {
 	}
 	
 	/**
-	 * setter
-	 * @param frag the frag you want to set
+	 * Sets the choice object.
+	 * @param Fragement frag
 	 */
 	public void setChoice(Fragement frag)
 	{
@@ -47,8 +58,8 @@ public class Choice implements Serializable {
 	}
 
 	/**
-	 * getter
-	 * @return the choice for this fragment
+	 * gets the Fragement object form the choice.
+	 * @return Fragement
 	 */
 	public UUID getChoiceId()
 	{

@@ -24,13 +24,15 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
 import com.uofa.adventure_app.interfaces.UniqueId;
-
+/**
+ * Part of the Model contains all of the getters and setters to create
+ * an annotation object.
+ * @author Kevin Lafond, Chris Pavlicek
+ *
+ */
 
 public class Annotation extends UniqueId implements Serializable {
-	
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
 
 	// the video, audio, or image 
@@ -77,7 +79,8 @@ public class Annotation extends UniqueId implements Serializable {
 
 
 	/**
-	 * @return the annotationString
+	 * returns the string of the annotation.
+	 * @return StringannotationString
 	 */
 	public String annotationString() {
 		return annotationString;
@@ -85,7 +88,8 @@ public class Annotation extends UniqueId implements Serializable {
 
 
 	/**
-	 * @param annotationString the annotationString to set
+	 * sets the string of the annotation.
+	 * @param String annotationString
 	 */
 	public void setAnnotationString(String annotationString) {
 		this.annotationString = annotationString;
@@ -93,7 +97,8 @@ public class Annotation extends UniqueId implements Serializable {
 
 
 	/**
-	 * @return the user
+	 * returns the creator of the annoataion.
+	 * @return User user
 	 */
 	public User user() {
 		return user;
@@ -101,7 +106,8 @@ public class Annotation extends UniqueId implements Serializable {
 
 
 	/**
-	 * @param user the user to set
+	 * sets the current user as the user that created the annotation.
+	 * @param User user
 	 */
 	public void setUser(User user) {
 		this.user = user;
@@ -109,7 +115,8 @@ public class Annotation extends UniqueId implements Serializable {
 
 
 	/**
-	 * @return the media
+	 * Returns the image attached to the annotation object
+	 * @return String 
 	 */
 	public String media() {
 		return media;

@@ -28,7 +28,12 @@ import java.util.Map;
 import java.util.UUID;
 
 import com.uofa.adventure_app.application.AdventureApplication;
-
+/**
+ * This ties the rest of the model together. everything is 
+ * contained in a "Story".
+ * @author Kevin Lafond, Joel Malina, Chris Pavlicek, Ulvi Ibrahimov
+ *
+ */
 public class Story implements Serializable, Cloneable {
 
 	private String title;
@@ -206,7 +211,10 @@ public class Story implements Serializable, Cloneable {
 		// fields
 		aOutputStream.defaultWriteObject();
 	}
-	
+	/**
+	 * creates a local copy of a story.
+	 * @return Story
+	 */
 	public Story localCopy() {
 		Story s = new Story();
 		s.setTitle(new String("Copy of " + this.title()));

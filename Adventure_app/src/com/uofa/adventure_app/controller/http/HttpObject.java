@@ -21,7 +21,12 @@ package com.uofa.adventure_app.controller.http;
 import java.net.URL;
 
 import com.uofa.adventure_app.enums.HttpRequestType;
-
+/**
+ * HttpObject holds the type of the HttpObject, The postString and the URL.
+ * 
+ * @author Chris Pavlicek
+ *
+ */
 public class HttpObject {
 	
 	private HttpRequestType type;
@@ -33,15 +38,24 @@ public class HttpObject {
 		this.postString = postString;
 		this.url = url;
 	}
-	
+	/**
+	 * returns the HttpRequestType
+	 * @return HttpRequestType
+	 */
 	public HttpRequestType type() {
 		return this.type;
 	}
-	
+	/**
+	 * Returns the post String.
+	 * @return String
+	 */
 	public String postString() {
 		return this.postString;
 	}
-	
+	/**
+	 * returns the URL
+	 * @return URL
+	 */
 	public URL url() {
 		return this.url;
 	}
