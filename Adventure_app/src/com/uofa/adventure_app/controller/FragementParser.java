@@ -27,9 +27,17 @@ import com.uofa.adventure_app.elastic.ElasticSearchResponse;
 import com.uofa.adventure_app.interfaces.Parser;
 import com.uofa.adventure_app.model.Fragement;
 import com.uofa.adventure_app.model.Story;
-
+/**
+ * Parses a Fragement String form JSON.
+ * @author Chris Pavlicek
+ *
+ */
 public class FragementParser implements Parser<Story> {
-
+	/**
+	 * Parses the string of a fragement and breaks it up into the model
+	 * @param String parseString
+	 * @return ArrayList<Story>
+	 */
 	public ArrayList<Story> parseFragement(String parseString) {
 		
 		//System.out.println("This one: " + parseString);
