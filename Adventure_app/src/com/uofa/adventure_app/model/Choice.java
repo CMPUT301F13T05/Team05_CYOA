@@ -26,14 +26,18 @@ import java.io.Serializable;
 import org.json.JSONObject;
 
 import android.app.Fragment;
-
+/**
+ * Holds the Choice object in the model.
+ * @author Chris Pavlicek
+ *
+ */
 public class Choice implements Serializable {
 	
 	private Fragement fragment;
 	
 	/**
-	 * 
-	 * @param frag the frag you want to create
+	 * creates the choice object.
+	 * @param Fragement frag
 	 */
 	public Choice(Fragement frag)
 	{
@@ -41,8 +45,8 @@ public class Choice implements Serializable {
 	}
 	
 	/**
-	 * setter
-	 * @param frag the frag you want to set
+	 * Sets the choice object.
+	 * @param Fragement frag
 	 */
 	public void setChoice(Fragement frag)
 	{
@@ -50,8 +54,8 @@ public class Choice implements Serializable {
 	}
 
 	/**
-	 * getter
-	 * @return the choice for this fragment
+	 * gets the Fragement object form the choice.
+	 * @return Fragement
 	 */
 	public Fragement getChoice()
 	{

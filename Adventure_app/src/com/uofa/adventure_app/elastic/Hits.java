@@ -19,7 +19,12 @@
 package com.uofa.adventure_app.elastic;
 
 import java.util.Collection;
-
+/**
+ * 
+ * @author Chris Pavlicek 
+ *
+ * @param <T>
+ */
 
 public class Hits<T> {
     int total;

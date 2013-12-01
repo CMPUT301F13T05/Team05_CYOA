@@ -27,10 +27,18 @@ import java.nio.charset.Charset;
 
 import com.uofa.adventure_app.controller.http.HttpObject;
 import com.uofa.adventure_app.enums.HttpRequestType;
-
-
+/**
+ * Controller for the Web Service Controls the string being read in.
+ * 
+ * @author Chris Pavlicek
+ *
+ */
 public class WebServiceController {
-	
+	/**
+	 * Reads in the HttpObject.
+	 * @param HttpObject obj
+	 * @return String
+	 */
 	public String httpWithType(HttpObject obj) {
 		
 		//String ErrorMessage = null;

@@ -5,7 +5,11 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.UUID;
-
+/**
+ * Gives majority of the model objects a unique ID.s
+ * @author Chris Pavlicek
+ *
+ */
 public abstract class UniqueId implements Serializable {
 	protected UUID uid;
 	public UniqueId() {

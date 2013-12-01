@@ -26,9 +26,17 @@ import com.google.gson.reflect.TypeToken;
 import com.uofa.adventure_app.elastic.ElasticSearchResponse;
 import com.uofa.adventure_app.interfaces.Parser;
 import com.uofa.adventure_app.model.Story;
-
+/**
+ * Parses the story string and adds the stories to a list.
+ * @author Chris Pavlicek
+ *
+ */
 public class StoryParser implements Parser<Story> {
-
+	/**
+	 * Parses the JSON string and adds the story to a list.
+	 * @param String parseString
+	 * @return ArrayList<Story>
+	 */
 	public ArrayList<Story> parseStory(String parseString) {
 		
 		//System.out.println("This one: " + parseString);

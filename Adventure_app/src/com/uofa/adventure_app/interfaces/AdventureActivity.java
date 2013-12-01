@@ -37,8 +37,11 @@ import com.uofa.adventure_app.controller.WebServiceController;
 import com.uofa.adventure_app.controller.http.HttpObject;
 import com.uofa.adventure_app.model.Fragement;
 import com.uofa.adventure_app.model.Story;
-
-
+/**
+ * Interface for all of the Activities in the application.
+ * @author Chris Pavlicek
+ *
+ */
 public abstract class AdventureActivity extends Activity implements DataReturn<Story> {
 	
 	WebServiceController  webServiceController = AdventureApplication.getWebServiceController();
@@ -79,7 +82,10 @@ public abstract class AdventureActivity extends Activity implements DataReturn<S
 	 */
 	public abstract void updateView();
 	
-	
+	/**
+	 * checks to see if there in a network connection.
+	 * @return boolean
+	 */
 	protected boolean isNetworkAvailable() {
 	    ConnectivityManager connectivityManager 
 	          = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -100,7 +106,11 @@ public abstract class AdventureActivity extends Activity implements DataReturn<S
 			// do nothing...
 		}
 	}
-	
+	/**
+	 * calls Fragement parser if there is a network connection.
+	 * @param HttpObject httpObject
+	 * @param String method
+	 */
 	protected void httpRequestFragement(HttpObject httpObject, String method) {
 		if(this.isNetworkAvailable()) {
 			WebServiceController wsc = AdventureApplication.getWebServiceController();
@@ -111,7 +121,11 @@ public abstract class AdventureActivity extends Activity implements DataReturn<S
 	}
 
 	protected abstract void openLastFragement();
-	
+	/**
+	 * Saves the text as a user types.
+	 * @param View v
+	 * @param String text
+	 */
 	protected abstract void saveTextForView(View v, String text);
 	
 	// Inline Class to Watch our text editing
@@ -161,11 +175,15 @@ public abstract class AdventureActivity extends Activity implements DataReturn<S
         	return super.onKeyDown(keyCode, event);
         }
     }
-	
+	/**
+	 * shows the loading window
+	 */
 	public void loadingWindow() {
 		progDailog = ProgressDialog.show(this, "Loading...", "");
 	}
-	
+	/**
+	 * shows the closing window.
+	 */
 	public void closeLoadingWindow() {
 		if(progDailog != null) {
 			progDailog.cancel();

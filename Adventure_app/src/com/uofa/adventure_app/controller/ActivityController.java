@@ -26,8 +26,9 @@ import android.os.HandlerThread;
 import com.uofa.adventure_app.interfaces.AdventureActivity;
 
 /**
- * This class should not be called...
- * @author chris
+ * Keeps track of the current activity and contains
+ * an ArrayList of the Activities.
+ * @author Chris Pavlicek
  */
 public class ActivityController {
 	// Every activity should be added to here.
@@ -45,19 +46,30 @@ public class ActivityController {
          this.handlerThread.start();
          this.handler = new Handler(handlerThread.getLooper());
 	}
-	
+	/**
+	 * Adds an activity to the list of activities.
+	 * @param AdventureActivity
+	 */
 	public void addActivity(AdventureActivity activity) {
 		activities.add(activity);
 	}
-	
+	/**
+	 * Removes an activity to the list of activities.
+	 * @param AdventureActivity
+	 */
 	public void removeActivitiy(AdventureActivity activity) {
 		activities.remove(activity);
 	}
-	
+	/**
+	 * returns a list of AdventureActivity
+	 * @return ArrayList<AdventureActivty>
+	 */
 	public ArrayList<AdventureActivity> openActivities() {
 		return this.activities;
 	}
-	
+	/**
+	 * Updates the referenced view.
+	 */
 	public void update() {
 		for(AdventureActivity a: activities) {
 			a.updateView();

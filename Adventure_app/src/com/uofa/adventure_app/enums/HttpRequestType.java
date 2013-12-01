@@ -17,7 +17,11 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package com.uofa.adventure_app.enums;
-
+/**
+ * holds HttpRequestType.
+ * @author Chris Pavlicek
+ *
+ */
 public enum HttpRequestType {
 	GET("GET"), POST("POST"), DELETE("DELETE");
 	

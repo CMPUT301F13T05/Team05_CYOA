@@ -29,7 +29,12 @@ import java.util.ArrayList;
 import com.uofa.adventure_app.application.AdventureApplication;
 import com.uofa.adventure_app.model.Fragement;
 import com.uofa.adventure_app.model.Story;
-
+/**
+ * Keeps track of the current story, fragement, and keeps a stack of both
+ * as well.
+ * @author Chris Pavlicek
+ *
+ */
 public class StoryController {
 	
 	ArrayList<Story> stories;
@@ -77,7 +82,8 @@ public class StoryController {
 	}
 	
 	/**
-	 * @return the previousFragementList
+	 * returns the previous Fragement List.
+	 * @return ArrayList<Fragement> previousFragementList
 	 */
 	public ArrayList<Fragement> previousFragementList() {
 		return previousFragementList;
@@ -111,7 +117,7 @@ public class StoryController {
 	/**
 	 * Adds A Fragement to our list. This is used for backtracking
 	 * and for editing.
-	 * @param f
+	 * @param Fragement f
 	 */
 	public void addPreviousFragement(Fragement f) {
 		previousFragementList.add(f);
@@ -125,14 +131,20 @@ public class StoryController {
 	}
 	
 
-	
+	/**
+	 * adds a story to the list of stories for the browserView.
+	 * @param Story story
+	 */
 	public void addStory(Story story) {
 		if(!stories.contains(story)) {
 			this.stories.add(story);
 			AdventureApplication.getActivityController().update();
 		}
 	}
-	
+	/**
+	 * Replaces a story in the story list so that we dont end up with duplicates
+	 * @param Story story
+	 */
 	public void replaceStory(Story story) {
 		if(stories.contains(story)) {
 			int index = this.stories.indexOf(story);
@@ -148,7 +160,7 @@ public class StoryController {
  * Allows you to set the current array of stories.
  * You should probably not call this unless you
  * know what your doing!
- * @param stories
+ * @param ArrayList<Story> stories
  */
 	public void setStories(ArrayList<Story> stories) {
 		this.stories = stories;

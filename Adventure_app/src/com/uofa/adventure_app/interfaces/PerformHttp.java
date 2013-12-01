@@ -10,7 +10,7 @@ import com.uofa.adventure_app.controller.http.HttpObject;
 
 /**
  * Used for Threading of Web Service Controller
- * @author chris
+ * @author chris Pavlicek
  *
  */
 	public class PerformHttp<T> extends AsyncTask<HttpObject, Integer, ArrayList<T>> {
@@ -20,6 +20,7 @@ import com.uofa.adventure_app.controller.http.HttpObject;
 		String method = null;
 		Parser<T> parser = null;
 		WebServiceController webServiceController;
+		
 		public PerformHttp(DataReturn<T> activity, String method, WebServiceController webService, Parser<T> parser) {
 			this.parser = parser;
 			this.webServiceController = webService;
@@ -27,7 +28,9 @@ import com.uofa.adventure_app.controller.http.HttpObject;
 			this.method = method;
 		}
 		
-
+		/**
+		 * Returns a list of Stories.
+		 */
 		protected ArrayList<T> doInBackground(HttpObject... httpObj) {
 			ArrayList<T> stories = new ArrayList<T>();
 			stories.clear();
@@ -41,13 +44,17 @@ import com.uofa.adventure_app.controller.http.HttpObject;
 			}
 			
 		}
-
+		/**
+		 * shows the loading window when downloading or uploading
+		 */
 		 protected void onProgressUpdate(Integer... progress) {
 	         for(AdventureActivity a : AdventureApplication.getActivityController().openActivities()) {
 	        	 a.loadingWindow();
 	         }
 	     }
-		
+		/**
+		 * calls dataReturn in the current activity.
+		 */
 		protected void onPostExecute(ArrayList<T> result) {
 	         for(AdventureActivity a : AdventureApplication.getActivityController().openActivities()) {
 	        	 a.closeLoadingWindow();

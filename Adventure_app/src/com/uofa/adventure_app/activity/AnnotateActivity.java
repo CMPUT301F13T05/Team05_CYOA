@@ -59,7 +59,7 @@ import com.uofa.adventure_app.model.Story;
  * It also calls a camera and the internal storage to allow the user to add
  * pictures to their comment/annotation
  * 
- * @author Ulvi Ibrahimov, Chris Pavlicek
+ * @author Ulvi Ibrahimov, Chris Pavlicek, Kevin Lafond, Joel Malina
  * 
  */
 
