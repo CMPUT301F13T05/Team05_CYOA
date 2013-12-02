@@ -6,11 +6,11 @@ package com.uofa.adventure_app.activity;
  *
  */
 public class RowItem {
-    private int imageId;
+    private String imageId;
     private String title;
     private String desc;
  
-    public RowItem(int imageId, String title, String desc) {
+    public RowItem(String imageId, String title, String desc) {
         this.imageId = imageId;
         this.title = title;
         this.desc = desc;
@@ -19,14 +19,14 @@ public class RowItem {
      * Gets the Image Id.
      * @return int
      */
-    public int getImageId() {
+    public String getImageId() {
         return imageId;
     }
     /**
      * Sets the image id.
      * @param int imageId
      */
-    public void setImageId(int imageId) {
+    public void setImageId(String imageId) {
         this.imageId = imageId;
     }
     /**
