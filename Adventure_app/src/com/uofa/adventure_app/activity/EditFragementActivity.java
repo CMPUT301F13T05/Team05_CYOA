@@ -293,6 +293,7 @@ public class EditFragementActivity extends AdventureActivity {
 			}
   
         }
+        AdventureApplication.getActivityController().update();
 	}
 
 	@Override
