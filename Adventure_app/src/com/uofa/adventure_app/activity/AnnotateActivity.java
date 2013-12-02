@@ -44,6 +44,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.uofa.adventure_app.R;
+import com.uofa.adventure_app.adapter.CustomListViewAdapter;
 import com.uofa.adventure_app.application.AdventureApplication;
 import com.uofa.adventure_app.controller.http.HttpObject;
 import com.uofa.adventure_app.controller.http.HttpObjectStory;
