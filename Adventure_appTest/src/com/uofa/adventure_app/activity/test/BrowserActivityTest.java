@@ -50,7 +50,7 @@ public class BrowserActivityTest extends
 		browseView = browserActivity.findViewById(android.R.id.content);
 		// HERE
 		HttpObjectStory httpStory = new HttpObjectStory();
-		//this.httpRequest(httpStory.fetchAll(), browserActivity.GET_ALL_METHOD);
+		
 	}
 	
 	public void testStory()

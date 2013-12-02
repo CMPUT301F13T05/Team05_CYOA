@@ -17,7 +17,7 @@ public class ChoiceTest extends TestCase {
 		
 	}
 	
-	public void testAnnotation()
+	public void testChoice()
 	{
 		Fragement testFrag = new Fragement();
 		Choice testChoice = new Choice(testFrag);
@@ -31,7 +31,6 @@ public class ChoiceTest extends TestCase {
 		// test if setting/getting Choice works
 		testChoice.setChoice(testFrag2);
 		assertEquals(testFrag2, new Fragement(testChoice.getChoiceId()));
-		
 	}
 	
 	
