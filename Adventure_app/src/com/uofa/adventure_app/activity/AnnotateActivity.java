@@ -121,8 +121,11 @@ public class AnnotateActivity extends AdventureActivity implements
 	public void alertBox() {
 
 		if(isNewAnnotation) {
+			newAnnotation = null;
 			newAnnotation = new Annotation(AdventureApplication.user());
 		}
+		
+		
 		
 		final Dialog dialog = new Dialog(this, R.style.DialogTheme);
 		LayoutInflater inflater = this.getLayoutInflater();
@@ -186,6 +189,9 @@ public class AnnotateActivity extends AdventureActivity implements
 		
 		} else {
 			System.out.println("Replace");
+			HttpObjectStory httpObject = new HttpObjectStory();
+			this.httpRequest(httpObject.updateAnnotation(newAnnotation, currentFragement.uid()), "ADD_ANNOTATION");
+		
 			currentFragement.replaceAnnotation(newAnnotation);
 		}
 		isNewAnnotation = false;
