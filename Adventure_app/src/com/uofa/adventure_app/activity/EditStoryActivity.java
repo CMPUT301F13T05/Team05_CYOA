@@ -68,16 +68,7 @@ public class EditStoryActivity extends AdventureActivity {
 			AdventureApplication.getStoryController().saveStories();
 			currentStory.addUser(AdventureApplication.user());
 		}
-		String authors = "Author: " + currentStory.users().get(0).toString();
-		if (currentStory.users().size() > 1){
-			authors += "\nEdited by: ";
-		}
-		for(int i = 1; i<currentStory.users().size(); i++){
-			authors +=  currentStory.users().get(i);
-			if (i != currentStory.users().size()-1 ){
-				authors  += ", ";
-			}
-		}
+		String authors = authorString();
 		TextView authorView = (TextView) findViewById(R.id.authortext);
 		authorView.setText(authors);
 		
@@ -114,15 +105,23 @@ public class EditStoryActivity extends AdventureActivity {
 				newFragment();
 				break;
 			case R.id.help:
-				String helpText = new String();
-				helpText="Touch New fragement to add an empty fragement to the story\n\n";
-				helpText=helpText+"Choose fragement you want to edit\n\n";
-				Toast.makeText(this, helpText, Toast.LENGTH_LONG).show();
+				toastHelp();
 				break;
 			default:
 				return super.onOptionsItemSelected(item);
 		}
 		return super.onOptionsItemSelected(item);
+	}
+	
+	/**
+	 * Toasts help text
+	 * implemented due to refactoring suggestions
+	 */
+	private void toastHelp() {
+		String helpText = new String();
+		helpText="Touch New fragement to add an empty fragement to the story\n\n";
+		helpText=helpText+"Choose fragement you want to edit\n\n";
+		Toast.makeText(this, helpText, Toast.LENGTH_LONG).show();
 	}
 	
 	// We want to create a context Menu when the user long click on an item
