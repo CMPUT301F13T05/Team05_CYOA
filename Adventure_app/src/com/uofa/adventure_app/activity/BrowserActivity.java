@@ -23,6 +23,7 @@ import java.util.UUID;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -237,7 +238,9 @@ public class BrowserActivity extends AdventureActivity {
 		}
 	}
 
-
+	/**
+	 * Sets up the grid adapter
+	 */
 	public void initGrid() {
 		//if(storyGridAdapter == null) {
 		GridView grid = (GridView) findViewById(R.id.gridView1);
@@ -324,6 +327,20 @@ public class BrowserActivity extends AdventureActivity {
 	protected void saveTextForView(View v, String text) {
 			
 	}
-
+	
+	/**
+	 * Override to close app
+	 */
+	@Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+        		finish();
+        		return true;
+        	} else {
+        		return super.onKeyDown(keyCode,event);
+        	}
+        } 
 }
+
+
 

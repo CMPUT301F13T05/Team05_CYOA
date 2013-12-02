@@ -92,16 +92,8 @@ public class EditFragementActivity extends AdventureActivity {
 			AdventureApplication.getStoryController().saveStories();
 			currentStory.addUser(AdventureApplication.user());
 		}
-		String authors = "Author: " + currentStory.users().get(0).toString();
-		if (currentStory.users().size() > 1){
-			authors += "\nEdited by: ";
-		}
-		for(int i = 1; i<currentStory.users().size(); i++){
-			authors +=  currentStory.users().get(i);
-			if (i != currentStory.users().size()-1 ){
-				authors  += ", ";
-			}
-		}
+		
+		String authors = authorString();
 		newauthor.setText(authors);
 		EditText newTitle = (EditText) findViewById(R.id.newtitle);
 		newTitle.setText(currentFragement.getTitle());
@@ -114,6 +106,7 @@ public class EditFragementActivity extends AdventureActivity {
 		newBody.addTextChangedListener(new GenericTextWatcher(newBody));
 
 	}
+	
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -205,25 +198,35 @@ public class EditFragementActivity extends AdventureActivity {
 			// Style our context menu
 			menu.setHeaderIcon(android.R.drawable.ic_input_get);
 			menu.setHeaderTitle("Add a Choice");
-			int counter = 0;
-			for (int j = 0; j < AdventureApplication.getStoryController()
-					.currentStory().getFragements().size(); j++) {
-				if (!AdventureApplication.getStoryController().currentStory().getFragements().get(j).equals(AdventureApplication.getStoryController().currentFragement())) {
-					Choice aChoice = new Choice(AdventureApplication.getStoryController().currentStory().getFragements().get(j));
-					if(!AdventureApplication.getStoryController().currentFragement().choices().contains(aChoice)) {
-					menu.add(0, counter, 0, "Add: "
-							+ AdventureApplication.getStoryController()
-									.currentStory().getFragements().get(j)
-									.getTitle());
-					}
-				}
-				counter++;
-			}
+			addFragementsToMenu(menu);
 			inflater.inflate(R.menu.createchoice, menu);
 			// choice = false;
 		}
 	}
-
+	
+	/**
+	 * Adds the relivent fragemens to the menu specified
+	 * Implemented by suggestion from JDeodarant.
+	 * @param menu
+	 */
+private void addFragementsToMenu(Menu menu) {
+	int counter = 0;
+	for (int j = 0; j < AdventureApplication.getStoryController()
+			.currentStory().getFragements().size(); j++) {
+		if (!AdventureApplication.getStoryController().currentStory().getFragements().get(j).equals(AdventureApplication.getStoryController().currentFragement())) {
+			Choice aChoice = new Choice(AdventureApplication.getStoryController().currentStory().getFragements().get(j));
+			if(!AdventureApplication.getStoryController().currentFragement().choices().contains(aChoice)) {
+			menu.add(0, counter, 0, "Add: "
+					+ AdventureApplication.getStoryController()
+							.currentStory().getFragements().get(j)
+							.getTitle());
+			}
+		}
+		counter++;
+	}
+}
+	
+	
 	/**
 	 * Takes the photo with the camera
 	 */

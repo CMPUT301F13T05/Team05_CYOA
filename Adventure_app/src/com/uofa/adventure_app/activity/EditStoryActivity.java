@@ -68,16 +68,7 @@ public class EditStoryActivity extends AdventureActivity {
 			AdventureApplication.getStoryController().saveStories();
 			currentStory.addUser(AdventureApplication.user());
 		}
-		String authors = "Author: " + currentStory.users().get(0).toString();
-		if (currentStory.users().size() > 1){
-			authors += "\nEdited by: ";
-		}
-		for(int i = 1; i<currentStory.users().size(); i++){
-			authors +=  currentStory.users().get(i);
-			if (i != currentStory.users().size()-1 ){
-				authors  += ", ";
-			}
-		}
+		String authors = authorString();
 		TextView authorView = (TextView) findViewById(R.id.authortext);
 		authorView.setText(authors);
 		
