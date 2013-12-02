@@ -41,7 +41,7 @@ import com.uofa.adventure_app.interfaces.UniqueId;
 public class Media extends UniqueId implements Serializable {
 
 	private String image;
-    private static final int IMAGE_MAX = 150;
+   	public static final int IMAGE_MAX = 150;
 	// private MediaType mediaType;
 
 	public Media( String image) {
