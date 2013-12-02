@@ -48,6 +48,7 @@ public class Annotation extends UniqueId implements Serializable {
 	public Annotation(User user) {
 		super();
 		this.user = user;
+		this.media = null;
 	}
 	
 	/**
