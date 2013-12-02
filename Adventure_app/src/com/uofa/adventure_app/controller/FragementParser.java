@@ -40,8 +40,6 @@ public class FragementParser implements Parser<Story> {
 	 */
 	public ArrayList<Story> parseFragement(String parseString) {
 		
-		System.out.println("This one: " + parseString);
-		
 		// Blank story to trick datareturn
 		ArrayList<Story> stories = new ArrayList<Story>();
 		Story s = new Story();

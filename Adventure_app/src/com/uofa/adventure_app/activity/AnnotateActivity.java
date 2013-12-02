@@ -89,6 +89,7 @@ public class AnnotateActivity extends AdventureActivity implements
 		listView.setOnItemClickListener(this);
 		
 		newAnnotation = new Annotation(AdventureApplication.user());
+		newAnnotation.setAnnotationPic(null);
 
 		Fragement currentFragement = AdventureApplication.getStoryController().currentFragement();
 		
@@ -131,6 +132,8 @@ public class AnnotateActivity extends AdventureActivity implements
 		if(isNewAnnotation) {
 			newAnnotation = null;
 			newAnnotation = new Annotation(AdventureApplication.user());
+			newAnnotation.setAnnotationPic(null);
+			
 		}
 		
 		
@@ -205,6 +208,7 @@ public class AnnotateActivity extends AdventureActivity implements
 		isNewAnnotation = false;
 		AdventureApplication.getStoryController().saveStories();
 		newAnnotation = new Annotation(AdventureApplication.user());
+		newAnnotation.setAnnotationPic(null);
 		
 
 		
@@ -231,7 +235,6 @@ public class AnnotateActivity extends AdventureActivity implements
 				currentFragement.setAnnotations(f.annotations());
 				
 			}
-			
 		}
 
 		this.updateView();
@@ -287,11 +290,9 @@ public class AnnotateActivity extends AdventureActivity implements
 
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
-			// TextView tv = (TextView) findViewById(R.id.status);
 			if (resultCode == RESULT_OK) {
 				System.out.println("Photo OK!");
                 try {
-                	
                     Bitmap bitmap = MediaStore.Images.Media.getBitmap(
                                     this.getContentResolver(), imageFileUri);
                     Bitmap resizedBitmap = Media.resizeImage(bitmap);
@@ -324,19 +325,15 @@ public class AnnotateActivity extends AdventureActivity implements
             if (!folderF.exists()) {
    	            folderF.mkdir();
             }
-   	        
 
-
-   	     	
-   	     
             try {
             // copyfile from gallery location to our app!
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(
                         this.getContentResolver(), chosenImageUri);
                 Bitmap resizedBitmap = Media.resizeImage(bitmap);
                 String image = Media.encodeToBase64(resizedBitmap);
+                newAnnotation.setAnnotationPic(null);
                 newAnnotation.setAnnotationPic(image);
-                System.out.println(newAnnotation.media());
                 saveAnnotation();
                 
 			} catch (IOException e) {

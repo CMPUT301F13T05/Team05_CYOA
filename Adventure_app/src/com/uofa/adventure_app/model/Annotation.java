@@ -50,7 +50,10 @@ public class Annotation extends UniqueId implements Serializable {
 		this.user = user;
 	}
 	
-	
+	/**
+	 * Sets the annotation picture
+	 * @param String annotation
+	 */
 	public void setAnnotationPic(String annotation){
 		this.media = annotation;
 	}
