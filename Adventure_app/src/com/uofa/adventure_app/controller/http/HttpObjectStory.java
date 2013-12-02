@@ -20,6 +20,7 @@ package com.uofa.adventure_app.controller.http;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.UUID;
 
 import com.google.gson.Gson;
@@ -94,6 +95,26 @@ import com.uofa.adventure_app.model.Story;
 		}
 		return obj;
 	}
+	/**
+	 * Fetchs the annotations for that current Fragement
+	 * @param id
+	 * @return
+	 */
+	public HttpObject fetchAnnotationsForFragement(UUID id) {
+		// This should search all Fields
+		HttpObject obj = null;
+		String searchQuery = "{  \"fields\" : [\"annotations\"]}";
+		//String searchQuery = "{\"query\" : {\"term\" : {\"_id\" : \"" + id.toString() + "\"}}}";
+		//searchQuery = "";
+		//String searchQuery = "{ \"query\": { \"match_all\": {}}}";
+		try {
+			obj = new HttpObject(HttpRequestType.POST, "" , new URL(commonUrlFragement+ "_search?q=_id:" + id.toString()));
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return obj;
+	}
 
 	/**
 	 * Publishes a Story to the Internet!
@@ -119,7 +140,7 @@ import com.uofa.adventure_app.model.Story;
 	 * @param UUID storyId
 	 * @return HttpObject
 	 */
-	public HttpObject publishFragement(Fragement fragement, UUID storyId) {
+	public HttpObject publishFragement(Fragement fragement) {
 		Gson gson = new Gson();
 		HttpObject obj = null;
 		
@@ -150,13 +171,12 @@ import com.uofa.adventure_app.model.Story;
 		return obj;
 	}
 	
-	public HttpObject updateAnnotation(Annotation annotation, UUID fragementId) {
+	public HttpObject updateAnnotation(ArrayList<Annotation> annotations, UUID fragementId) {
 		Gson gson = new Gson();
 		HttpObject obj = null;
-		System.out.println(gson.toJson(annotation));
 		
 		//String query = "{\"script\": \"if (ctx._source[\"annotations\"] == null) { ctx._source.annotations = annotation } else { ctx._source.annotations += annotation }\"\"params\": { \"annotation\":  ["+ gson.toJson(annotation) + "]}}";
-		String query = "{\"script\": \"if (ctx._source.annotations.properties.uid == \""+annotation.uid().toString()+"\") { ctx._source.annotations.properties.uid = annotation } else { ctx.op = \"none\" }\",\"params\" : {\"annotation\" : "+ gson.toJson(annotation) +"}}";
+		String query = "{\"script\": \"ctx._source.annotations = annotation\",\"params\" : {\"annotation\" : "+ gson.toJson(annotations) +"}}";
 		System.out.println(query);
 		try {
 			obj = new HttpObject(HttpRequestType.POST, query, new URL(commonUrlFragement + fragementId.toString() + "/_update"));
@@ -206,5 +226,7 @@ import com.uofa.adventure_app.model.Story;
 		}
 		return obj;
 	}
+	
+
 	
 }

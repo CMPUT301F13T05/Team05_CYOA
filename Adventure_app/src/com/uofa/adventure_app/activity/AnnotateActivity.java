@@ -44,6 +44,7 @@ import android.widget.TextView;
 
 import com.uofa.adventure_app.R;
 import com.uofa.adventure_app.application.AdventureApplication;
+import com.uofa.adventure_app.controller.http.HttpObject;
 import com.uofa.adventure_app.controller.http.HttpObjectStory;
 import com.uofa.adventure_app.interfaces.AdventureActivity;
 import com.uofa.adventure_app.model.Annotation;
@@ -79,7 +80,7 @@ public class AnnotateActivity extends AdventureActivity implements
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_annotate);
-
+		
 		rowItems = AdventureApplication.getStoryController().currentFragement().annotations();
 		System.out.println(rowItems);
 		listView = (ListView) findViewById(R.id.list);
@@ -89,8 +90,16 @@ public class AnnotateActivity extends AdventureActivity implements
 		
 		newAnnotation = new Annotation(AdventureApplication.user());
 
+		Fragement currentFragement = AdventureApplication.getStoryController().currentFragement();
+		
+		if(this.isNetworkAvailable()) {
+			HttpObjectStory httpStory = new HttpObjectStory();
+			this.httpRequest(httpStory.fetchAnnotationsForFragement(currentFragement.uid()), "GET_ANNOTATIONS");
+		} 
+		
 		// alertBox();
 	}
+
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -192,7 +201,7 @@ public class AnnotateActivity extends AdventureActivity implements
 		} else {
 			System.out.println("Replace");
 			HttpObjectStory httpObject = new HttpObjectStory();
-			this.httpRequest(httpObject.updateAnnotation(newAnnotation, currentFragement.uid()), "ADD_ANNOTATION");
+			this.httpRequest(httpObject.updateAnnotation(currentFragement.annotations(), currentFragement.uid()), "ADD_ANNOTATION");
 		
 			currentFragement.replaceAnnotation(newAnnotation);
 		}
@@ -216,8 +225,18 @@ public class AnnotateActivity extends AdventureActivity implements
 
 	@Override
 	public void dataReturn(ArrayList<Story> result, String method) {
-		// TODO Auto-generated method stub
+		if(!result.isEmpty()) {
+		Fragement currentFragement = AdventureApplication.getStoryController().currentFragement();
+		if(result != null && result.get(0)  != null) {
+			ArrayList<Fragement> fragList = result.get(0).getFragements();
+			for(Fragement f : fragList) {
+				currentFragement.setAnnotations(f.annotations());
+			}
+			
+		}
 
+		this.updateView();
+	}
 	}
 
 	@Override
