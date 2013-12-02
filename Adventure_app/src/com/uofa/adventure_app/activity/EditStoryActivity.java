@@ -105,15 +105,23 @@ public class EditStoryActivity extends AdventureActivity {
 				newFragment();
 				break;
 			case R.id.help:
-				String helpText = new String();
-				helpText="Touch New fragement to add an empty fragement to the story\n\n";
-				helpText=helpText+"Choose fragement you want to edit\n\n";
-				Toast.makeText(this, helpText, Toast.LENGTH_LONG).show();
+				toastHelp();
 				break;
 			default:
 				return super.onOptionsItemSelected(item);
 		}
 		return super.onOptionsItemSelected(item);
+	}
+	
+	/**
+	 * Toasts help text
+	 * implemented due to refactoring suggestions
+	 */
+	private void toastHelp() {
+		String helpText = new String();
+		helpText="Touch New fragement to add an empty fragement to the story\n\n";
+		helpText=helpText+"Choose fragement you want to edit\n\n";
+		Toast.makeText(this, helpText, Toast.LENGTH_LONG).show();
 	}
 	
 	// We want to create a context Menu when the user long click on an item

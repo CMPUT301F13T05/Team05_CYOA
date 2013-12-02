@@ -152,18 +152,26 @@ public class EditFragementActivity extends AdventureActivity {
 			save();
 			break;
 		case R.id.help:
-			String helpText = new String();
-			helpText="Touch Add Media, to add images to the fragement\n\n";
-			helpText=helpText+"Touch save, to save the fragement\n\n";
-			helpText=helpText+"Touch Add choice to add a fragement as a choice\n\n";
-			Toast.makeText(this, helpText, Toast.LENGTH_LONG).show();
+			toastHelp();
 			break;
 		default:
 			return super.onOptionsItemSelected(item);
 		}
 		return super.onOptionsItemSelected(item);
 	}
-
+	
+/**
+ * Toasts the help instructions
+ * Implemented due to refactoring suggestions
+ */
+	private void toastHelp() {
+		String helpText = new String();
+		helpText="Touch Add Media, to add images to the fragement\n\n";
+		helpText=helpText+"Touch save, to save the fragement\n\n";
+		helpText=helpText+"Touch Add choice to add a fragement as a choice\n\n";
+		Toast.makeText(this, helpText, Toast.LENGTH_LONG).show();
+	}
+	
 	/**
 	 * Method that is called to open the context view to allow the user to open
 	 * the camera or choose an existing piece of media.
