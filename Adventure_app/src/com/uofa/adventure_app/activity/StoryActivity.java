@@ -357,7 +357,7 @@ public class StoryActivity<T> extends AdventureActivity {
     		System.out.println("Publishing Story: " + currentStory.id().toString());
     		for (Fragement f: fragements){
     			System.out.println("Publish Fragement ID "+ f.uid().toString());
-    			this.httpRequest(httpStory.publishFragement(f, currentStory.id()), "PUBLISH_FRAGEMENT");
+    			this.httpRequest(httpStory.publishFragement(f), "PUBLISH_FRAGEMENT");
     		}
     		
     	}
