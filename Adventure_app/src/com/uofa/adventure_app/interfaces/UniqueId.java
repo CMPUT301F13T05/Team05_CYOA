@@ -11,7 +11,7 @@ import java.util.UUID;
  *
  */
 public abstract class UniqueId implements Serializable {
-	protected UUID uid;
+	protected UUID _id;
 	public UniqueId() {
 		this.setUid(UUID.randomUUID());
 	}
@@ -19,14 +19,14 @@ public abstract class UniqueId implements Serializable {
 	 * @return the uid
 	 */
 	public UUID uid() {
-		return uid;
+		return _id;
 	}
 	/**
 	 * @param uid the uid to set
 	 */
 	//
 	public void setUid(UUID uid) {
-		this.uid = uid;
+		this._id = uid;
 	}
 
 	@Override
