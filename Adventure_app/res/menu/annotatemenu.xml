@@ -4,7 +4,8 @@
 
 <group android:id="@+id/annotategroup">
 <item android:id="@+id/newAnnotation" android:title="New Annotation"></item>
-<item android:id="@+id/anohelp" android:title="Help"></item>
+<item android:id="@+id/takepic" android:title="Take Picture"></item>
+<item android:id="@+id/choosemedia" android:title="Choose Existing Image"></item>
 <item android:id="@+id/cancelAnnotate" android:title="Cancel"></item>
 
 </group>

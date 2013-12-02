@@ -62,14 +62,7 @@ public class BrowserActivity extends AdventureActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_browser);
 		v = this.findViewById(android.R.id.content);
-		HttpObjectStory httpStory = new HttpObjectStory();
 		
-		AdventureApplication.getStoryController().stories().clear();
-		AdventureApplication.getStoryController().loadStories();
-		
-		this.httpRequest(httpStory.fetchAll(), GET_ALL_METHOD);
-
-		loadAllStories();
 		boolean firstrun = getSharedPreferences("PREFERENCE", MODE_PRIVATE).getBoolean("firstrun", true);
 		/*
 		 * Ran only on the first time after install or if the user logs out of the app.
@@ -85,9 +78,7 @@ public class BrowserActivity extends AdventureActivity {
 			AdventureApplication.setUser(new User(username, UUID.fromString(uid)));
 		}
 		
-
-
-
+		loadAllStories();
 
 	}
 
