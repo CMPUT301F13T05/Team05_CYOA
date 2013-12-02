@@ -46,7 +46,7 @@ public class User extends UniqueId implements Serializable{
 	public User(String name, UUID uid) {
 		super();
 		this.name = name;
-		this.uid = uid;
+		this._id = uid;
 	}
 	
 	/**
