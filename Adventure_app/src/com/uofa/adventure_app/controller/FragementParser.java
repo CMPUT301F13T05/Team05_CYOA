@@ -50,11 +50,14 @@ public class FragementParser implements Parser<Story> {
 			}.getType();
 			ElasticSearchResponse<Fragement> esResponse = null;
 			try {
+				//
 				
 				esResponse = gson.fromJson(
 					parseString, elasticSearchResponseType);
 			if (esResponse.getHits() != null) {
+				
 				for (ElasticSearchResponse<Fragement> f : esResponse.getHits()) {
+					
 					if(f != null) {
 						s.addFragement(f.getObject());
 					}

@@ -83,20 +83,19 @@ public class AnnotateActivity extends AdventureActivity implements
 		setContentView(R.layout.activity_annotate);
 		
 		rowItems = AdventureApplication.getStoryController().currentFragement().annotations();
-		System.out.println(rowItems);
 		listView = (ListView) findViewById(R.id.list);
 		adapter = new CustomListViewAdapter(this, R.layout.list_item, rowItems);
 		listView.setAdapter(adapter);
 		listView.setOnItemClickListener(this);
 		
 		newAnnotation = new Annotation(AdventureApplication.user());
-		newAnnotation.setAnnotationPic(null);
+		//newAnnotation.setAnnotationPic(null);
 
 		Fragement currentFragement = AdventureApplication.getStoryController().currentFragement();
 		
 		if(this.isNetworkAvailable()) {
 			HttpObjectStory httpStory = new HttpObjectStory();
-			this.httpRequest(httpStory.fetchAnnotationsForFragement(currentFragement.uid()), "GET_ANNOTATIONS");
+			this.httpRequestFragement(httpStory.fetchAnnotationsForFragement(currentFragement.uid()), "GET_ANNOTATIONS");
 		} 
 		
 		// alertBox();
@@ -133,7 +132,7 @@ public class AnnotateActivity extends AdventureActivity implements
 		if(isNewAnnotation) {
 			newAnnotation = null;
 			newAnnotation = new Annotation(AdventureApplication.user());
-			newAnnotation.setAnnotationPic(null);
+			//newAnnotation.setAnnotationPic(null);
 			
 		}
 		
@@ -219,7 +218,7 @@ public class AnnotateActivity extends AdventureActivity implements
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
-		newAnnotation = rowItems.get(position);
+		newAnnotation = AdventureApplication.getStoryController().currentFragement().annotations().get(position);
 		if(newAnnotation.user().equals(AdventureApplication.user())) {
 			alertBox();
 		}
@@ -232,7 +231,9 @@ public class AnnotateActivity extends AdventureActivity implements
 		if(result != null && result.get(0)  != null) {
 			ArrayList<Fragement> fragList = result.get(0).getFragements();
 			for(Fragement f : fragList) {
+
 				currentFragement.setAnnotations(f.annotations());
+				
 			}
 		}
 
@@ -242,6 +243,8 @@ public class AnnotateActivity extends AdventureActivity implements
 
 	@Override
 	public void updateView() {
+		adapter.clear();
+		adapter.addAll(AdventureApplication.getStoryController().currentFragement().annotations());
 		adapter.notifyDataSetChanged();
 	}
 
@@ -261,7 +264,7 @@ public class AnnotateActivity extends AdventureActivity implements
 			break;
 		}
 
-		AdventureApplication.getActivityController().update();
+		updateView();
 
 	}
 	/**
@@ -329,6 +332,7 @@ public class AnnotateActivity extends AdventureActivity implements
                         this.getContentResolver(), chosenImageUri);
                 Bitmap resizedBitmap = Media.resizeImage(bitmap);
                 String image = Media.encodeToBase64(resizedBitmap);
+                
                 newAnnotation.setAnnotationPic(null);
                 newAnnotation.setAnnotationPic(image);
                 saveAnnotation();

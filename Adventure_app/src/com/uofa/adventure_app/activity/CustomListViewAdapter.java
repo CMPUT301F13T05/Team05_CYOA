@@ -63,6 +63,8 @@ public class CustomListViewAdapter extends ArrayAdapter<Annotation> {
         if(rowItem.media() != null) {
         	Bitmap bitmap = Media.decodeBase64(rowItem.media());
         	holder.imageView.setImageBitmap(bitmap);
+        } else {
+        	holder.imageView.setImageBitmap(null);
         }
  
         return convertView;
