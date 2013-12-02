@@ -430,18 +430,11 @@ private void addFragementsToMenu(Menu menu) {
 
 
 	@Override
-	public void onBackPressed() {
-		// TODO Auto-generated method stub
-		super.onBackPressed();
-		AdventureApplication.getStoryController().saveStories();
-		
-	}
-	
-	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 	    if (keyCode == KeyEvent.KEYCODE_BACK) {
 	        AdventureApplication.getStoryController().saveStories();
-	        return super.onKeyDown(keyCode, event);
+	        finish();
+	        return true;
 	    }
 	    return super.onKeyDown(keyCode, event);
 	}

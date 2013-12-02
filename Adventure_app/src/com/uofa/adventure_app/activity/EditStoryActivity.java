@@ -24,6 +24,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -210,14 +211,21 @@ public class EditStoryActivity extends AdventureActivity {
 			AdventureApplication.getActivityController().update();
 
 		}
-		@Override
-		public void onBackPressed() {
-			// TODO Auto-generated method stub
-			super.onBackPressed();
-			AdventureApplication.getStoryController().saveStories();
-			
-		}
 
+		/**
+		 * Overides the back button for annotations
+		 */
+		@Override
+	    public boolean onKeyDown(int keyCode, KeyEvent event) {
+	        if (keyCode == KeyEvent.KEYCODE_BACK) {
+	        		
+	        		AdventureApplication.getStoryController().saveStories();
+	        		finish();
+	        		return true;
+	        } else {
+	        	return super.onKeyDown(keyCode, event);
+	        }
+	    }
 		
 		
 }
