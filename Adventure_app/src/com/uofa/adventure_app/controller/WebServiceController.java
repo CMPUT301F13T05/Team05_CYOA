@@ -81,6 +81,7 @@ public class WebServiceController {
 			
 			if (status / 100 != 2) {
 				responseMessage = conn.getResponseMessage();
+				System.out.println(responseMessage + "status :" + status);
 			}
 			
 			// response = new Response(status, new Hashtable<String,
