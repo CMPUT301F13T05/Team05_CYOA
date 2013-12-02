@@ -63,7 +63,7 @@ public class Fragement extends UniqueId implements Serializable  {
         public Fragement(UUID id)
         {
         	this();
-        	this.uid = id;
+        	this._id = id;
         } 
         
         public Fragement(String body, boolean flag)
@@ -191,12 +191,11 @@ public class Fragement extends UniqueId implements Serializable  {
     				return true;
     			else
     				return false;
+    		} else {
+    			return super.equals(o);
     		}
     		
-    		if (this == o)
-    			return true;
-    		else
-    			return false;
+ 
     	}
         
 		/* (non-Javadoc)

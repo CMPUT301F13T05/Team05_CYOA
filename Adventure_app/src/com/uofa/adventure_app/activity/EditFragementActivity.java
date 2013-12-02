@@ -352,14 +352,18 @@ public class EditFragementActivity extends AdventureActivity {
 				.currentFragement();
 		Fragement newFragement = new Fragement();
 		Choice newChoice = new Choice(newFragement);
+		
+		AdventureApplication.getStoryController().currentStory().addFragement(newFragement);
+		
 		AdventureApplication.getStoryController().currentFragement()
 				.addChoice(newChoice);
 		AdventureApplication.getStoryController().addPreviousFragement(
 				currentFragement);
 		AdventureApplication.getStoryController().setCurrentFragement(
 				newFragement);
-		if (!AdventureApplication.getStoryController().currentStory().getFragements().contains(currentFragement))
-			AdventureApplication.getStoryController().currentStory().addFragement(currentFragement);
+		
+		//if (!AdventureApplication.getStoryController().currentStory().getFragements().contains(currentFragement))
+
 		EditText newTitle = (EditText) findViewById(R.id.newtitle);
 		newTitle.setText("");
 		EditText newBody = (EditText) findViewById(R.id.newbody);
