@@ -96,7 +96,10 @@ public class AnnotateActivity extends AdventureActivity implements
 		if(this.isNetworkAvailable()) {
 			HttpObjectStory httpStory = new HttpObjectStory();
 			this.httpRequestFragement(httpStory.fetchAnnotationsForFragement(currentFragement.uid()), "GET_ANNOTATIONS");
-		} 
+		} else {
+			adapter.addAll(currentFragement.annotations());
+			this.updateView();
+		}
 		
 		// alertBox();
 	}
@@ -231,8 +234,10 @@ public class AnnotateActivity extends AdventureActivity implements
 		if(result != null && result.get(0)  != null) {
 			ArrayList<Fragement> fragList = result.get(0).getFragements();
 			for(Fragement f : fragList) {
+				for (Annotation a: f.annotations()) {
+					currentFragement.addAnnotation(a);
+				}
 
-				currentFragement.setAnnotations(f.annotations());
 				
 			}
 		}
@@ -243,8 +248,8 @@ public class AnnotateActivity extends AdventureActivity implements
 
 	@Override
 	public void updateView() {
-		adapter.clear();
-		adapter.addAll(AdventureApplication.getStoryController().currentFragement().annotations());
+		//adapter.clear();
+		//adapter.addAll(AdventureApplication.getStoryController().currentFragement().annotations());
 		adapter.notifyDataSetChanged();
 	}
 

@@ -254,11 +254,13 @@ public class Fragement extends UniqueId implements Serializable  {
 		}
 
 		/**
-		 * Adds an Annotation to the Fragement
+		 * s an Annotation to the Fragement
 		 * @param Annotiation a
 		 */
 		public void addAnnotation(Annotation a) {
+			if(!this.annotations().contains(a)) {
 				this.annotations().add(a);
+			}
 		}
 		/**
 		 * Replaces an annotation with another updates one.
