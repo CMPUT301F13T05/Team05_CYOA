@@ -230,16 +230,17 @@ public class Story implements Serializable, Cloneable {
 		s.setIsLocal(true);
 		Map<UUID, UUID> uidMap = new HashMap<UUID,UUID>();
 		
+		ArrayList<Fragement> copyFragements = new ArrayList<Fragement>();
 		// Start Fragement should always be set!
 		if(this.startFragement() != null) {
 			Fragement startFragement = this.startFragement().localCopy();
 			s.setStartFragement(startFragement);
+			copyFragements.add(startFragement);
 			uidMap.put(this.startFragement().uid(), startFragement.uid());
 		} else {
 			return null;
 		}
-		
-		ArrayList<Fragement> copyFragements = new ArrayList<Fragement>();
+
 		for (Fragement f : this.getFragements()) 
 		{
 			if(!f.equals(startFragement)) {

@@ -60,10 +60,11 @@ public class EditStoryActivity extends AdventureActivity {
 		currentStory = AdventureApplication.getStoryController().currentStory();
 		EditText titleEditText = (EditText) findViewById(R.id.titletext);
 		titleEditText.setText(AdventureApplication.getStoryController().currentStory().title());
+		System.out.println(currentStory.id().toString());
 		if (!currentStory.users().contains(AdventureApplication.user())){
 			currentStory = AdventureApplication.getStoryController().currentStory().localCopy();
-			AdventureApplication.getStoryController().setCurrentStory(currentStory);
 			AdventureApplication.getStoryController().addStory(currentStory);
+			AdventureApplication.getStoryController().setCurrentStory(currentStory);
 			AdventureApplication.getStoryController().saveStories();
 			currentStory.addUser(AdventureApplication.user());
 		}
