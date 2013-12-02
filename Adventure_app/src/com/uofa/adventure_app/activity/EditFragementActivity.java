@@ -348,7 +348,7 @@ public class EditFragementActivity extends AdventureActivity {
      * creates a new fragement and adds it to the current fragment as a choice.
      */
 	private void newChoice() {
-		Fragement currentFragement = AdventureApplication.getStoryController()
+		currentFragement = AdventureApplication.getStoryController()
 				.currentFragement();
 		Fragement newFragement = new Fragement();
 		Choice newChoice = new Choice(newFragement);
@@ -372,11 +372,7 @@ public class EditFragementActivity extends AdventureActivity {
 		EditText newTitle = (EditText) findViewById(R.id.newtitle);
 		// EditText newAuthor = (EditText) findViewById(R.id.newauthor);
 		EditText newBody = (EditText) findViewById(R.id.newbody);
-
-		// Update the current window fragement
-		// We should setup a text listner, and do this automatically, this is
-		// clunky.
-		Fragement currentFragement = AdventureApplication.getStoryController()
+		currentFragement = AdventureApplication.getStoryController()
 				.currentFragement();
 		currentFragement.setBody(newBody.getText().toString());
 		currentFragement.setTitle(newTitle.getText().toString());
@@ -424,6 +420,8 @@ public class EditFragementActivity extends AdventureActivity {
 	public void onBackPressed() {
 		// TODO Auto-generated method stub
 		super.onBackPressed();
+		if (!AdventureApplication.getStoryController().currentStory().getFragements().contains(currentFragement))
+			AdventureApplication.getStoryController().currentStory().addFragement(currentFragement);
 		AdventureApplication.getStoryController().saveStories();
 		
 	}

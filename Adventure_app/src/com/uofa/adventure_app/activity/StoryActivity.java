@@ -146,6 +146,7 @@ public class StoryActivity<T> extends AdventureActivity {
 			int counter = 0;
 			for(Choice f : currentFragement.choices()) {
 				UUID fragId  = f.getChoiceId();
+				System.out.println("Fagid: "+ fragId);
 				String title = AdventureApplication.getStoryController().currentStory().fragementWithId(fragId).getTitle();
 				menu.add(0, counter, 0, title);
 				counter++;
