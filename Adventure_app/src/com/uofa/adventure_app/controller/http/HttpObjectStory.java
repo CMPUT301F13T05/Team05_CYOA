@@ -135,8 +135,29 @@ import com.uofa.adventure_app.model.Story;
 	public HttpObject publishAnnotation(Annotation annotation, UUID fragementId) {
 		Gson gson = new Gson();
 		HttpObject obj = null;
-		String query = "{\"script\": \"if (ctx._source[\"annotations\"] == null) { ctx._source.annotations = annotation } else { ctx._source.annotations += annotation }\"\"params\": {\"annotation\": "+ gson.toJson(annotation) + "}}";
-		//
+		
+		System.out.println(gson.toJson(annotation));
+		
+		//String query = "{\"script\": \"if (ctx._source[\"annotations\"] == null) { ctx._source.annotations = annotation } else { ctx._source.annotations += annotation }\"\"params\": { \"annotation\":  ["+ gson.toJson(annotation) + "]}}";
+		String query = "{\"script\": \"ctx._source.annotations += annotation\",\"params\" : {\"annotation\" : "+ gson.toJson(annotation) +"}}";
+		System.out.println(query);
+		try {
+			obj = new HttpObject(HttpRequestType.POST, query, new URL(commonUrlFragement + fragementId.toString() + "/_update"));
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return obj;
+	}
+	
+	public HttpObject updateAnnotation(Annotation annotation, UUID fragementId) {
+		Gson gson = new Gson();
+		HttpObject obj = null;
+		System.out.println(gson.toJson(annotation));
+		
+		//String query = "{\"script\": \"if (ctx._source[\"annotations\"] == null) { ctx._source.annotations = annotation } else { ctx._source.annotations += annotation }\"\"params\": { \"annotation\":  ["+ gson.toJson(annotation) + "]}}";
+		String query = "{\"script\": \"if (ctx._source.annotations.properties.uid == \""+annotation.uid().toString()+"\") { ctx._source.annotations.properties.uid = annotation } else { ctx.op = \"none\" }\",\"params\" : {\"annotation\" : "+ gson.toJson(annotation) +"}}";
+		System.out.println(query);
 		try {
 			obj = new HttpObject(HttpRequestType.POST, query, new URL(commonUrlFragement + fragementId.toString() + "/_update"));
 		} catch (MalformedURLException e) {
