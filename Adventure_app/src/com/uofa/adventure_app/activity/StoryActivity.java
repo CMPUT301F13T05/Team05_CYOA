@@ -337,6 +337,7 @@ public class StoryActivity<T> extends AdventureActivity {
      * publishes the current story being read to the server.
      */
     public void publish(){
+    	if(this.isNetworkAvailable()) {
     	if (currentStory.isLocal()){
     		currentStory.setIsLocal(false);
     		HttpObjectStory httpStory = new HttpObjectStory();
@@ -360,6 +361,11 @@ public class StoryActivity<T> extends AdventureActivity {
     			this.httpRequest(httpStory.publishFragement(f), "PUBLISH_FRAGEMENT");
     		}
     		
+    	}
+    	} else {
+    		String helpText = new String();
+    		helpText="Network not avaliable.";
+    		Toast.makeText(this, helpText, Toast.LENGTH_SHORT).show();
     	}
     }
 
