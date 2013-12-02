@@ -89,7 +89,7 @@ public class AnnotateActivity extends AdventureActivity implements
 		listView.setOnItemClickListener(this);
 		
 		newAnnotation = new Annotation(AdventureApplication.user());
-		newAnnotation.setAnnotationPic(null);
+		//newAnnotation.setAnnotationPic(null);
 
 		Fragement currentFragement = AdventureApplication.getStoryController().currentFragement();
 		
@@ -132,7 +132,7 @@ public class AnnotateActivity extends AdventureActivity implements
 		if(isNewAnnotation) {
 			newAnnotation = null;
 			newAnnotation = new Annotation(AdventureApplication.user());
-			newAnnotation.setAnnotationPic(null);
+			//newAnnotation.setAnnotationPic(null);
 			
 		}
 		
@@ -218,7 +218,7 @@ public class AnnotateActivity extends AdventureActivity implements
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
-		newAnnotation = rowItems.get(position);
+		newAnnotation = AdventureApplication.getStoryController().currentFragement().annotations().get(position);
 		if(newAnnotation.user().equals(AdventureApplication.user())) {
 			alertBox();
 		}
@@ -264,7 +264,7 @@ public class AnnotateActivity extends AdventureActivity implements
 			break;
 		}
 
-		AdventureApplication.getActivityController().update();
+		updateView();
 
 	}
 	/**
@@ -332,6 +332,7 @@ public class AnnotateActivity extends AdventureActivity implements
                         this.getContentResolver(), chosenImageUri);
                 Bitmap resizedBitmap = Media.resizeImage(bitmap);
                 String image = Media.encodeToBase64(resizedBitmap);
+                
                 newAnnotation.setAnnotationPic(null);
                 newAnnotation.setAnnotationPic(image);
                 saveAnnotation();

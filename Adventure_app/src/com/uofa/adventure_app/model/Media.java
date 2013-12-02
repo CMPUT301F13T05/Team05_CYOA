@@ -131,7 +131,8 @@ public class Media extends UniqueId implements Serializable {
      *            encoded string.
      * @return decoded bitmap.
      */
-    public static Bitmap decodeBase64(String bArray) {
+    public static Bitmap decodeBase64(String bitMapString) {
+    	String bArray = new String(bitMapString);
             byte[] decodedByte = Base64.decode(bArray, 0);
             return BitmapFactory
                             .decodeByteArray(decodedByte, 0, decodedByte.length);
