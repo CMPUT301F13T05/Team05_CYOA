@@ -83,7 +83,6 @@ public class AnnotateActivity extends AdventureActivity implements
 		setContentView(R.layout.activity_annotate);
 		
 		rowItems = AdventureApplication.getStoryController().currentFragement().annotations();
-		System.out.println(rowItems);
 		listView = (ListView) findViewById(R.id.list);
 		adapter = new CustomListViewAdapter(this, R.layout.list_item, rowItems);
 		listView.setAdapter(adapter);
@@ -95,7 +94,7 @@ public class AnnotateActivity extends AdventureActivity implements
 		
 		if(this.isNetworkAvailable()) {
 			HttpObjectStory httpStory = new HttpObjectStory();
-			this.httpRequest(httpStory.fetchAnnotationsForFragement(currentFragement.uid()), "GET_ANNOTATIONS");
+			this.httpRequestFragement(httpStory.fetchAnnotationsForFragement(currentFragement.uid()), "GET_ANNOTATIONS");
 		} 
 		
 		// alertBox();
@@ -228,7 +227,9 @@ public class AnnotateActivity extends AdventureActivity implements
 		if(result != null && result.get(0)  != null) {
 			ArrayList<Fragement> fragList = result.get(0).getFragements();
 			for(Fragement f : fragList) {
+
 				currentFragement.setAnnotations(f.annotations());
+				
 			}
 			
 		}
@@ -239,6 +240,8 @@ public class AnnotateActivity extends AdventureActivity implements
 
 	@Override
 	public void updateView() {
+		adapter.clear();
+		adapter.addAll(AdventureApplication.getStoryController().currentFragement().annotations());
 		adapter.notifyDataSetChanged();
 	}
 

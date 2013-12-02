@@ -46,6 +46,7 @@ public class Annotation extends UniqueId implements Serializable {
 	 * @param author
 	 */
 	public Annotation(User user) {
+		super();
 		this.user = user;
 	}
 	

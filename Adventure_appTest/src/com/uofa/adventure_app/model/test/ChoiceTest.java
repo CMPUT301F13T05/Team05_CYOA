@@ -25,12 +25,12 @@ public class ChoiceTest extends TestCase {
 		assertNotNull(testChoice);
 		
 		// test if a fragment was defined
-		assertNotNull(testChoice.getChoice());
+		assertNotNull(testChoice.getChoiceId());
 		
 		Fragement testFrag2 = new Fragement();
 		// test if setting/getting Choice works
 		testChoice.setChoice(testFrag2);
-		assertEquals(testFrag2, testChoice.getChoice());
+		assertEquals(testFrag2, new Fragement(testChoice.getChoiceId()));
 		
 	}
 	

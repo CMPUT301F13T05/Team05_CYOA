@@ -40,7 +40,7 @@ public class FragementParser implements Parser<Story> {
 	 */
 	public ArrayList<Story> parseFragement(String parseString) {
 		
-		//System.out.println("This one: " + parseString);
+		System.out.println("This one: " + parseString);
 		
 		// Blank story to trick datareturn
 		ArrayList<Story> stories = new ArrayList<Story>();
@@ -52,11 +52,14 @@ public class FragementParser implements Parser<Story> {
 			}.getType();
 			ElasticSearchResponse<Fragement> esResponse = null;
 			try {
+				//
 				
 				esResponse = gson.fromJson(
 					parseString, elasticSearchResponseType);
 			if (esResponse.getHits() != null) {
+				
 				for (ElasticSearchResponse<Fragement> f : esResponse.getHits()) {
+					
 					if(f != null) {
 						s.addFragement(f.getObject());
 					}

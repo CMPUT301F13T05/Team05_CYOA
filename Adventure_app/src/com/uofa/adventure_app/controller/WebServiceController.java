@@ -70,7 +70,7 @@ public class WebServiceController {
 				if(postString != null) {
 					conn.setFixedLengthStreamingMode(postString.length());
 					// Out put the post string in UTF-8
-					//System.err.println(postString);
+					
 					conn.getOutputStream().write(postString.getBytes(Charset.forName("UTF-8")));
 				} else {
 					throw new IOException("Invalid Post String");
