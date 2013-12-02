@@ -30,6 +30,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -192,7 +193,18 @@ public class AnnotateActivity extends AdventureActivity implements
 	}
 
 
-
+	/**
+	 * Overides the back button for annotations
+	 */
+	@Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+        		finish();
+        		return true;
+        } else {
+        	return super.onKeyDown(keyCode, event);
+        }
+    }
 	public void saveAnnotation() {
 		Fragement currentFragement = AdventureApplication.getStoryController().currentFragement();
 		if(isNewAnnotation) {
