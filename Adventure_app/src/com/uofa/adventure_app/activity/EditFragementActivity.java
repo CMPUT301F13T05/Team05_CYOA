@@ -235,7 +235,6 @@ public class EditFragementActivity extends AdventureActivity {
 	     String imageFilePath = folder + "/" + "Adventure_App" + String.valueOf(System.currentTimeMillis()) + "jpg";
 	     File imageFile = new File(imageFilePath);
 	     imageFileUri = Uri.fromFile(imageFile);
-	       System.out.println(imageFileUri.toString());
 	     intent.putExtra(MediaStore.EXTRA_OUTPUT, imageFileUri);
 		startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
 	}
@@ -250,7 +249,7 @@ public class EditFragementActivity extends AdventureActivity {
                                     this.getContentResolver(), imageFileUri);
                     Bitmap resizedBitmap = Media.resizeImage(bitmap);
                     String image = Media.encodeToBase64(resizedBitmap);
-                    System.out.println(AdventureApplication.getStoryController().currentFragement().getTitle());
+
                     AdventureApplication.getStoryController().currentFragement().addMedia(new Media(image));
                 } catch (FileNotFoundException e) {
                 	e.printStackTrace();
@@ -311,9 +310,6 @@ public class EditFragementActivity extends AdventureActivity {
 			switch (item.getItemId()) {
 			case R.id.takepic:
 				takeAPhoto();
-				currentView.getRootView().dispatchKeyEvent(
-						new KeyEvent(KeyEvent.ACTION_DOWN,
-								KeyEvent.KEYCODE_BACK));
 				break;
 			case R.id.choosemedia:
 				chooseImage();
@@ -329,9 +325,6 @@ public class EditFragementActivity extends AdventureActivity {
 
 				break;
 			default:
-				currentView.getRootView().dispatchKeyEvent(
-						new KeyEvent(KeyEvent.ACTION_DOWN,
-								KeyEvent.KEYCODE_BACK));
 				return super.onContextItemSelected(item);
 
 			}

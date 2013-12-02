@@ -37,7 +37,6 @@ public class Annotation extends UniqueId implements Serializable {
 
 	// the video, audio, or image 
 	private String media;
-	
 	// same as user
 	private User user;
 	private String annotationString;

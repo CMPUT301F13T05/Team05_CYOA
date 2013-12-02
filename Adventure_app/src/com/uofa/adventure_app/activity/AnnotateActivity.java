@@ -41,6 +41,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.uofa.adventure_app.R;
 import com.uofa.adventure_app.application.AdventureApplication;
@@ -117,11 +118,8 @@ public class AnnotateActivity extends AdventureActivity implements
 			isNewAnnotation = true;
 			alertBox();
 			break;
-		case R.id.choosemedia:
-			chooseImage();			
-			break;
-		case R.id.takepic:
-			takeAPhoto();
+		case R.id.anohelp:
+			help();			
 			break;
 		default:
 			return super.onOptionsItemSelected(item);
@@ -356,4 +354,14 @@ public class AnnotateActivity extends AdventureActivity implements
 	    	pickImage.setAction(Intent.ACTION_GET_CONTENT);
 	    	startActivityForResult(Intent.createChooser(pickImage, "Select Picture"), PICK_IMAGE);
 	    }
+	  /**
+	   * Shows the help Toast when the help button is pressed.
+	   */
+	  public void help(){
+		  Toast.makeText(this, "To create a new annotation go into the menu and choose New Annotation\n\n"
+				  + "To edit an existing annotation you have created click on the annotation in the list"
+				  + "and a screen will pop up allowing you to "
+				  + "change your existing annotation.", Toast.LENGTH_LONG).show();
+		  
+	  }
 }
