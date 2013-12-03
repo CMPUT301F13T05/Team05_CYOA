@@ -132,7 +132,9 @@ public class BrowserActivity extends AdventureActivity {
 		case R.id.random:
 			Random rand = new Random();
 			int size = AdventureApplication.getStoryController().stories().size();
-			int  n = rand.nextInt(size - 1);
+			int  n = 0;
+			if(size > 1)
+				n = rand.nextInt(size);
 			viewStory(v, AdventureApplication.getStoryController().stories().get(n));
 			break;
 		case R.id.help:
