@@ -125,6 +125,20 @@ public class Annotation extends UniqueId implements Serializable {
 	public String media() {
 		return media;
 	}
+	@Override
+	public boolean equals(Object o) {
+		// TODO Auto-generated method stub
+		if(o.getClass().equals(this.getClass())) {
+			Annotation ann = (Annotation) o;
+			if (this.uid().equals(ann.uid()))
+				return true;
+			else
+				return false;
+		} else {
+			return super.equals(o);
+		}
+		
 
+	}
 
 }

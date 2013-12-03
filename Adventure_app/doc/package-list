@@ -1,5 +1,6 @@
 com.uofa.adventure_app
 com.uofa.adventure_app.activity
+com.uofa.adventure_app.adapter
 com.uofa.adventure_app.application
 com.uofa.adventure_app.controller
 com.uofa.adventure_app.controller.http

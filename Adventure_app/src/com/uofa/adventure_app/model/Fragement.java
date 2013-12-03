@@ -48,7 +48,7 @@ public class Fragement extends UniqueId implements Serializable  {
             this.choices = new ArrayList<Choice>(); 
             this.media = new ArrayList<Media>();
             this.randomFlag = false;
-            this.title = null;
+            this.title = "";
             this.body = "";
         }      
 
@@ -254,11 +254,13 @@ public class Fragement extends UniqueId implements Serializable  {
 		}
 
 		/**
-		 * Adds an Annotation to the Fragement
+		 * s an Annotation to the Fragement
 		 * @param Annotiation a
 		 */
 		public void addAnnotation(Annotation a) {
+			if(!this.annotations().contains(a)) {
 				this.annotations().add(a);
+			}
 		}
 		/**
 		 * Replaces an annotation with another updates one.
@@ -278,7 +280,7 @@ public class Fragement extends UniqueId implements Serializable  {
 			this.annotations = annotations;
 		}
 		/**
-		 * creates a new fragement with the same ID.
+		 * creates a new fragement with the same ID, with no data.
 		 * @return Fragement
 		 */
 		public Fragement stripFragement() {

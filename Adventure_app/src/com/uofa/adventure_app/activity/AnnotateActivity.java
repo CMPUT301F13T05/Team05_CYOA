@@ -30,6 +30,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -44,6 +45,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.uofa.adventure_app.R;
+import com.uofa.adventure_app.adapter.CustomListViewAdapter;
 import com.uofa.adventure_app.application.AdventureApplication;
 import com.uofa.adventure_app.controller.http.HttpObject;
 import com.uofa.adventure_app.controller.http.HttpObjectStory;
@@ -96,7 +98,10 @@ public class AnnotateActivity extends AdventureActivity implements
 		if(this.isNetworkAvailable()) {
 			HttpObjectStory httpStory = new HttpObjectStory();
 			this.httpRequestFragement(httpStory.fetchAnnotationsForFragement(currentFragement.uid()), "GET_ANNOTATIONS");
-		} 
+		} else {
+			adapter.addAll(currentFragement.annotations());
+			this.updateView();
+		}
 		
 		// alertBox();
 	}
@@ -188,7 +193,18 @@ public class AnnotateActivity extends AdventureActivity implements
 	}
 
 
-
+	/**
+	 * Overides the back button for annotations
+	 */
+	@Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+        		finish();
+        		return true;
+        } else {
+        	return super.onKeyDown(keyCode, event);
+        }
+    }
 	public void saveAnnotation() {
 		Fragement currentFragement = AdventureApplication.getStoryController().currentFragement();
 		if(isNewAnnotation) {
@@ -231,8 +247,10 @@ public class AnnotateActivity extends AdventureActivity implements
 		if(result != null && result.get(0)  != null) {
 			ArrayList<Fragement> fragList = result.get(0).getFragements();
 			for(Fragement f : fragList) {
+				for (Annotation a: f.annotations()) {
+					currentFragement.addAnnotation(a);
+				}
 
-				currentFragement.setAnnotations(f.annotations());
 				
 			}
 		}
@@ -243,8 +261,8 @@ public class AnnotateActivity extends AdventureActivity implements
 
 	@Override
 	public void updateView() {
-		adapter.clear();
-		adapter.addAll(AdventureApplication.getStoryController().currentFragement().annotations());
+		//adapter.clear();
+		//adapter.addAll(AdventureApplication.getStoryController().currentFragement().annotations());
 		adapter.notifyDataSetChanged();
 	}
 

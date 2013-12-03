@@ -1,4 +1,4 @@
-package com.uofa.adventure_app.activity;
+package com.uofa.adventure_app.adapter;
 
 import java.util.ArrayList;
 

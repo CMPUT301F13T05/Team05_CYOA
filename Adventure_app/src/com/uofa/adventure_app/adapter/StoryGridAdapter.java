@@ -16,7 +16,7 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.uofa.adventure_app.activity;
+package com.uofa.adventure_app.adapter;
 
 import java.util.ArrayList;
 
@@ -31,11 +31,11 @@ import com.uofa.adventure_app.R;
 import com.uofa.adventure_app.model.Story;
 
 /**
- * Adapter for the Browse view Story list.
- * Displays all of the Stories in an organized and good
- * looking manner.
+ * Adapter for the Browse view Story list. Displays all of the Stories in an
+ * organized and good looking manner.
+ * 
  * @author Kevin Lafond
- *
+ * 
  */
 public class StoryGridAdapter extends BaseAdapter {
 
@@ -53,10 +53,13 @@ public class StoryGridAdapter extends BaseAdapter {
 		this.storiesClone.addAll(stories);
 		this.query = "";
 	}
+
 	/**
-	 * filters the stories being displayed based on the string passed
-	 * into the method
-	 * @param String query
+	 * filters the stories being displayed based on the string passed into the
+	 * method
+	 * 
+	 * @param String
+	 *            query
 	 */
 	public void filter(String query) {
 		if (query != null) {
@@ -82,7 +85,7 @@ public class StoryGridAdapter extends BaseAdapter {
 
 	@Override
 	public Object getItem(int position) {
-		if(this.stories != null) {
+		if (this.stories != null) {
 			return this.stories.get(position);
 		} else {
 			return null;
@@ -96,49 +99,56 @@ public class StoryGridAdapter extends BaseAdapter {
 		return position;
 	}
 
-
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		// Setup the multi line items in a listview
-		if(this.stories != null) {
-		if (convertView == null) {
+		if (this.stories != null) {
+			if (convertView == null) {
 
-			convertView = mInflater.inflate(R.layout.browser_item, parent,
-					false);
-		}
-		// Get the views
-		TextView title = (TextView) convertView.findViewById(R.id.line_a);
-		TextView sub = (TextView) convertView.findViewById(R.id.line_b);
-
-		Story story = (Story) this.getItem(position);
-		if (story != null) {
-
-			if (!story.isLocal()) {
-				convertView.setBackgroundResource(R.drawable.gridbgdown);
-				convertView.setPadding(25, 20, 20, 25);
-			} else {
-				convertView.setBackgroundResource(R.drawable.gridbg);
-				convertView.setPadding(25, 20, 20, 25);
+				convertView = mInflater.inflate(R.layout.browser_item, parent,
+						false);
 			}
+			// Get the views
+			TextView title = (TextView) convertView.findViewById(R.id.line_a);
+			TextView sub = (TextView) convertView.findViewById(R.id.line_b);
+
+			Story story = (Story) this.getItem(position);
+			if (story != null) {
+
+				if (!story.isLocal()) {
+					convertView.setBackgroundResource(R.drawable.gridbgdown);
+					convertView.setPadding(25, 20, 20, 25);
+				} else {
+					convertView.setBackgroundResource(R.drawable.gridbg);
+					convertView.setPadding(25, 20, 20, 25);
+				}
 
 				title.setText(story.title());
-
-				String authors = "Author: " + story.users().get(0).toString();
-				if (story.users().size() > 1){
-					authors += "\nEdited by: ";
-				}
-				for(int i = 1; i<story.users().size(); i++){
-					authors +=  story.users().get(i);
-					if (i != story.users().size()-1 ){
-						authors  += ", ";
-					}
-				}
-			sub.setText(authors);
-		}
+				sub.setText(authorString(story));
+			}
 		}
 		return convertView;
 	}
 
+	/**
+	 * Returns the authors for that Story
+	 * Implemented by refactoring
+	 * @param story
+	 * @return Returns a String of Authors
+	 */
+	private String authorString(Story story) {
 
-	
+		String authors = "Author: " + story.users().get(0).toString();
+		if (story.users().size() > 1) {
+			authors += "\nEdited by: ";
+		}
+		for (int i = 1; i < story.users().size(); i++) {
+			authors += story.users().get(i);
+			if (i != story.users().size() - 1) {
+				authors += ", ";
+			}
+		}
+		return authors;
+	}
+
 }

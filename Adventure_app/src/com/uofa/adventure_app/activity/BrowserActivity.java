@@ -23,6 +23,7 @@ import java.util.UUID;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -34,6 +35,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.uofa.adventure_app.R;
+import com.uofa.adventure_app.adapter.StoryGridAdapter;
 import com.uofa.adventure_app.application.AdventureApplication;
 import com.uofa.adventure_app.controller.FragementParser;
 import com.uofa.adventure_app.controller.http.HttpObjectStory;
@@ -138,12 +140,7 @@ public class BrowserActivity extends AdventureActivity {
 			viewStory(v, AdventureApplication.getStoryController().stories().get(n));
 			break;
 		case R.id.help:
-			String helpText = new String();
-			helpText="Search for a specific story using search bar\n\n";
-			helpText=helpText+"Choose story, to read the first fragement of the story\n\n";
-			helpText=helpText+"Touch New Story to create new story from scratch\n\n";
-			helpText=helpText+"Touch Refresh to refresh stories\n\n";
-			Toast.makeText(this, helpText, Toast.LENGTH_LONG).show();
+			toastHelp();
 			break;
 		case R.id.logout:
 			getSharedPreferences("PREFERENCE", MODE_PRIVATE).edit().putBoolean("firstrun", true).commit();
@@ -156,6 +153,20 @@ public class BrowserActivity extends AdventureActivity {
 		}
 		return super.onOptionsItemSelected(item);
 	}
+	
+	/**
+	 * Toasts help text
+	 * Implemented due to refactoring suggestions
+	 */
+	private void toastHelp() {
+		String helpText = new String();
+		helpText="Search for a specific story using search bar\n\n";
+		helpText=helpText+"Choose story, to read the first fragement of the story\n\n";
+		helpText=helpText+"Touch New Story to create new story from scratch\n\n";
+		helpText=helpText+"Touch Refresh to refresh stories\n\n";
+		Toast.makeText(this, helpText, Toast.LENGTH_LONG).show();
+	}
+	
 	/**
 	 * called when the user clicks Create a new story.
 	 * Creates and calls the intent that calls the Edit Fragment screen.
@@ -238,7 +249,9 @@ public class BrowserActivity extends AdventureActivity {
 		}
 	}
 
-
+	/**
+	 * Sets up the grid adapter
+	 */
 	public void initGrid() {
 		//if(storyGridAdapter == null) {
 		GridView grid = (GridView) findViewById(R.id.gridView1);
@@ -272,51 +285,66 @@ public class BrowserActivity extends AdventureActivity {
 			}
 			initGrid();
 		}else if(method.equals(GET_METHOD)) {
-			//System.out.println("RESULT " + result);
-			Story currentStory = result.get(0);
-			if(currentStory != null) {
-				currentStory.setIsLocal(true);
-				//System.out.println(currentStory.getFragements().get(0).getTitle());
-				AdventureApplication.getStoryController().replaceStory(currentStory);
-				
-				for (Fragement f : currentStory.getFragements()) {
-					HttpObjectStory httpStory = new HttpObjectStory();
-					this.httpRequestFragement(httpStory.fetchFragement(f.uid()), GET_FRAGEMENT);
-				}
-				
-				// Updates all views to proper content
-				AdventureApplication.getActivityController().update();
-				
-				// Save the Stories Just in Case!
-				AdventureApplication.getStoryController().saveStories();
-				
-				// Open it!
-				openStory(currentStory);
-
-			}
-		} else if(method.equals(GET_FRAGEMENT)) {
-			Story currentStory = AdventureApplication.getStoryController().currentStory();
-			if(result != null && result.get(0)  != null) {
-				ArrayList<Fragement> fragList = result.get(0).getFragements();
-				for(Fragement f : fragList) {
-						System.out.println("f : " + f.uid().toString());
-						currentStory.replaceFragement(f);
-						
-						if(currentStory.startFragement().equals(f)) {
-							currentStory.setStartFragement(f);
-						}
-						if(AdventureApplication.getStoryController().currentFragement().equals(f)) {
-							AdventureApplication.getStoryController().setCurrentFragement(f);
-						}
-				}
-				
-			}
-			AdventureApplication.getStoryController().replaceStory(currentStory);
-			AdventureApplication.getActivityController().update();
+			getStoryData(result);
 			
+		} else if(method.equals(GET_FRAGEMENT)) {
+			getFragementData(result);
 		}
 		}
 	}
+	/**
+	 * Puts the story into the story controller
+	 * @param result
+	 */
+	private void getStoryData(ArrayList<Story> result) {
+		//System.out.println("RESULT " + result);
+		Story currentStory = result.get(0);
+		if(currentStory != null) {
+			currentStory.setIsLocal(true);
+			//System.out.println(currentStory.getFragements().get(0).getTitle());
+			AdventureApplication.getStoryController().replaceStory(currentStory);
+			
+			for (Fragement f : currentStory.getFragements()) {
+				HttpObjectStory httpStory = new HttpObjectStory();
+				this.httpRequestFragement(httpStory.fetchFragement(f.uid()), GET_FRAGEMENT);
+			}
+			
+			// Updates all views to proper content
+			AdventureApplication.getActivityController().update();
+			
+			// Save the Stories Just in Case!
+			AdventureApplication.getStoryController().saveStories();
+			
+			// Open it!
+			openStory(currentStory);
+		}
+	}
+
+	/**
+	 * Gets the fragement from the result and appends to current story
+	 * @param result
+	 */
+	private void getFragementData(ArrayList<Story> result) {
+		Story currentStory = AdventureApplication.getStoryController().currentStory();
+		if(result != null && result.get(0)  != null) {
+			ArrayList<Fragement> fragList = result.get(0).getFragements();
+			for(Fragement f : fragList) {
+					System.out.println("f : " + f.uid().toString());
+					currentStory.replaceFragement(f);
+					
+					if(currentStory.startFragement().equals(f)) {
+						currentStory.setStartFragement(f);
+					}
+					if(AdventureApplication.getStoryController().currentFragement().equals(f)) {
+						AdventureApplication.getStoryController().setCurrentFragement(f);
+					}
+			}
+			
+		}
+		AdventureApplication.getStoryController().replaceStory(currentStory);
+		AdventureApplication.getActivityController().update();
+	}
+	
 	 protected void openLastFragement() {
 		 // Nothing Happens here.
 		 finish();
@@ -325,6 +353,20 @@ public class BrowserActivity extends AdventureActivity {
 	protected void saveTextForView(View v, String text) {
 			
 	}
-
+	
+	/**
+	 * Override to close app
+	 */
+	@Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+        		finish();
+        		return true;
+        	} else {
+        		return super.onKeyDown(keyCode,event);
+        	}
+        } 
 }
+
+
 
